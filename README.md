@@ -23,7 +23,7 @@ conda activate churp
 
 ```bash
 echo "TRAINING STARTED"
-python train.py --audio_path "../3470165/all_wavs" --save_name "churp.pth" --hop_length 86
+python train.py --audio_path "../../3470165/all_wavs" --save_name "churp.pth" --hop_length 86
 echo "TRAINING DONE"
 ```
 
@@ -40,7 +40,7 @@ echo "INFERENCE STARTED"
 for bird in "${birdnames[@]}"; do
     pklname="./${bird%/}.pkl"
     python model_inference_batched.py \
-        --audio_path "../3470165/$bird/Wave" \
+        --audio_path "../../3470165/$bird/Wave" \
         --model_path "churp.pth" \
         --save_pickle "$pklname" \
         --hop_length 86
@@ -56,7 +56,7 @@ echo "CLUSTERING STARTED"
 for bird in "${birdnames[@]}"; do
     pklname="birdsong_inference_out/${bird}.pkl"
     python cluster_and_seg.py \
-        --audio_path "../3470165/${bird}/Wave" \
+        --audio_path "../../3470165/${bird}/Wave" \
         --pkl "${pklname}" \
         --hop_length 86 \
         --bird_name_prefix "${bird}"
