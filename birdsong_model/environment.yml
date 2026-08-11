@@ -3,45 +3,46 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.11  
+  - python=3.11
   - pip
   - setuptools
   - wheel
   - cython
+
+  # Core Data & Math (installed via Conda FIRST so C-extensions build cleanly)
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - tqdm
+
+  # Audio processing
+  - librosa
+  - soundfile
+
+  # Visualization & Tools
+  - matplotlib
+  - seaborn
+  - ipython
+  - jupyter
+  - ipykernel
+  - pyqtgraph
+  - pyqt
+
+  # Clustering
+  - hdbscan
+  - umap-learn
+
   - pip:
       - --extra-index-url https://download.pytorch.org/whl/cu124
-      
-      # Core ML / Audio
+
+      # PyTorch CUDA builds
       - torch
       - torchvision
       - torchaudio
-      
-      # Data processing and clustering tools
-      - numpy
-      - scipy
-      - pandas
-      - scikit-learn
-      - tqdm
+
+      # Specialized packages requiring pre-installed NumPy
       - hmmlearn
-      
-      # Audio processing
-      - librosa
-      - soundfile
-      
-      # Visualization and notebook tools
-      - matplotlib
-      - seaborn
-      - ipython
-      - jupyter
-      - ipykernel
       - glasbey
-      - pyqtgraph
-      - PyQt5
-      
-      # Specialized clustering/metrics
-      - hdbscan
       - iisignature
-      - umap-learn
-      
-      # Utilities
       - shutil-extra
