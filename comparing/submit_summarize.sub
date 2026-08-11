@@ -1,0 +1,24 @@
+container_image = docker://lsvaren/transformers
+universe = container
+executable = run_summarize.sh
+
+# Pass the parallel job index (0 through 9) to the script
+
+transfer_input_files = plot_metrics.py,file:///staging/cdonahue6/birdsong/comparison_0.tar.gz,file:///staging/cdonahue6/birdsong/comparison_1.tar.gz,file:///staging/cdonahue6/birdsong/comparison_2.tar.gz,file:///staging/cdonahue6/birdsong/comparison_3.tar.gz,file:///staging/cdonahue6/birdsong/comparison_4.tar.gz,file:///staging/cdonahue6/birdsong/comparison_5.tar.gz,file:///staging/cdonahue6/birdsong/comparison_6.tar.gz,file:///staging/cdonahue6/birdsong/comparison_7.tar.gz,file:///staging/cdonahue6/birdsong/comparison_8.tar.gz,file:///staging/cdonahue6/birdsong/comparison_9.tar.gz,file:///staging/cdonahue6/birdsong/comparison_10.tar.gz
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+# Dynamically name output package so jobs don't overwrite each other in staging
+transfer_output_files = metrics.tar.gz
+output_destination = file:///staging/cdonahue6/birdsong/
+
+requirements=(HasCHTCStaging == true)
+request_memory = 20 GB
+request_disk = 200 GB
+request_cpus = 1
+
+batch_name = birdsong_comparison
+output = logs/metrics.out
+error = logs/metrics.err
+log = logs/metrics.log

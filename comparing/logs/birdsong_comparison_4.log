@@ -1,0 +1,100 @@
+000 (6012067.004.000) 2026-08-10 10:57:57 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "birdsong_comparison" ]
+...
+040 (6012067.004.000) 2026-08-10 11:59:52 Started transferring input files
+	Transferring to host: <128.105.69.133:9618?addrs=128.105.69.133-9618+[2607-f388-2200-100-1270-fdff-fe56-70f4]-9618&alias=e4082.chtc.wisc.edu&noUDP&sock=slot1_4_3885077_f4fa_13877>
+...
+040 (6012067.004.000) 2026-08-10 12:03:49 Finished transferring input files
+...
+001 (6012067.004.000) 2026-08-10 12:03:50 Job executing on host: <128.105.69.133:9618?addrs=128.105.69.133-9618+[2607-f388-2200-100-1270-fdff-fe56-70f4]-9618&alias=e4082.chtc.wisc.edu&noUDP&sock=startd_10694_c5e2>
+	SlotName: slot1_4@e4082.chtc.wisc.edu
+	CondorScratchDir = "/var/lib/condor/execute/slot1/dir_708209/scratch"
+	Cpus = 1
+	Disk = 209715200
+	GPUs = 0
+	IoHeavy = 0
+	Memory = 20480
+...
+006 (6012067.004.000) 2026-08-10 12:03:58 Image size of job updated: 57
+	57  -  MemoryUsage of job (MB)
+	58916  -  ResidentSetSize of job (KB)
+...
+006 (6012067.004.000) 2026-08-10 12:08:59 Image size of job updated: 107
+	107  -  MemoryUsage of job (MB)
+	109624  -  ResidentSetSize of job (KB)
+...
+006 (6012067.004.000) 2026-08-10 12:19:00 Image size of job updated: 3450
+	3450  -  MemoryUsage of job (MB)
+	3533000  -  ResidentSetSize of job (KB)
+...
+040 (6012067.004.000) 2026-08-10 14:21:09 Started transferring output files
+...
+040 (6012067.004.000) 2026-08-10 14:21:55 Finished transferring output files
+...
+005 (6012067.004.000) 2026-08-10 14:22:05 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 01:54:19, Sys 0 00:15:46  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 01:54:19, Sys 0 00:15:46  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	6853602487  -  Run Bytes Sent By Job
+	33613709451  -  Run Bytes Received By Job
+	6853602487  -  Total Bytes Sent By Job
+	33613709451  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated 
+	   Cpus                 :        0.00         1         1 
+	   Disk (KB)            : 87379844    209715200 209715200 
+	   GPUs                 :                               0 
+	   IoHeavy              :                               0 
+	   Memory (MB)          :     3450        20480     20480 
+	   TimeExecute (s)      :     8238                        
+	   TimeSlotBusy (s)     :     8524                        
+...
+000 (6013147.004.000) 2026-08-10 16:22:39 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "birdsong_comparison" ]
+...
+040 (6013147.004.000) 2026-08-10 16:29:33 Started transferring input files
+	Transferring to host: <128.105.69.195:9618?addrs=128.105.69.195-9618+[2607-f388-2200-100-1270-fdff-fe56-6f44]-9618&alias=e4048.chtc.wisc.edu&noUDP&sock=slot1_44_2057078_4afb_54586>
+...
+040 (6013147.004.000) 2026-08-10 16:35:12 Finished transferring input files
+...
+001 (6013147.004.000) 2026-08-10 16:35:21 Job executing on host: <128.105.69.195:9618?addrs=128.105.69.195-9618+[2607-f388-2200-100-1270-fdff-fe56-6f44]-9618&alias=e4048.chtc.wisc.edu&noUDP&sock=startd_14792_a8fe>
+	SlotName: slot1_44@e4048.chtc.wisc.edu
+	CondorScratchDir = "/var/lib/condor/execute/slot1/dir_602844/scratch"
+	Cpus = 1
+	Disk = 209715200
+	GPUs = 0
+	IoHeavy = 0
+	Memory = 20480
+...
+006 (6013147.004.000) 2026-08-10 16:40:22 Image size of job updated: 80
+	80  -  MemoryUsage of job (MB)
+	82256  -  ResidentSetSize of job (KB)
+...
+006 (6013147.004.000) 2026-08-10 16:50:24 Image size of job updated: 3448
+	3448  -  MemoryUsage of job (MB)
+	3530820  -  ResidentSetSize of job (KB)
+...
+040 (6013147.004.000) 2026-08-10 19:08:23 Started transferring output files
+...
+040 (6013147.004.000) 2026-08-10 19:11:04 Finished transferring output files
+...
+005 (6013147.004.000) 2026-08-10 19:11:15 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 02:08:10, Sys 0 00:20:48  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 02:08:10, Sys 0 00:20:48  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	6853603332  -  Run Bytes Sent By Job
+	33613710214  -  Run Bytes Received By Job
+	6853603332  -  Total Bytes Sent By Job
+	33613710214  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated 
+	   Cpus                 :        0.00         1         1 
+	   Disk (KB)            : 87379284    209715200 209715200 
+	   GPUs                 :                               0 
+	   IoHeavy              :                               0 
+	   Memory (MB)          :     3448        20480     20480 
+	   TimeExecute (s)      :     9028                        
+	   TimeSlotBusy (s)     :     9693                        
+...

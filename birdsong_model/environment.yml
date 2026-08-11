@@ -1,0 +1,47 @@
+name: churp
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11  
+  - pip
+  - setuptools
+  - wheel
+  - cython
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu124
+      
+      # Core ML / Audio
+      - torch
+      - torchvision
+      - torchaudio
+      
+      # Data processing and clustering tools
+      - numpy
+      - scipy
+      - pandas
+      - scikit-learn
+      - tqdm
+      - hmmlearn
+      
+      # Audio processing
+      - librosa
+      - soundfile
+      
+      # Visualization and notebook tools
+      - matplotlib
+      - seaborn
+      - ipython
+      - jupyter
+      - ipykernel
+      - glasbey
+      - pyqtgraph
+      - PyQt5
+      
+      # Specialized clustering/metrics
+      - hdbscan
+      - iisignature
+      - umap-learn
+      
+      # Utilities
+      - shutil-extra

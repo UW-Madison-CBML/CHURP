@@ -1,0 +1,27 @@
+container_image = docker://lsvaren/transformers
+
+
+Universe = container
+Executable = run_inference_batched.sh
+transfer_input_files = model.py,model_inference_batched.py,file:///staging/cdonahue6/birdsong/benchmark_data/3470165.tar.gz,file:///staging/cdonahue6/birdsong/birdsong_train.tar.gz
+
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_output_files = birdsong_inference_out.tar.gz
+output_destination = file:///staging/cdonahue6/birdsong/
+
++WantGPULab = true
++WantFlock = true
++GPUJobLength = "long"
+Requirements = (Target.HasCHTCStaging == true)
+gpus_minimum_memory = 130 GB
+request_memory = 130 GB
+request_disk = 1056 GB
+request_cpus = 5
+request_gpus = 1
+
+batch_name = lstm_inference_batched
+output = $(Cluster).out
+error = $(Cluster).err
+log = $(Cluster).log
+queue 
