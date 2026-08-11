@@ -1,11 +1,7 @@
 Markdown
 # CHURP Usage Guide
 
-<!-- Add a brief introduction here describing what CHURP is, what dataset it expects, and any prerequisites needed before starting. -->
-
 ## 1. Setup and Installation
-
-<!-- Explain where the data archive comes from or what it contains before extraction. -->
 
 First, extract the dataset and clone the repository:
 
