@@ -6,7 +6,7 @@ First, extract the dataset and clone the repository:
 
 ```bash
 tar -zxf 3470165.tar.gz
-git clone git@github.com:/UW-Madison-CBML/CHURP
+git clone https://github.com/UW-Madison-CBML/CHURP
 cd CHURP/birdsong_model 
 ```
 
