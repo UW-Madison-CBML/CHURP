@@ -31,11 +31,8 @@ dependencies:
   - umap-learn
 
   - pip:
-      - --extra-index-url https://download.pytorch.org/whl/cu124
-      - --no-build-isolation
-      
       # PyTorch CUDA builds
-      - torch
+      - torch==2.10.0
       - torchvision
       - torchaudio
 
