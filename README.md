@@ -15,16 +15,16 @@ git clone [https://github.com/C-P-R-DON/CHURP.git](https://github.com/C-P-R-DON/
 cd birdsong_model 
 ```
 
-2. Environment Configuration
-Create and activate the required Conda environment:
+## 2. Environment Configuration
+### Create and activate the required Conda environment:
 
 ```bash
 conda env create -f environment.yml -n churp
 conda activate churp
 ```
 
-3. Model Training
-Start the training pipeline to generate the churp.pth model weights:
+## 3. Model Training
+### Start the training pipeline to generate the churp.pth model weights:
 
 ```bash
 echo "TRAINING STARTED"
@@ -32,8 +32,8 @@ python train.py --audio_path "../3470165/all_wavs" --save_name "churp.pth" --hop
 echo "TRAINING DONE"
 ```
 
-4. Inference
-Define the target subjects and run batched inference to generate pickle (.pkl) files for each bird:
+## 4. Inference
+### Define the target subjects and run batched inference to generate pickle (.pkl) files for each bird:
 
 ```bash
 birdnames=(
@@ -53,8 +53,8 @@ done
 echo "INFERENCE DONE"
 ```
 
-5. Clustering and Segmentation
-Process the inferred pickle files to group and segment the audio data:
+## 5. Clustering and Segmentation
+### Process the inferred pickle files to group and segment the audio data:
 
 ```bash
 echo "CLUSTERING STARTED"
@@ -69,8 +69,8 @@ done
 echo "CLUSTERING DONE"
 ```
 
-6. Packaging Outputs
-Finally, organize all generated visualizations and data files into a single compressed archive for easy sharing or storage:
+## 6. Packaging Outputs
+### Finally, organize all generated visualizations and data files into a single compressed archive for easy sharing or storage:
 
 ```bash
 mkdir CHURP_outputs
