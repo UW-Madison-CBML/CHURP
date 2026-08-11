@@ -1,4 +1,3 @@
-Markdown
 # CHURP Usage Guide
 
 ## 1. Setup and Installation
@@ -75,3 +74,11 @@ mv *.png CHURP_outputs
 mv *.pkl CHURP_outputs
 tar -czf "CHURP_outputs.tar.gz" ./CHURP_outputs
 ```
+# TweetyBERT implementation
+
+# Metrics and comparison calculations
+
+
+
+
+
