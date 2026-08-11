@@ -7,7 +7,7 @@ First, extract the dataset and clone the repository:
 
 ```bash
 tar -zxf 3470165.tar.gz
-git clone [https://github.com/C-P-R-DON/CHURP.git](https://github.com/C-P-R-DON/CHURP.git)
+git clone git@github.com:/UW-Madison-CBML/tda-birdsong
 cd birdsong_model 
 ```
 
