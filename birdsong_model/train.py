@@ -57,6 +57,11 @@ def main():
         type=int, 
         help="The hop length of the stft."
     )
+    parser.add_argument(
+        "--epochs", 
+        type=int, 
+        help="The number of training epochs"
+    )
     args = parser.parse_args()
 
     # load wav files as spectrograms
@@ -75,8 +80,8 @@ def main():
     criterion = nn.MSELoss(reduction='none')
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 
-    # train model for 50 epochs, using mask to ignore loss from padded regions 
-    n_epochs = 50
+    # train model using mask to ignore loss from padded regions 
+    n_epochs = args.epochs
     model.train()
     for epoch in range(n_epochs):
         # Unpack the mask alongside the batch
