@@ -17,7 +17,7 @@ cd CHURP/birdsong_model
 conda env create -f environment.yml -n churp
 conda activate churp
 # install iisignature within environment to avoid error
-pip install iisignature
+pip install iisignature --no-build-isolation
 ```
 
 ## 3. Model Training
