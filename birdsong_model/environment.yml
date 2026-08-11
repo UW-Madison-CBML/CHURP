@@ -9,18 +9,15 @@ dependencies:
   - wheel
   - cython
 
-  # Core Data & Math (installed via Conda FIRST so C-extensions build cleanly)
+  # Core Data & Math (installed via Conda FIRST)
   - numpy
   - scipy
   - pandas
   - scikit-learn
   - tqdm
 
-  # Audio processing
+  # Audio processing & Visualization
   - librosa
-  - soundfile
-
-  # Visualization & Tools
   - matplotlib
   - seaborn
   - ipython
@@ -41,7 +38,8 @@ dependencies:
       - torchvision
       - torchaudio
 
-      # Specialized packages requiring pre-installed NumPy
+      # Packages to install via PyPI / Pip
+      - soundfile
       - hmmlearn
       - glasbey
       - iisignature
