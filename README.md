@@ -18,14 +18,14 @@ docker pull cdonahue6/churp
 docker run cdonahue6/churp
 ```
 
-## 3. Model Training
+## 3. Model Training -- outputs "churp.pth" weights file
 ### Start the training pipeline to generate the churp.pth model weights:
 
 ```bash
 python train.py --audio_path "../../3470165/all_wavs" --save_name "churp.pth" --hop_length 86 --epochs 50
 ```
 
-## 4. Inference
+## 4. Inference -- outputs "<bird name>.pkl" files containing dictionary mapping each .wav file (the keys) to the corresponding list of 3d normalized embeddings for each time bin in the recording (the values)
 ### Define the target subjects and run batched inference to generate pickle (.pkl) files for each bird:
 
 ```bash
@@ -49,7 +49,7 @@ for bird in "${birdnames[@]}"; do
 done
 ```
 
-## 5. Clustering and Segmentation
+## 5. Clustering and Segmentation -- outputs <bird name>.html summary file and .png files containing visualizations
 ### Process the inferred pickle files to group and segment the audio data (in parallel, for speed):
 
 ```bash
