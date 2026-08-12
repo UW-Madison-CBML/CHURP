@@ -175,7 +175,7 @@ def get_all_subintervals(path, thresh_perc=0.75):
     return loop_subintervals, starts, ends
 
 
-def collect_all_loops(embeddings, refined_intervals, thresh_perc=0.75):
+def collect_all_loops(embeddings, refined_intervals, thresh_perc=0.75, max_length = 50):
     """
     Iterates through broad intervals and conditionally splits long ones 
     into smaller sub-loops, packaging them into a structured dictionary.
@@ -192,7 +192,7 @@ def collect_all_loops(embeddings, refined_intervals, thresh_perc=0.75):
         path = embeddings[s:e]
 
         # If the loop is relatively short (<= 50 frames), keep it as is
-        if d <= 50:
+        if d <= max_length:
             all_intervals[f"{i}_0"] = {'loop': path, 'idx': (s, e)}
             intervals.append((s, e))
         else:
@@ -799,6 +799,31 @@ def main():
         "--hop_length", 
         type=int, 
         help="The hop length of the stft."
+    )
+    parser.add_argument(
+        "--max_length", 
+        type=int, 
+        help="The cutoff for subdivision of loops (in time bins)."
+    )
+    parser.add_argument(
+        "--min_length", 
+        type=int, 
+        help="The shortest allowed loop length (in time bins)."
+    )
+    parser.add_argument(
+        "--fst_threshold", 
+        type=float, 
+        help="The percentage of frequency intensity (as a fraction) to separate noise from song."
+    )
+    parser.add_argument(
+        "--sec_threshold", 
+        type=float, 
+        help="The percentage of frequency intensity (as a fraction) to separate out syllables within song."
+    )
+    parser.add_argument(
+        "--max_clusters", 
+        type=int, 
+        help="The maximum number of clusters allowed."
     )
 
     args = parser.parse_args()
