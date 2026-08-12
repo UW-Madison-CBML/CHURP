@@ -2,7 +2,7 @@
 
 ## 1. Setup and Installation
 
-First, extract the dataset. The dataset used below comes from https://figshare.com/articles/media/BirdsongRecognition/3470165 and the "all_wavs" directory was created by adding all the wav files from the individuals birds to a single directory. Note than any wav files can be used as model inputs. Next, clone the repository:
+First, extract the dataset. The dataset used below comes from https://figshare.com/articles/media/BirdsongRecognition/3470165 and the "all_wavs" directory was created by adding all the wav files from the individual birds to a single directory. Note than any wav files can be used as model inputs. Next, clone the repository:
 
 ```bash
 tar -zxf 3470165.tar.gz
