@@ -73,7 +73,7 @@ mv *.pkl CHURP_outputs
 tar -czf "CHURP_outputs.tar.gz" ./CHURP_outputs
 ```
 # TweetyBERT implementation
-TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code segment cell below. This includes all parameters used, as well as the commands that were executed to change some of the original code. 
+TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code block below. This includes all parameters used, as well as the commands that were executed to change some of the original code. 
 
 ```bash
 # 1. Create and activate a new Conda environment
