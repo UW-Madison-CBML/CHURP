@@ -16,32 +16,27 @@ dependencies:
   - scikit-learn
   - tqdm
 
-  # Audio processing & Visualization
-  - librosa
-  - matplotlib
-  - seaborn
+  # Jupyter & IPython
   - ipython
   - jupyter
   - ipykernel
-  - pyqtgraph
-  - pyqt
 
   # Clustering
   - hdbscan
   - umap-learn
 
   - pip:
-      # PyTorch CUDA 12.1 repository
-      - --extra-index-url https://download.pytorch.org/whl/cu121
-  
       # PyTorch CUDA builds
       - torch==2.10.0
       - torchvision
       - torchaudio
 
-      # Packages to install via PyPI / Pip
+      # Audio, Viz, and specialty packages
+      - matplotlib
+      - seaborn
+      - pyqt
+      - pyqtgraph
       - soundfile
       - hmmlearn
       - glasbey
       - shutil-extra
-      - iisignature
