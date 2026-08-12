@@ -11,7 +11,7 @@ cd CHURP/birdsong_model
 ```
 
 ## 2. Container Configuration
-### Pull and run the docker image. Install librosa:
+### Pull and run the docker image. If the pull fails, the image can be built from the dockerfile available in the "docker_setup" directory. Install librosa:
 
 ```bash
 docker pull cdonahue6/churp
