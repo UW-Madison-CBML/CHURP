@@ -18,6 +18,8 @@ conda env create -f environment.yml -n churp
 conda activate churp
 # install iisignature within environment to avoid error
 pip install iisignature --no-build-isolation
+# install correct version of torchaudio
+pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121
 ```
 
 ## 3. Model Training
