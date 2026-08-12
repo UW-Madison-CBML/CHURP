@@ -73,7 +73,82 @@ mv *.pkl CHURP_outputs
 tar -czf "CHURP_outputs.tar.gz" ./CHURP_outputs
 ```
 # TweetyBERT implementation
-TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the scripts in the "tweety_bert" subdirectory. These scripts include all parameters used, as well as the commands that were executed to change some of the original code.
+TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code segment cell below. This includes all parameters used, as well as the commands that were executed to change some of the original code. 
+
+```bash
+# 1. Create and activate a new Conda environment
+conda create -n tweetybert python=3.11
+conda activate tweetybert
+
+# 2. Install core scientific packages (including librosa)
+conda install -c conda-forge \
+    numpy \
+    matplotlib \
+    tqdm \
+    umap-learn \
+    hdbscan \
+    scikit-learn \
+    pandas \
+    seaborn \
+    jupyter \
+    ipykernel \
+    librosa
+
+# 3. Install additional dependencies via pip
+pip install soundfile shutil-extra glasbey pyqtgraph PyQt5 hmmlearn
+
+# clone tweetyBERT repository
+git clone https://github.com/georgevenven/tweety_bert.git
+cd tweety_bert
+
+# pretrain network on all birds using default settings, except step_size 86 for 2.7ms bins
+python pretrain.py --input_dir "../3470165/all_wavs" --experiment_name "MyTweetyBERTModel" --test_percentage 20 --batch_size 32 --learning_rate 3e-4 --context 1000 --m 250 --multi_thread --step_size 86
+
+# change path error in inference.py
+sed -i "s|'python', '/home/george-vengrovski/Documents/projects/tweety_net_song_detector/src/inference.py'|'python','./src/inference.py'|g" src/inference.py
+
+birdnames=(
+    "Bird0"
+    "Bird1"
+    "Bird2"
+    "Bird3"
+    "Bird4"
+    "Bird5"
+    "Bird6"
+    "Bird7"
+    "Bird8"
+    "Bird9"
+    "Bird10"
+)
+
+# fix hardcoded hop-length
+myhop=86
+
+perl -pi -e 's/("--output", str\(temp_detector_output_dir\))/$1,\n        "--step_size", "86"/g' detect_song.py
+
+perl -pi.bak -e 's/\b(step_size\s*=\s*)119\b/${1}'"$myhop"'/g' src/spectogram_generator.py
+
+perl -pi.bak -e 's/\bhop_length\s*=\s*119\b/hop_length = '"$myhop"'/g' src/inference.py
+
+# make empty npz file for decoding.py to work
+mkdir files
+
+for bird in "${birdnames[@]}"; do
+        touch files/$bird.npz
+
+        # detect songs for individual bird
+        python detect_song.py --input_dir "../3470165/$bird/Wave/"
+
+        # generate UMAP embeddings and train decoder on all birds with default arguments
+        python decoding.py --mode single --bird_name "${bird}_decoder" --model_name "MyTweetyBERTModel" --wav_folder "../3470165/$bird/Wave/" --num_random_files_spec 100 --num_samples_umap 5e5 --song_detection_json_path "files/${bird}_song_detection.json"
+
+        mv files/song_detection.json files/${bird}_song_detection.json
+
+        # run inference on specific bird
+        python run_inference.py --bird_name "${bird}_decoder" --wav_folder "../3470165/$bird/Wave/" --apply_post_processing True --visualize --song_detection_json "files/${bird}_song_detection.json"
+
+done
+```
 
 # Metrics and comparison calculations
 
