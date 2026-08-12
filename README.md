@@ -11,7 +11,7 @@ cd CHURP/birdsong_model
 ```
 
 ## 2. Container Configuration
-### Pull and run the docker image. If the pull fails, the image can be built from the dockerfile available in the "docker_setup" directory. The docker image uses torch 2.10.0, so be sure to change that and match the correct CUDA version to your system and GPU drivers if needed. Install librosa:
+### Pull and run the docker image. If the pull fails, the image can be built from the dockerfile available in the "docker_setup" directory. The docker image uses torch 2.10.0, so be sure to change that and match the correct CUDA version to your system and GPU drivers if needed. Install librosa after running the image:
 
 ```bash
 docker pull cdonahue6/churp
