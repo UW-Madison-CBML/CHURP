@@ -865,10 +865,10 @@ def main():
         origin, db_thresh, keep_idx = find_origin(spectrogram, embeddings_norm)
 
         # get intervals of deviation from fuzzy origin
-        ints, starts, ends = get_all_intervals(embeddings_norm, origin, threshold_perc=0.2)
+        ints, starts, ends = get_all_intervals(embeddings_norm, origin, threshold_perc=args.fst_threshold)
 
         # filter out intervals that are too short to be syllables
-        refined_intervals = refine_loops(starts, ends, min_length=20)
+        refined_intervals = refine_loops(starts, ends, min_length=args.min_length)
 
         # if no intervals pass the refining step, we store nothing in the corresponding data structures  
         if len(refined_intervals) == 0:
@@ -886,7 +886,7 @@ def main():
             continue 
         else:
             # collect all smaller loops within the identified refined loops, using a higher threshold this time
-            traj_small, intervals_small = collect_all_loops(embeddings_norm, refined_intervals, thresh_perc=0.75)
+            traj_small, intervals_small = collect_all_loops(embeddings_norm, refined_intervals, thresh_perc=args.sec_threshold, max_length = args.max_length)
 
             # store information of each syllable in appropriate data structure
             spec_ints = [item[1].get('idx') for item in traj_small.items()]
@@ -946,7 +946,7 @@ def main():
 
     # run UMAP and HDBSCAN to cluster the path signatures, optimizing for silhouette score
     # the 2d umap will be used for plotting, but the cluster labels come from the optimal clustering
-    X_2d, clusters = optimize_umap_clusters(X, seed=seed, min_cluster_size=100, max_clusters=20)
+    X_2d, clusters = optimize_umap_clusters(X, seed=seed, min_cluster_size=100, max_clusters=args.max_clusters)
 
     # Create a dynamic color palette that scales based on the number of unique clusters found
     cmap = plt.get_cmap('viridis', len(set(clusters))) 
