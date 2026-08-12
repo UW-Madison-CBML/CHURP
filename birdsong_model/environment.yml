@@ -31,6 +31,9 @@ dependencies:
   - umap-learn
 
   - pip:
+      # PyTorch CUDA 12.1 repository
+      - --extra-index-url https://download.pytorch.org/whl/cu121
+  
       # PyTorch CUDA builds
       - torch==2.10.0
       - torchvision
