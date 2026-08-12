@@ -9,7 +9,7 @@ dependencies:
   - wheel
   - cython
 
-  # Core Data & Math (installed via Conda FIRST)
+  # Core Data & Math
   - numpy
   - scipy
   - pandas
@@ -44,3 +44,4 @@ dependencies:
       - hmmlearn
       - glasbey
       - shutil-extra
+      - iisignature
