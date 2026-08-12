@@ -29,7 +29,6 @@ dependencies:
       # PyTorch CUDA builds
       - torch==2.10.0
       - torchvision
-      - torchaudio
 
       # Audio, Viz, and specialty packages
       - matplotlib
