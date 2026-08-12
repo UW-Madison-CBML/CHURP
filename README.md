@@ -11,11 +11,12 @@ cd CHURP/birdsong_model
 ```
 
 ## 2. Container Configuration
-### Pull and run the docker image:
+### Pull and run the docker image. Install librosa:
 
 ```bash
 docker pull cdonahue6/churp
 docker run cdonahue6/churp
+pip install librosa
 ```
 
 ## 3. Model Training -- outputs "churp.pth" weights file
