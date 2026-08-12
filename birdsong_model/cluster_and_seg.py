@@ -899,9 +899,9 @@ def main():
 
         syb = traj[k]
         
-        # Vectorized time-integration 
+        # Vectorized time-integration (MinMax scaled to [0, 1])
         num_rows = len(syb)
-        time_steps = np.arange(num_rows) / num_rows
+        time_steps = np.linspace(0, 1, num_rows)
         
         # add time dimension for time-integrated path signatures 
         transformed = np.c_[syb, time_steps]
