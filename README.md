@@ -7,28 +7,22 @@ First, extract the dataset and clone the repository:
 ```bash
 tar -zxf 3470165.tar.gz
 git clone https://github.com/UW-Madison-CBML/CHURP
-cd CHURP/birdsong_model 
+cd CHURP/birdsong_model
 ```
 
-## 2. Environment Configuration
-### Create and activate the required Conda environment:
+## 2. Container Configuration
+### Pull and run the docker image:
 
 ```bash
-conda env create -f environment.yml -n churp
-conda activate churp
-# install iisignature within environment to avoid error
-pip install iisignature --no-build-isolation
-# install correct version of torchaudio
-pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121
+docker pull cdonahue6/churp
+docker run cdonahue6/churp
 ```
 
 ## 3. Model Training
 ### Start the training pipeline to generate the churp.pth model weights:
 
 ```bash
-echo "TRAINING STARTED"
-python train.py --audio_path "../../3470165/all_wavs" --save_name "churp.pth" --hop_length 86
-echo "TRAINING DONE"
+python train.py --audio_path "../../3470165/all_wavs" --save_name "churp.pth" --hop_length 86 --epochs 50
 ```
 
 ## 4. Inference
@@ -36,36 +30,35 @@ echo "TRAINING DONE"
 
 ```bash
 birdnames=(
-    "Bird1" "Bird2" "Bird3" "Bird4" "Bird5" 
-    "Bird6" "Bird7" "Bird8" "Bird9" "Bird10"
+    "Bird0"
+    "Bird1"
+    "Bird2"
+    "Bird3"
+    "Bird4"
+    "Bird5"
+    "Bird6"
+    "Bird7"
+    "Bird8"
+    "Bird9"
+    "Bird10"
 )
 
-echo "INFERENCE STARTED"
 for bird in "${birdnames[@]}"; do
     pklname="./${bird%/}.pkl"
-    python model_inference_batched.py \
-        --audio_path "../../3470165/$bird/Wave" \
-        --model_path "churp.pth" \
-        --save_pickle "$pklname" \
-        --hop_length 86
+    python model_inference_batched.py --audio_path "../../3470165/$bird/Wave" --model_path "churp.pth" --save_pickle "$pklname" --hop_length 86
 done
-echo "INFERENCE DONE"
 ```
 
 ## 5. Clustering and Segmentation
-### Process the inferred pickle files to group and segment the audio data:
+### Process the inferred pickle files to group and segment the audio data (in parallel, for speed):
 
 ```bash
-echo "CLUSTERING STARTED"
 for bird in "${birdnames[@]}"; do
-    pklname="birdsong_inference_out/${bird}.pkl"
-    python cluster_and_seg.py \
-        --audio_path "../../3470165/${bird}/Wave" \
-        --pkl "${pklname}" \
-        --hop_length 86 \
-        --bird_name_prefix "${bird}"
+    pklname="${bird}.pkl"
+    python cluster_and_seg.py --audio_path "../../3470165/${bird}/Wave" --pkl "${pklname}" --hop_length 86 --bird_name_prefix "${bird}" --min_length 20 --max_length 50 --max_clusters 20 --fst_threshold 0.2 --sec_threshold 0.75 &
 done
-echo "CLUSTERING DONE"
+# wait for background processes running in parallel to end
+wait
 ```
 
 ## 6. Packaging Outputs
