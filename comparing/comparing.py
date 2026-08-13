@@ -474,7 +474,11 @@ def apply_region_mask(annot_dict, regions_json_path, hop):
         for i, seg in enumerate(segments):
             onset_bin = seg.get("onset_timebin", 0)
             offset_bin = seg.get("offset_timebin", 0)
-
+            
+            # filter out sigments less than 250 time bins long 
+            if (offset_bin - onset_bin) < 250:
+                continue
+            
             # Convert timebins directly to sample indices
             onset_sample = max(0, min(onset_bin * hop_multiplier, len(original_annots)))
             offset_sample = max(0, min(offset_bin * hop_multiplier, len(original_annots)))
