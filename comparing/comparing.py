@@ -668,6 +668,9 @@ def main():
     parser.add_argument(
         "--out_dir", type=str, default=".", help="Directory to save outputs"
     )
+        parser.add_argument(
+        "--bird", type=str, default=".", help="Bird ID for csv naming"
+    )
 
     args = parser.parse_args()
 
@@ -759,8 +762,8 @@ def main():
 
 
     # store all the comparison metrics in a csv file
-    file_exists = os.path.exists("comparison_data.csv")
-    with open('comparison_data.csv', mode='a', newline='') as file:
+    file_exists = os.path.exists(f"{args.bird}_comparison_data.csv")
+    with open(f"{args.bird}_comparison_data.csv", mode='a', newline='') as file:
         writer = csv.writer(file)
    
         if not file_exists:
