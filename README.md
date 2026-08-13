@@ -14,9 +14,19 @@ cd CHURP/birdsong_model
 ### Pull and run the docker image. If the pull fails, the image can be built from the dockerfile available in the "docker_setup" directory. The docker image uses torch 2.10.0, so be sure to change that and match the correct CUDA version to your system and GPU drivers if needed. Install librosa after running the image:
 
 ```bash
-docker pull cdonahue6/churp
-docker run cdonahue6/churp
-pip install librosa
+conda create -n churp python=3.10
+source $(conda info --base)/etc/profile.d/conda.sh 
+conda activate churp
+
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+
+conda install -y -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas librosa seaborn jupyter ipykernel
+pip install --upgrade pip setuptools wheel cython
+pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0 --index-url https://download.pytorch.org/whl/cu121
+echo "Installing hdbscan and iisignature..."
+pip install hdbscan iisignature --no-build-isolation
+pip install scipy soundfile ipython wandb shutil-extra glasbey pyqtgraph PyQt5 hmmlearn
 ```
 
 ## 3. Model Training -- outputs "churp.pth" weights file
