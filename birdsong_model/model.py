@@ -66,7 +66,7 @@ def pad_collate_fn(batch):
     for item in batch:
         x = item[0] # Extract the tensor from the tuple
         seq_len = x.shape[1]
-        lengths.append(seq_length)
+        lengths.append(seq_len)
         
         pad_amount = max_len - seq_len
         padded_x = F.pad(x, (0, pad_amount), mode='constant', value=0.0)
