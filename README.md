@@ -17,16 +17,12 @@ cd ../CHURP/birdsong_model
 
 ```bash
 conda create -n churp python=3.10
-source $(conda info --base)/etc/profile.d/conda.sh 
+source $(conda info --base)/etc/profile.d/conda.sh
 conda activate churp
 
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
-conda install -y -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas librosa seaborn jupyter ipykernel
+conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas seaborn jupyter ipykernel librosa
 pip install --upgrade pip setuptools wheel cython
-pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0 --index-url https://download.pytorch.org/whl/cu121
-echo "Installing hdbscan and iisignature..."
+pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
 pip install hdbscan iisignature --no-build-isolation
 pip install scipy soundfile ipython wandb shutil-extra glasbey pyqtgraph PyQt5 hmmlearn
 ```
@@ -56,6 +52,7 @@ birdnames=(
     "Bird10"
 )
 
+# run inference on each bird
 for bird in "${birdnames[@]}"; do
     pklname="./${bird%/}.pkl"
     python model_inference_batched.py --audio_path "../../3470165/$bird/Wave" --model_path "churp.pth" --save_pickle "$pklname" --hop_length 86
@@ -70,7 +67,6 @@ for bird in "${birdnames[@]}"; do
     pklname="${bird}.pkl"
     python cluster_and_seg.py --audio_path "../../3470165/${bird}/Wave" --pkl "${pklname}" --hop_length 86 --bird_name_prefix "${bird}" --min_length 20 --max_length 50 --max_clusters 20 --fst_threshold 0.2 --sec_threshold 0.75 &
 done
-# wait for background processes running in parallel to end
 wait
 ```
 
@@ -78,11 +74,12 @@ wait
 ### Finally, organize all generated visualizations and data files into a single compressed archive for easy sharing or storage:
 
 ```bash
+cd ../../
 mkdir CHURP_outputs
-mv *.html CHURP_outputs
-mv *.png CHURP_outputs
-mv *.pkl CHURP_outputs
-tar -czf "CHURP_outputs.tar.gz" ./CHURP_outputs
+mv CHURP/birdsong_model/*.html CHURP_outputs
+mv CHURP/birdsong_model/*.png CHURP_outputs
+mv CHURP/birdsong_model/*.pkl CHURP_outputs
+tar -czf "CHURP_outputs.tar.gz" CHURP_outputs
 ```
 # TweetyBERT implementation
 TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code block below. This includes all parameters used, as well as the commands that were executed to change some of the original code. 
