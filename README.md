@@ -2,7 +2,7 @@
 
 ## 1. Setup and Installation
 
-First, extract the dataset. The dataset used below comes from https://figshare.com/articles/media/BirdsongRecognition/3470165 and the "all_wavs" directory was created by adding all the wav files from the individual birds to a single directory. Note than any wav files can be used as model inputs. Next, clone the repository:
+First, extract the dataset. The dataset used below comes from https://figshare.com/articles/media/BirdsongRecognition/3470165 and the "all_wavs" directory was created by adding all the wav files from the individual birds to a single directory (see the move_wavs.sh script). Note than any wav files can be used as model inputs. Next, clone the repository:
 
 ```bash
 tar -zxf 3470165.tar.gz
@@ -10,8 +10,8 @@ git clone https://github.com/UW-Madison-CBML/CHURP
 cd CHURP/birdsong_model
 ```
 
-## 2. Container Configuration
-### Pull and run the docker image. If the pull fails, the image can be built from the dockerfile available in the "docker_setup" directory. The docker image uses torch 2.10.0, so be sure to change that and match the correct CUDA version to your system and GPU drivers if needed. Install librosa after running the image:
+## 2. Environemnt Configuration
+### Create an environment for running CHURP and install the necessary programs. Note that the pipeline uses torch 2.10.0, so be sure to change that and match the correct CUDA version to your system and GPU drivers if needed:
 
 ```bash
 conda create -n churp python=3.10
