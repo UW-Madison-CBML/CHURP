@@ -148,8 +148,59 @@ mv tweety_outputs.tar.gz ../../../tweety_outputs.tar.gz
 ```
 
 # Metrics and comparison calculations
+```bash
+tar -xzf CHURP_outputs.tar.gz
+tar -xzf tweety_outputs.tar.gz
+tar -xzf 3470165.tar.gz
 
+mkdir comparison_outputs
 
+birdnames=(
+    "Bird0"
+    "Bird1"
+    "Bird2"
+    "Bird3"
+    "Bird4"
+    "Bird5"
+    "Bird6"
+    "Bird7"
+    "Bird8"
+    "Bird9"
+    "Bird10"
+)
+
+# run comparisons for each bird
+for bird in "${birdnames[@]}"; do
+
+        python CHURP/comparing/comparing.py \
+                --xml "3470165/${bird}/Annotation.xml" \
+                --pkl "CHURP_outputs/annotated_bins_${bird}.pkl" \
+                --json "tweety_outputs/${bird}_decoder_decoded_database.json" \
+                --wav_dir "3470165/${bird}/Wave" \
+                --sr 32000 \
+                --hop 86 \
+                --out_dir "comparison_outputs" \
+                --regions "tweety_outputs/${bird}_song_detection.json" \
+                --bird "${bird}" > "comparison_outputs/${bird}.out" &
+
+done
+
+wait
+
+mv *.csv comparison_outputs/
+
+touch metrics.csv
+
+sed -n '1p' "comparison_outputs/Bird0_comparison_data.csv" > metrics.csv
+
+for bird in "${birdnames[@]}"; do
+        sed -n '2p' "comparison_outputs/${bird}_comparison_data.csv" >> metrics.csv
+done
+
+mv metrics.csv comparison_outputs/
+
+tar -czf comparison_outputs.tar.gz comparison_outputs/
+```
 
 
 
