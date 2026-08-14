@@ -81,7 +81,7 @@ mv CHURP/birdsong_model/*.png CHURP_outputs
 mv CHURP/birdsong_model/*.pkl CHURP_outputs
 tar -czf "CHURP_outputs.tar.gz" CHURP_outputs
 ```
-# TweetyBERT implementation
+# TweetyBERT implementation (Assumes CHURP repository has been cloned and CHURP environment activated -- steps 1 and 2 from CHURP usage guide)
 TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main as of July 2026. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code block below. This includes all parameters used, as well as the commands that were executed to change some of the original code. 
 
 ```bash
@@ -147,7 +147,7 @@ tar -czf tweety_outputs.tar.gz tweety_outputs/
 mv tweety_outputs.tar.gz ../../../tweety_outputs.tar.gz
 ```
 
-# Metrics and comparison calculations
+# Metrics and comparison calculations (Assumes CHURP repository has been cloned and CHURP environment activated -- steps 1 and 2 from CHURP usage guide)
 ```bash
 tar -xzf CHURP_outputs.tar.gz
 tar -xzf tweety_outputs.tar.gz
