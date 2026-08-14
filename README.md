@@ -12,7 +12,7 @@ bash ../CHURP/birdsong_model/move_wavs.sh
 cd ../CHURP/birdsong_model
 ```
 
-## 2. Environemnt Configuration
+## 2. Environment Configuration
 ### Create an environment for running CHURP and install the necessary programs. Note that the pipeline uses torch 2.10.0, so be sure to change that and match the correct CUDA version to your system and GPU drivers if needed:
 
 ```bash
