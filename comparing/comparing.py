@@ -668,7 +668,7 @@ def main():
     parser.add_argument(
         "--out_dir", type=str, default=".", help="Directory to save outputs"
     )
-        parser.add_argument(
+    parser.add_argument(
         "--bird", type=str, default=".", help="Bird ID for csv naming"
     )
 
