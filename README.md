@@ -2,12 +2,14 @@
 
 ## 1. Setup and Installation
 
-First, extract the dataset. The dataset used below comes from https://figshare.com/articles/media/BirdsongRecognition/3470165 and the "all_wavs" directory was created by adding all the wav files from the individual birds to a single directory (see the move_wavs.sh script). Note than any wav files can be used as model inputs. Next, clone the repository:
+First, extract the dataset. The dataset used below comes from https://figshare.com/articles/media/BirdsongRecognition/3470165 and the "all_wavs" directory was created by adding all the wav files from the individual birds to a single directory (see the "birdsong_model/move_wavs.sh" usage). Note than any wav files can be used as model inputs. Next, clone the repository:
 
 ```bash
 tar -zxf 3470165.tar.gz
 git clone https://github.com/UW-Madison-CBML/CHURP
-cd CHURP/birdsong_model
+cd 3470165
+bash ../CHURP/birdsong_model/move_wavs.sh
+cd ../CHURP/birdsong_model
 ```
 
 ## 2. Environemnt Configuration
