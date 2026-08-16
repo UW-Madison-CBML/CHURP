@@ -87,6 +87,11 @@ TweetyBERT was implemented according to the github https://github.com/georgevenv
 ```bash
 tar -xzf 3470165.tar.gz
 
+git clone https://github.com/UW-Madison-CBML/CHURP
+cd 3470165
+bash ../CHURP/birdsong_model/move_wavs.sh
+cd ..
+
 conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
 conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
