@@ -158,6 +158,10 @@ for bird in "${birdnames[@]}"; do
     python run_inference.py --bird_name "${bird}_decoder" --wav_folder "../3470165/$bird/Wave/" --apply_post_processing True --visualize --song_detection_json "files/${bird}_song_detection.json"
 
 done
+
+cd ..
+
+tar -zcvf tweety_bert.tar.gz tweety_bert
 ```
 
 # Metrics and comparison calculations (Assumes CHURP repository has been cloned and CHURP environment activated -- steps 1 and 2 from CHURP usage guide)
