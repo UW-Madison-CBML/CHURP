@@ -169,7 +169,7 @@ cd ..
 tar -zcvf tweety_bert.tar.gz tweety_bert
 ```
 
-# Metrics and comparison calculations (Assumes CHURP repository has been cloned and CHURP environment activated -- steps 1 and 2 from CHURP usage guide)
+# Metrics and comparison calculations
 ```bash
 git clone https://github.com/UW-Madison-CBML/CHURP
 
