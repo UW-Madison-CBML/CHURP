@@ -171,8 +171,20 @@ tar -zcvf tweety_bert.tar.gz tweety_bert
 
 # Metrics and comparison calculations (Assumes CHURP repository has been cloned and CHURP environment activated -- steps 1 and 2 from CHURP usage guide)
 ```bash
+git clone https://github.com/UW-Madison-CBML/CHURP
+
+conda create -n churp python=3.10
+source $(conda info --base)/etc/profile.d/conda.sh
+conda activate churp
+
+conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas seaborn jupyter ipykernel librosa
+pip install --upgrade pip setuptools wheel cython
+pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
+pip install hdbscan iisignature --no-build-isolation
+pip install scipy soundfile ipython wandb shutil-extra glasbey pyqtgraph PyQt5 hmmlearn
+
 tar -xzf CHURP_outputs.tar.gz
-tar -xzf tweety_outputs.tar.gz
+tar -xzf tweety_bert.tar.gz
 tar -xzf 3470165.tar.gz
 
 mkdir comparison_outputs
@@ -197,12 +209,12 @@ for bird in "${birdnames[@]}"; do
         python CHURP/comparing/comparing.py \
                 --xml "3470165/${bird}/Annotation.xml" \
                 --pkl "CHURP_outputs/annotated_bins_${bird}.pkl" \
-                --json "tweety_outputs/${bird}_decoder_decoded_database.json" \
+                --json "tweety_bert/files/${bird}_decoder_decoded_database.json" \
                 --wav_dir "3470165/${bird}/Wave" \
                 --sr 32000 \
                 --hop 86 \
                 --out_dir "comparison_outputs" \
-                --regions "tweety_outputs/${bird}_song_detection.json" \
+                --regions "tweety_bert/files/${bird}_song_detection.json" \
                 --bird "${bird}" > "comparison_outputs/${bird}.out" &
 
 done
