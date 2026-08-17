@@ -133,6 +133,7 @@ birdnames=(
     "Bird10"
 )
 
+
 # fix hardcoded hop-length
 myhop=86
 
@@ -148,19 +149,18 @@ perl -pi.bak -e 's/\bhop_length\s*=\s*119\b/hop_length = '"$myhop"'/g' src/infer
 mkdir files
 
 for bird in "${birdnames[@]}"; do
-    touch files/$bird.npz
+        touch files/$bird.npz
 
-    # detect songs for individual bird so that spectrogram naming is not messed up
-    python detect_song.py --input_dir "../3470165/$bird/Wave/"
+        # generate UMAP embeddings and train decoder on all birds with default arguments
+        python decoding.py --mode single --bird_name "${bird}_decoder" --model_name "MyTweetyBERTModel" --wav_folder "../3470165/$bird/Wave/" --num_random_files_spec 100 --num_samples_umap 5e5
 
+        # detect songs for individual bird so that spectrogram naming is not messed up
+        python detect_song.py --input_dir "../3470165/$bird/Wave/"
 
-    # generate UMAP embeddings and train decoder on all birds with default arguments
-    python decoding.py --mode single --bird_name "${bird}_decoder" --model_name "MyTweetyBERTModel" --wav_folder "../3470165/$bird/Wave/" --num_random_files_spec 100 --num_samples_umap 5e5 --song_detection_json_path "files/${bird}_song_detection.json"
+        mv files/song_detection.json files/${bird}_song_detection.json
 
-    mv files/song_detection.json files/${bird}_song_detection.json
-
-    # run inference on specific bird
-    python run_inference.py --bird_name "${bird}_decoder" --wav_folder "../3470165/$bird/Wave/" --apply_post_processing True --visualize --song_detection_json "files/${bird}_song_detection.json"
+        # run inference on specific bird
+        python run_inference.py --bird_name "${bird}_decoder" --wav_folder "../3470165/$bird/Wave/" --apply_post_processing True --visualize --song_detection_json "files/${bird}_song_detection.json"
 
 done
 
