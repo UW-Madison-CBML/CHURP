@@ -1,0 +1,41 @@
+name: churp
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11 
+  - pip
+  - setuptools
+  - wheel
+  - cython
+
+  # Core Data & Math
+  - numpy
+  - scipy
+  - pandas
+  - scikit-learn
+  - tqdm
+
+  # Jupyter & IPython
+  - ipython
+  - jupyter
+  - ipykernel
+
+  # Clustering
+  - hdbscan
+  - umap-learn
+
+  - pip:
+      # PyTorch CUDA builds
+      - torch==2.10.0
+      - torchvision
+
+      # Audio, Viz, and specialty packages
+      - matplotlib
+      - seaborn
+      - pyqt
+      - pyqtgraph
+      - soundfile
+      - hmmlearn
+      - glasbey
+      - shutil-extra
