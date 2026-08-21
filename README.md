@@ -177,7 +177,7 @@ conda create -n churp python=3.10
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate churp
 
-conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas seaborn jupyter ipykernel librosa
+conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas seaborn jupyter ipykernel librosa networkx
 pip install --upgrade pip setuptools wheel cython
 pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
 pip install hdbscan iisignature --no-build-isolation
@@ -232,6 +232,9 @@ for bird in "${birdnames[@]}"; do
 done
 
 mv metrics.csv comparison_outputs/
+
+# plot results
+python CHURP/comparing/plot_comparisons.py
 
 tar -czf comparison_outputs.tar.gz comparison_outputs/
 ```
