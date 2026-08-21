@@ -629,16 +629,6 @@ def strip_unmapped(annot_dict, mapping, bg_label="-1"):
 def build_transition_matrix(transition_probs, label_mapping=None):
     """
     Converts a nested transition dictionary into a pandas DataFrame matrix.
-    
-    Args:
-        transition_probs: Dictionary of transition probabilities, where keys are 'from' states
-                         and values are dictionaries of 'to' states with their probabilities.
-        label_mapping: Optional dictionary mapping predicted/clustered labels to ground truth labels.
-                      If provided, predicted/clustered syllable labels are remapped to their
-                      corresponding ground truth labels before building the matrix.
-    
-    Returns:
-        pandas DataFrame: Transition probability matrix with states as both rows and columns.
     """
     
     # If a label mapping is provided, remap the transition probabilities
@@ -655,10 +645,7 @@ def build_transition_matrix(transition_probs, label_mapping=None):
             for to_state, prob in to_states.items():
                 mapped_to = label_mapping.get(str(to_state), str(to_state))
                 
-                if mapped_to not in remapped_probs[mapped_from]:
-                    remapped_probs[mapped_from][mapped_to] = 0.0
-                
-                remapped_probs[mapped_from][mapped_to] += prob
+                remapped_probs[mapped_from][mapped_to] = prob
         
         transition_probs = remapped_probs
     
@@ -856,8 +843,10 @@ def main():
 
     # make transition probability matrices
     gt_matrix = build_transition_matrix(transition_probs_xml)
-    birdsong_matrix = build_transition_matrix(transition_probs_pkl, label_mapping=label_mapping_1)
-    tweety_matrix = build_transition_matrix(transition_probs_json, label_mapping=label_mapping_2)
+    reversed_map_1 = {v: k for k, v in label_mapping_1.items()}
+    birdsong_matrix = build_transition_matrix(transition_probs_pkl, label_mapping=reveresed_map_1)
+    reversed_map_2 = {v: k for k, v in label_mapping_2.items()}
+    tweety_matrix = build_transition_matrix(transition_probs_json, label_mapping=reveresed_map_2)
 
     stats = {
         'per_record_fer_tweety' : fer_per_sample_tweety, 
