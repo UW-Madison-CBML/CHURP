@@ -821,7 +821,7 @@ def main():
     for key in gt_keys:
         # Get the mean duration for each label
         val_a = mean_durations_xml.get(key)
-        val_b = mean_durations_pkl.get(label_mapping_1.get(key, ""), 0.0)
+        val_b = mean_durations_pkl.get(label_mapping_1.get(key))
         
         intersection = min(val_a, val_b)
         union = max(val_a, val_b)
@@ -834,7 +834,7 @@ def main():
     for key in gt_keys:
         # Get the mean duration for each label
         val_a = mean_durations_xml.get(key)
-        val_b = mean_durations_json.get(label_mapping_2.get(key, ""), 0.0)
+        val_b = mean_durations_json.get(label_mapping_2.get(key))
         
         intersection = min(val_a, val_b)
         union = max(val_a, val_b)
