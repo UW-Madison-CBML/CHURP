@@ -844,9 +844,9 @@ def main():
     # make transition probability matrices
     gt_matrix = build_transition_matrix(transition_probs_xml)
     reversed_map_1 = {v: k for k, v in label_mapping_1.items()}
-    birdsong_matrix = build_transition_matrix(transition_probs_pkl, label_mapping=reveresed_map_1)
+    birdsong_matrix = build_transition_matrix(transition_probs_pkl, label_mapping=reversed_map_1)
     reversed_map_2 = {v: k for k, v in label_mapping_2.items()}
-    tweety_matrix = build_transition_matrix(transition_probs_json, label_mapping=reveresed_map_2)
+    tweety_matrix = build_transition_matrix(transition_probs_json, label_mapping=reversed_map_2)
 
     stats = {
         'per_record_fer_tweety' : fer_per_sample_tweety, 
