@@ -794,8 +794,8 @@ def main():
     _, mean_durations_pkl, _, transition_probs_pkl = compute_phrase_metrics(processed_pkl, bg_labels=("-1", -1))
     _, mean_durations_json, _, transition_probs_json = compute_phrase_metrics(processed_json, bg_labels=("-1", -1))
 
-    # calculate jaccard index for syllables
-    jaccards_birdsong = []
+    # calculate min-max similarity for syllables
+    similarity_birdsong = []
     gt_keys = set(mean_durations_xml.keys())
         
     for key in gt_keys:
@@ -806,9 +806,9 @@ def main():
         intersection = min(val_a, val_b)
         union = max(val_a, val_b)
         
-        jaccards_birdsong.append(intersection / union)
+        similarity_birdsong.append(intersection / union)
 
-    jaccards_tweety = []
+    similarity_tweety = []
     gt_keys = set(mean_durations_xml.keys())
         
     for key in gt_keys:
@@ -819,7 +819,7 @@ def main():
         intersection = min(val_a, val_b)
         union = max(val_a, val_b)
         
-        jaccards_tweety.append(intersection / union)
+        similarity_tweety.append(intersection / union)
 
     # make transition probability matrices
     gt_matrix = build_transition_matrix(transition_probs_xml)
@@ -829,8 +829,8 @@ def main():
     stats = {
         'per_record_fer_tweety' : fer_per_sample_tweety, 
         'per_record_fer_birdsong' : fer_per_sample_birdsong,
-        'per_syb_jaccard_tweety' : jaccards_tweety,
-        'per_syb_jaccard_birdsong' : jaccards_birdsong,
+        'per_syb_similarity_tweety' : similarity_tweety,
+        'per_syb_similarity_birdsong' : similarity_birdsong,
         'transition_matrix_tweety' : tweety_matrix,
         'transition_matrix_birdsong' : birdsong_matrix,
         'transition_matrix_gt' : gt_matrix
