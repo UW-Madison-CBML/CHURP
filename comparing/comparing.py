@@ -816,9 +816,9 @@ def main():
 
     # calculate min-max similarity for syllables
     similarity_birdsong = []
-    gt_keys = set(mean_durations_xml.keys())
-        
-    for key in gt_keys:
+    mapped_keys = label_mapping_1.get(key)
+    
+    for key in mapped_keys:
         # Get the mean duration for each label
         val_a = mean_durations_xml.get(key)
         val_b = mean_durations_pkl.get(label_mapping_1.get(key))
@@ -829,9 +829,9 @@ def main():
         similarity_birdsong.append(intersection / union)
 
     similarity_tweety = []
-    gt_keys = set(mean_durations_xml.keys())
+    mapped_keys = set(label_mapping_2.get(key))
         
-    for key in gt_keys:
+    for key in mapped_keys:
         # Get the mean duration for each label
         val_a = mean_durations_xml.get(key)
         val_b = mean_durations_json.get(label_mapping_2.get(key))
