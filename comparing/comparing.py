@@ -626,8 +626,41 @@ def strip_unmapped(annot_dict, mapping, bg_label="-1"):
         
     return cleaned_dict
 
-def build_transition_matrix(transition_probs):
-    """Converts a nested transition dictionary into a pandas DataFrame matrix."""
+def build_transition_matrix(transition_probs, label_mapping=None):
+    """
+    Converts a nested transition dictionary into a pandas DataFrame matrix.
+    
+    Args:
+        transition_probs: Dictionary of transition probabilities, where keys are 'from' states
+                         and values are dictionaries of 'to' states with their probabilities.
+        label_mapping: Optional dictionary mapping predicted/clustered labels to ground truth labels.
+                      If provided, predicted/clustered syllable labels are remapped to their
+                      corresponding ground truth labels before building the matrix.
+    
+    Returns:
+        pandas DataFrame: Transition probability matrix with states as both rows and columns.
+    """
+    
+    # If a label mapping is provided, remap the transition probabilities
+    if label_mapping is not None:
+        remapped_probs = {}
+        for from_state, to_states in transition_probs.items():
+            # Map the 'from' state using the provided mapping, default to original if not in mapping
+            mapped_from = label_mapping.get(str(from_state), str(from_state))
+            
+            if mapped_from not in remapped_probs:
+                remapped_probs[mapped_from] = {}
+            
+            # Map each 'to' state and accumulate probabilities for the same mapped state
+            for to_state, prob in to_states.items():
+                mapped_to = label_mapping.get(str(to_state), str(to_state))
+                
+                if mapped_to not in remapped_probs[mapped_from]:
+                    remapped_probs[mapped_from][mapped_to] = 0.0
+                
+                remapped_probs[mapped_from][mapped_to] += prob
+        
+        transition_probs = remapped_probs
     
     # Identify all unique states (phrases) across both 'from' and 'to' transitions
     all_states = set(transition_probs.keys())
@@ -823,8 +856,8 @@ def main():
 
     # make transition probability matrices
     gt_matrix = build_transition_matrix(transition_probs_xml)
-    birdsong_matrix = build_transition_matrix(transition_probs_pkl)
-    tweety_matrix = build_transition_matrix(transition_probs_json)
+    birdsong_matrix = build_transition_matrix(transition_probs_pkl, label_mapping=label_mapping_1)
+    tweety_matrix = build_transition_matrix(transition_probs_json, label_mapping=label_mapping_2)
 
     stats = {
         'per_record_fer_tweety' : fer_per_sample_tweety, 
@@ -871,4 +904,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
