@@ -819,6 +819,9 @@ def main():
     mapped_keys = set(label_mapping_1.keys())
     
     for key in mapped_keys:
+        if key == "-1":
+            continue
+        
         # Get the mean duration for each label
         val_a = mean_durations_xml.get(key)
         val_b = mean_durations_pkl.get(label_mapping_1.get(key))
