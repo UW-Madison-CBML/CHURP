@@ -177,11 +177,11 @@ conda create -n churp python=3.10
 source $(conda info --base)/etc/profile.d/conda.sh
 conda activate churp
 
-conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas seaborn jupyter ipykernel librosa networkx
+conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas jupyter ipykernel librosa
 pip install --upgrade pip setuptools wheel cython
 pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
 pip install hdbscan iisignature --no-build-isolation
-pip install scipy soundfile ipython wandb shutil-extra glasbey pyqtgraph PyQt5 hmmlearn
+pip install scipy soundfile ipython wandb shutil-extra glasbey pyqtgraph PyQt5 hmmlearn seaborn networkx
 
 tar -xzf CHURP_outputs.tar.gz
 tar -xzf tweety_bert.tar.gz
