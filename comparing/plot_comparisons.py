@@ -9,7 +9,7 @@ import networkx as nx
 import re
 
 STATS_DIR = "comparison_outputs"  # Directory containing comparison_stats_{bird}.pkl files
-OUT_DIR = "comparison_plots"      # Directory where generated figures will be saved
+OUT_DIR = "comparison_outputs"      # Directory where generated figures will be saved
 
 os.makedirs(OUT_DIR, exist_ok=True)
 
