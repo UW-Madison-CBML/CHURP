@@ -810,10 +810,15 @@ def main():
             fer_per_sample_tweety.append(errors / total_frames)
 
     # get the mean durations per syllable and the probabilites of each syllable transition pair
-    _, mean_durations_xml, _, transition_probs_xml = compute_phrase_metrics(processed_xml, bg_labels=("-1", -1))
-    _, mean_durations_pkl, _, transition_probs_pkl = compute_phrase_metrics(processed_pkl, bg_labels=("-1", -1))
-    _, mean_durations_json, _, transition_probs_json = compute_phrase_metrics(processed_json, bg_labels=("-1", -1))
+    freq_xml, mean_durations_xml, _, transition_probs_xml = compute_phrase_metrics(processed_xml, bg_labels=("-1", -1))
+    freq_pkl, mean_durations_pkl, _, transition_probs_pkl = compute_phrase_metrics(processed_pkl, bg_labels=("-1", -1))
+    freq_json, mean_durations_json, _, transition_probs_json = compute_phrase_metrics(processed_json, bg_labels=("-1", -1))
 
+    # calculate number of syllables ground truth and learned
+    num_xml_sybs = sum(freq_xml.values())
+    num_pkl_sybs = sum(freq_pkl.values())
+    num_json_sybs = sum(freq_json.values())
+    
     # calculate min-max similarity for syllables
     similarity_birdsong = []
     mapped_keys = set(label_mapping_1.keys())
@@ -886,10 +891,10 @@ def main():
         writer = csv.writer(file)
    
         if not file_exists:
-            writer.writerow(['Tweety Entropy Cor', 'Birdsong Entropy Cor', 'Tweety Duration Cor', 'Birdsong Duration Cor', 'Audio Minutes'])
+            writer.writerow(['Syllables From Tweety', 'Syllables from Birdsong', 'Ground Truth Syllables', 'Tweety Entropy Cor', 'Birdsong Entropy Cor', 'Tweety Duration Cor', 'Birdsong Duration Cor', 'Audio Minutes'])
 
         raw_data = [
-            tweety_corr_ent, birdsong_corr_ent, 
+            num_json_sybs, num_pkl_sybs, num_xml_sybs, tweety_corr_ent, birdsong_corr_ent, 
             tweety_corr_dur, birdsong_corr_dur, minutes
         ]
 
