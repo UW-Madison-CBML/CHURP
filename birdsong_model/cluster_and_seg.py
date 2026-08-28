@@ -653,6 +653,107 @@ def optimize_umap_clusters(X, seed, min_cluster_size=100, max_clusters = None):
 
     return X_2d, best_clusters
 
+def optimize_umap_kmeans(X, seed, n_clusters=5):
+    """
+    Sweeps UMAP n_components from 2 to 10 and uses KMeans clustering,
+    evaluating via Silhouette score to select the best low-dimensional representation.
+    """
+    best_silhouette = -1.0
+    best_clusters = None
+    best_n = None
+    X_2d = None
+
+    for n_c in range(2, 11):
+        # Fit UMAP reduction
+        reducer = umap.UMAP(n_components=n_c, metric='euclidean', random_state=seed)
+        X_trans = reducer.fit_transform(X)
+
+        if n_c == 2:
+            X_2d = X_trans.copy()
+
+        # Perform KMeans Clustering
+        kmeans = sklearn.cluster.KMeans(n_clusters=n_clusters, random_state=seed, n_init='auto')
+        clusters = kmeans.fit_predict(X_trans)
+
+        unique_clusters = np.unique(clusters)
+        if len(unique_clusters) > 1:
+            score = silhouette_score(X_trans, clusters)
+            if score > best_silhouette:
+                best_n = n_c
+                best_silhouette = score
+                best_clusters = clusters.copy()
+
+    if best_clusters is None:
+        best_n = 2
+        kmeans = sklearn.cluster.KMeans(n_clusters=n_clusters, random_state=seed, n_init=10)
+        best_clusters = kmeans.fit_predict(X_2d)
+
+    print(f"Best KMeans Clustering is from UMAP with {best_n} components")
+    return X_2d, best_clusters
+
+def plot_distance_on_spectrogram(spectrogram, embeddings_3d, t_sec, save_name):
+    """
+    Plots the latent trajectory distance from the origin overlaid on 
+    the spectrogram and saves it as a 600 DPI PNG file.
+    """
+    distances = np.linalg.norm(embeddings_3d, axis=1)
+    
+    fig, ax1 = plt.subplots(figsize=(14, 6))
+
+    # set limits for plotting
+    # Define middle half time bounds (25% to 75%)
+    t_start = 0.25 * t_sec
+    t_end = 0.75 * t_sec
+    
+    # Plot Spectrogram on primary y-axis
+    extent = [0, t_sec, 0, spectrogram.shape[0]]
+    im = ax1.imshow(spectrogram, origin='lower', aspect='auto', cmap='magma', extent=extent)
+    ax1.set_xlabel("Time (s)")
+    ax1.set_ylabel("Frequency Bin")
+    ax1.set_xlim(t_start, t_end)
+    
+    # Create twin axis for distance metric overlay
+    ax2 = ax1.twinx()
+    time_bins = np.linspace(0, t_sec, len(distances))
+    
+    # Plot distance line
+    ax2.plot(time_bins, distances, color='cyan', linewidth=1.8, label='Distance from Origin')
+    
+    # Calculate mean distance and plot horizontal dashed red line
+    mean_distance = np.mean(distances)
+    ax2.axhline(y=mean_distance, color='red', linestyle='--', linewidth=1.5, label='Mean Distance')
+    
+    # Add legend for ax2 (will grab both labels automatically)
+    ax2.legend(loc='upper right')
+    
+    ax2.set_ylabel("Distance from Origin", color='cyan')
+    ax2.tick_params(axis='y', labelcolor='cyan')
+    
+    plt.title("Spectrogram with Latent Trajectory Distance Overlay")
+    plt.tight_layout()
+    plt.savefig(f"{save_name}.png", dpi=600, bbox_inches='tight')
+    plt.close(fig)
+
+def plot_large_latent_trajectory(embeddings_3d, save_name, figsize=(14, 12)):
+    """
+    Plots a large high-resolution 3D plot of the entire latent trajectory 
+    of a recording in gray and saves it as a 600 DPI PNG.
+    """
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot(111, projection='3d')
+    
+    # Plot continuous trajectory line in gray
+    ax.plot(embeddings_3d[:, 0], embeddings_3d[:, 1], embeddings_3d[:, 2], 
+            color='gray', alpha=0.7, linewidth=1.5)
+    
+    ax.set_title("Full Latent Trajectory", fontsize=18)
+    ax.set_xlabel("Latent Dim 1", labelpad=10)
+    ax.set_ylabel("Latent Dim 2", labelpad=10)
+    ax.set_zlabel("Latent Dim 3", labelpad=10)
+    
+    plt.tight_layout()
+    plt.savefig(f"{save_name}.png", dpi=600, bbox_inches='tight')
+    plt.close(fig)
 
 def plot_record_analysis(record, record_clusters, colors, save_name):
     """
@@ -813,6 +914,11 @@ def main():
         type=int, 
         help="The maximum number of clusters allowed."
     )
+    parser.add_argument(
+        "--k_means", 
+        type=int, 
+        help="The k value if k-means clustering is used."
+    )
 
     args = parser.parse_args()
 
@@ -841,7 +947,7 @@ def main():
     num_records = len(data)
 
     # iterate over model output of each recording
-    for k, value in data.items():
+    for index, (k, value) in enumerate(data.items()):
 
         embeddings_norm = value
 
@@ -854,6 +960,15 @@ def main():
 
         # find origin that represents silence
         origin, db_thresh, keep_idx = find_origin(spectrogram, embeddings_norm)
+
+        if index % 50 == 0:
+            # plot trajectory distance overlaid on spectrogram at 600 DPI
+            dist_plot_name = f"dist_overlay_{args.bird_name_prefix}_{index}"
+            plot_distance_on_spectrogram(spectrogram, embeddings_norm, t_sec, dist_plot_name)
+
+            # plot large version of entire latent trajectory in gray at 600 DPI
+            large_traj_name = f"large_latent_traj_{args.bird_name_prefix}_{index}"
+            plot_large_latent_trajectory(embeddings_norm, large_traj_name)
 
         # get intervals of deviation from fuzzy origin
         ints, starts, ends = get_all_intervals(embeddings_norm, origin, threshold_perc=args.fst_threshold)
@@ -937,7 +1052,10 @@ def main():
 
     # run UMAP and HDBSCAN to cluster the path signatures, optimizing for silhouette score
     # the 2d umap will be used for plotting, but the cluster labels come from the optimal clustering
-    X_2d, clusters = optimize_umap_clusters(X, seed=seed, min_cluster_size=100, max_clusters=args.max_clusters)
+    if args.k_means is None:
+        X_2d, clusters = optimize_umap_clusters(X, seed=seed, min_cluster_size=100, max_clusters=args.max_clusters)
+    else:
+        X_2d, clusters = optimize_umap_kmeans(X, seed, n_clusters=args.K_means)
 
     # Create a dynamic color palette that scales based on the number of unique clusters found
     cmap = plt.get_cmap('viridis', len(set(clusters))) 
