@@ -691,12 +691,12 @@ def optimize_umap_kmeans(X, seed, n_clusters=5):
     print(f"Best KMeans Clustering is from UMAP with {best_n} components")
     return X_2d, best_clusters
 
-def plot_distance_on_spectrogram(spectrogram, embeddings_3d, t_sec, save_name):
+def plot_distance_on_spectrogram(spectrogram, embeddings_3d, t_sec, origin, save_name):
     """
     Plots the latent trajectory distance from the origin overlaid on 
     the spectrogram and saves it as a 600 DPI PNG file.
     """
-    distances = np.linalg.norm(embeddings_3d, axis=1)
+    distances = np.linalg.norm(embeddings_3d - origin, axis=1)
     
     fig, ax1 = plt.subplots(figsize=(14, 6))
 
@@ -964,7 +964,7 @@ def main():
         if index % 50 == 0:
             # plot trajectory distance overlaid on spectrogram at 600 DPI
             dist_plot_name = f"dist_overlay_{args.bird_name_prefix}_{index}"
-            plot_distance_on_spectrogram(spectrogram, embeddings_norm, t_sec, dist_plot_name)
+            plot_distance_on_spectrogram(spectrogram, embeddings_norm, t_sec, origin, dist_plot_name)
 
             # plot large version of entire latent trajectory in gray at 600 DPI
             large_traj_name = f"large_latent_traj_{args.bird_name_prefix}_{index}"
@@ -1055,7 +1055,7 @@ def main():
     if args.k_means is None:
         X_2d, clusters = optimize_umap_clusters(X, seed=seed, min_cluster_size=100, max_clusters=args.max_clusters)
     else:
-        X_2d, clusters = optimize_umap_kmeans(X, seed, n_clusters=args.k_means)
+        X_2d, clusters = optimize_umap_kmeans(X, seed, n_clusters=args.K_means)
 
     # Create a dynamic color palette that scales based on the number of unique clusters found
     cmap = plt.get_cmap('viridis', len(set(clusters))) 
