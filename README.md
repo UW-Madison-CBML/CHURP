@@ -234,7 +234,7 @@ done
 mv metrics.csv comparison_outputs/
 
 # plot results
-python CHURP/comparing/plot_comparisons.py
+python CHURP/comparing/plot_comparisons.py "comparison_outputs"
 
 tar -czf comparison_outputs.tar.gz comparison_outputs/
 ```
