@@ -1055,7 +1055,7 @@ def main():
     if args.k_means is None:
         X_2d, clusters = optimize_umap_clusters(X, seed=seed, min_cluster_size=100, max_clusters=args.max_clusters)
     else:
-        X_2d, clusters = optimize_umap_kmeans(X, seed, n_clusters=args.K_means)
+        X_2d, clusters = optimize_umap_kmeans(X, seed, n_clusters=args.k_means)
 
     # Create a dynamic color palette that scales based on the number of unique clusters found
     cmap = plt.get_cmap('viridis', len(set(clusters))) 
