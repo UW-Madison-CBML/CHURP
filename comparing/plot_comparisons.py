@@ -1,4 +1,5 @@
 import os
+import sys
 import glob
 import pickle
 import numpy as np
@@ -8,8 +9,8 @@ import seaborn as sns
 import networkx as nx
 import re
 
-STATS_DIR = "comparison_outputs"  # Directory containing comparison_stats_{bird}.pkl files
-OUT_DIR = "comparison_outputs"      # Directory where generated figures will be saved
+STATS_DIR = sys.argv[1]  # Directory containing comparison_stats_{bird}.pkl files
+OUT_DIR = sys.argv[1]      # Directory where generated figures will be saved
 
 os.makedirs(OUT_DIR, exist_ok=True)
 
