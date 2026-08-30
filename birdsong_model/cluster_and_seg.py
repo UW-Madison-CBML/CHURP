@@ -3,6 +3,7 @@ from scipy.io import loadmat
 import librosa
 import pickle
 import glob
+import re
 import argparse
 import io
 import os
@@ -734,7 +735,7 @@ def plot_distance_on_spectrogram(spectrogram, embeddings_3d, t_sec, origin, save
     plt.savefig(f"{save_name}.png", dpi=600, bbox_inches='tight')
     plt.close(fig)
 
-def plot_large_latent_trajectory(embeddings_3d, save_name, figsize=(14, 12)):
+def plot_large_latent_trajectory(embeddings_3d, save_name, figsize=(14, 12), birdname = None, recording_number = None):
     """
     Plots a large high-resolution 3D plot of the entire latent trajectory 
     of a recording in gray and saves it as a 600 DPI PNG.
@@ -746,10 +747,12 @@ def plot_large_latent_trajectory(embeddings_3d, save_name, figsize=(14, 12)):
     ax.plot(embeddings_3d[:, 0], embeddings_3d[:, 1], embeddings_3d[:, 2], 
             color='gray', alpha=0.7, linewidth=1.5)
     
-    ax.set_title("Full Latent Trajectory", fontsize=18)
-    ax.set_xlabel("Latent Dim 1", labelpad=10)
-    ax.set_ylabel("Latent Dim 2", labelpad=10)
-    ax.set_zlabel("Latent Dim 3", labelpad=10)
+    formatted_name = re.sub(r"([a-zA-Z]+)(\d+)", r"\1 \2", birdname)
+    
+    ax.set_title(f"Full Latent Trajectory, {formatted_name} Recording {recording_number}", fontsize=18)
+    ax.set_xlabel("Principal Component 1", labelpad=10)
+    ax.set_ylabel("Principal Component 2", labelpad=10)
+    ax.set_zlabel("Principal Component 3", labelpad=10)
     
     plt.tight_layout()
     plt.savefig(f"{save_name}.png", dpi=600, bbox_inches='tight')
@@ -963,7 +966,7 @@ def main():
 
             # plot large version of entire latent trajectory in gray at 600 DPI
             large_traj_name = f"large_latent_traj_{args.bird_name_prefix}_{index}"
-            plot_large_latent_trajectory(embeddings_norm, large_traj_name)
+            plot_large_latent_trajectory(embeddings_norm, large_traj_name, birdname = args.bird_name_prefix, recording_number = index)
 
         # get intervals of deviation from fuzzy origin
         ints, starts, ends = get_all_intervals(embeddings_norm, origin, threshold_perc=args.fst_threshold)
