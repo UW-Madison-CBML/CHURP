@@ -727,8 +727,8 @@ def plot_distance_on_spectrogram(spectrogram, embeddings_3d, t_sec, origin, save
     # Add legend for ax2 (will grab both labels automatically)
     ax2.legend(loc='upper right')
     
-    ax2.set_ylabel("Distance from Origin", color='cyan')
-    ax2.tick_params(axis='y', labelcolor='cyan')
+    ax2.set_ylabel("Distance from Origin")
+    ax2.tick_params(axis='y')
     
     plt.title("Spectrogram with Latent Trajectory Distance Overlay")
     plt.tight_layout()
