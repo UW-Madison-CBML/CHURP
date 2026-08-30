@@ -846,10 +846,10 @@ def plot_record_analysis(record, record_clusters, colors, save_name):
         # Plot the entire trajectory in translucent gray
         ax3d.plot(embeddings_3d[:, 0], embeddings_3d[:, 1], embeddings_3d[:, 2], color='gray', alpha=0.3, linewidth=1, zorder=1)
         
-        # make the segments of the cluster translucent but colored by cluster
+        # make the segments of the cluster colored by cluster
         for start, end in c_intervals:
             traj = embeddings_3d[start:end]
-            ax3d.plot(traj[:, 0], traj[:, 1], traj[:, 2], color=color, alpha=0.4, linewidth=1, zorder=10)
+            ax3d.plot(traj[:, 0], traj[:, 1], traj[:, 2], color=color, alpha=0.8, linewidth=1, zorder=10)
             
         ax3d.set_title(f"Cluster {c_id} Trajectories")
         ax3d.set_xticks([])
