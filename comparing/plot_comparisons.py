@@ -225,24 +225,14 @@ def draw_markov_chain(matrix, ax, title, pos, all_nodes, min_prob_threshold=0.05
 
     # Draw active edges for the current matrix
     active_edges = []
-    edge_labels = {}
     
     for src in active_nodes:
         for dst in active_nodes:
             prob = matrix.loc[src, dst]
             if prob >= min_prob_threshold:
                 active_edges.append((src, dst, prob))
-                edge_labels[(src, dst)] = f"{prob:.2f}"
                 
     draw_edges(active_edges)
-    
-    # 4. Annotate Probabilities (only for the solid foreground edges)
-    if edge_labels:
-        nx.draw_networkx_edge_labels(
-            G_dummy, pos, ax=ax, edge_labels=edge_labels,
-            font_size=8, font_weight='bold', font_color='red', label_pos=0.3,
-            bbox=dict(boxstyle='round,pad=0.2', fc='white', ec='none', alpha=0.75)
-        )
 
     ax.set_title(title, fontsize=12, fontweight='bold')
     ax.axis('off')
@@ -278,10 +268,10 @@ for bird_id, stats in bird_stats.items():
         tweety_manhattan = (gt_mat_filled - tweety_mat_filled).abs().sum().sum()
         birdsong_manhattan = (gt_mat_filled - birdsong_mat_filled).abs().sum().sum()        
         tweety_title = f"TweetyBERT\n(Manhattan Dist: {tweety_manhattan:.2f})"
-        birdsong_title = f"Birdsong\n(Manhattan Dist: {birdsong_manhattan:.2f})"
+        birdsong_title = f"CHURP\n(Manhattan Dist: {birdsong_manhattan:.2f})"
     else:
         tweety_title = "TweetyBERT"
-        birdsong_title = "Birdsong"
+        birdsong_title = "CHURP"
 
     # provide unfilled matrices to the draw_markov_chain function to ensure proper handling of empty matrices
     draw_markov_chain(gt_mat, axes[0], "Ground Truth", pos, all_nodes)
