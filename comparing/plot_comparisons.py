@@ -39,6 +39,7 @@ for pkl_file in stats_files:
     # Extract bird name from filename
     filename = os.path.basename(pkl_file)
     bird_id = filename.replace("comparison_stats_", "").replace(".pkl", "")
+    bird_id = re.sub(r"([a-zA-Z]+)(\d+)", r"\1 \2", bird_id)
     
     with open(pkl_file, "rb") as f:
         stats = pickle.load(f)
