@@ -843,15 +843,10 @@ def plot_record_analysis(record, record_clusters, colors, save_name):
         # Plot the entire trajectory in translucent gray
         ax3d.plot(embeddings_3d[:, 0], embeddings_3d[:, 1], embeddings_3d[:, 2], color='gray', alpha=0.3, linewidth=1, zorder=1)
         
-        # make the later segments of the cluster translucent but colored by cluster
-        for start, end in c_intervals[1:]:
+        # make the segments of the cluster translucent but colored by cluster
+        for start, end in c_intervals:
             traj = embeddings_3d[start:end]
             ax3d.plot(traj[:, 0], traj[:, 1], traj[:, 2], color=color, alpha=0.4, linewidth=1, zorder=10)
-
-        # Highlight the first of this cluster's segment using the colormap
-        start, end = c_intervals[0]
-        traj = embeddings_3d[start:end]
-        ax3d.plot(traj[:, 0], traj[:, 1], traj[:, 2], color=color, alpha=0.9, linewidth=2.5, zorder =100)
             
         ax3d.set_title(f"Cluster {c_id} Trajectories")
         ax3d.set_xticks([])
@@ -961,7 +956,7 @@ def main():
         # find origin that represents silence
         origin, db_thresh, keep_idx = find_origin(spectrogram, embeddings_norm)
 
-        if index % 50 == 0:
+        if index % 10 == 0:
             # plot trajectory distance overlaid on spectrogram at 600 DPI
             dist_plot_name = f"dist_overlay_{args.bird_name_prefix}_{index}"
             plot_distance_on_spectrogram(spectrogram, embeddings_norm, t_sec, origin, dist_plot_name)
