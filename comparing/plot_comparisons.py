@@ -166,7 +166,7 @@ def annotate(ax, spec, extent, labels, sec_per_label, colors=None):
             current_label = label
             run_start_frame = i
 
-    ax.set_ylabel('Frequency Bin')
+    ax.set_ylabel('Frequency Bin', fontsize=24)
     return im
 
 def plot_spectrograms(label_dictionary, bird):
@@ -215,8 +215,12 @@ def plot_spectrograms(label_dictionary, bird):
         
         # Add a colorbar mapped to the spectrogram's intensity (dB)
         cbar = plt.colorbar(im, ax=ax, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.02)
+        cbar.set_label('Intensity (dB)', fontsize=24)
+        cbar.ax.tick_params(labelsize=20)
         
-        ax.set_xlabel('Time (s)')
+        ax.set_xlabel('Time (s)', fontsize=24)
+        ax.set_ylabel("Frequency Bin", fontsize=24)
+        ax.tick_params(axis='both', which='major', labelsize=20)
         
         # Adjust layout so labels/colorbars aren't cut off during saving
         plt.tight_layout()
