@@ -516,7 +516,7 @@ def annotate(ax, spec, extent, intervals, sec_per_point, colors=None, clusters=N
             edgecolor='black', facecolor=color
         )
     
-    ax.set_ylabel('Frequency')
+    ax.set_ylabel('Frequency', fontsize=24)
 
     # Return the image object so a colorbar can be attached to it later
     return im
@@ -548,10 +548,12 @@ def plot_spectrograms(spectrogram, intervals, t_sec, save_name, colors, clusters
     
     # Add a colorbar mapped to the spectrogram's intensity (dB)
     cbar = plt.colorbar(im, ax=ax, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.02)
+    cbar.set_label('Intensity (dB)', fontsize=24)
+    cbar.ax.tick_params(labelsize=20)
     
-    ax.set_xlabel('Time (s)')
-    ax.set_ylabel("Frequency Bin")
-
+    ax.set_xlabel('Time (s)', fontsize=24)
+    ax.set_ylabel("Frequency Bin", fontsize=24)
+    ax.tick_params(axis='both', which='major', labelsize=20)
     ax.set_xlim(t_start, t_end)
     
     # Adjust layout so labels/colorbars aren't cut off during saving
