@@ -8,6 +8,226 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import networkx as nx
 import re
+import librosa
+import soundfile as sf
+from scipy.signal import ellip, filtfilt
+import matplotlib.gridspec as gridspec
+
+# Plot Markov Chain Transition Graphs
+def draw_markov_chain(matrix, ax, title, pos, all_nodes, min_prob_threshold=0.05):
+    """Utility function to render a transition matrix as a Markov Chain network diagram."""
+    if matrix.empty:
+        ax.set_title(f"{title}\n(No Data)", fontsize=11)
+        ax.axis('off')
+        return
+
+    # Container graph representing positions
+    G_dummy = nx.DiGraph()
+    G_dummy.add_nodes_from(all_nodes)
+    
+    # Determine active vs inactive nodes for THIS matrix
+    active_nodes = set(matrix.index)
+    inactive_nodes = set(all_nodes) - active_nodes
+
+
+    # Draw active nodes solid
+    if active_nodes:
+        nx.draw_networkx_nodes(G_dummy, pos, nodelist=list(active_nodes), ax=ax, 
+                               node_color='#89CFF0', node_size=1000, edgecolors='black', alpha=1.0)
+        nx.draw_networkx_labels(G_dummy, pos, labels={n: n for n in active_nodes}, ax=ax, 
+                                font_size=9, font_weight='bold')
+    # Draw inactive nodes translucent
+    if inactive_nodes:
+        nx.draw_networkx_nodes(G_dummy, pos, nodelist=list(inactive_nodes), ax=ax, 
+                               node_color='#89CFF0', node_size=1000, edgecolors='black', alpha=0.15)
+        nx.draw_networkx_labels(G_dummy, pos, labels={n: n for n in inactive_nodes}, ax=ax, 
+                                font_size=9, font_weight='bold', alpha=0.0)
+
+    # Helper function to plot distinct edge groups cleanly
+    def draw_edges(edge_list):
+        if not edge_list: return
+        alpha = 1.0
+        
+        regular_edges = []
+        self_loops = []
+        weights_reg = []
+        weights_self = []
+        
+        for src, dst, prob in edge_list:
+            weight_scaled = (prob * 4.0)
+            
+            if src == dst:
+                self_loops.append((src, dst))
+                weights_self.append(weight_scaled)
+            else:
+                regular_edges.append((src, dst))
+                weights_reg.append(weight_scaled)
+
+        # Non self-loops
+        if regular_edges:
+            nx.draw_networkx_edges(
+                G_dummy, pos, ax=ax, edgelist=regular_edges, width=weights_reg, 
+                arrowstyle='->', arrowsize= 26, edge_color='#555555', 
+                alpha=alpha, connectionstyle='arc3,rad=0.15'
+            )
+        
+        # Self-loops (Using a larger dummy node_size forces networkx to draw broader self-loops)
+        if self_loops:
+            nx.draw_networkx_edges(
+                G_dummy, pos, ax=ax, edgelist=self_loops, width=weights_self,
+                arrowstyle='->', arrowsize= 26, edge_color='#555555', 
+                alpha=alpha, node_size=2000 
+            )
+
+    # Draw active edges for the current matrix
+    active_edges = []
+    
+    for src in active_nodes:
+        for dst in active_nodes:
+            prob = matrix.loc[src, dst]
+            if prob >= min_prob_threshold:
+                active_edges.append((src, dst, prob))
+                
+    draw_edges(active_edges)
+
+    ax.set_title(title, fontsize=12, fontweight='bold')
+    ax.axis('off')
+
+def load_stft(f, hop_length):
+    """
+    Helper for loading individual wav files as spectrograms -- normalizing and cutoff at 512 bins not needed here
+    """
+    # load file as single-channel audio
+    with sf.SoundFile(f, 'r') as wav_file:
+        samplerate = wav_file.samplerate
+        total_frames = wav_file.frames
+        data = wav_file.read(dtype='int16')
+
+    # apply high-pass filter with 500hz cutoff frequency (filter forwards and backwards)
+    b, a = ellip(5, 0.2, 40, 500 / (samplerate / 2), 'high')
+    data = filtfilt(b, a, data)
+
+    # transform audio to spectrogram with short-time fourier
+    Sxx = librosa.stft(data.astype(float), n_fft=1024, hop_length=hop_length, window='hann')
+    Sxx_log = librosa.amplitude_to_db(np.abs(Sxx), ref=np.max)
+    
+    t_sec = total_frames / samplerate
+
+    return Sxx_log, t_sec, samplerate
+
+def annotate(ax, spec, extent, labels, sec_per_label, colors=None):
+    """
+    Plots a spectrogram on a given Matplotlib axis and adds colored
+    highlight bars (annotations) just above the plot to indicate specific time intervals.
+    """
+    # Plot the 2D spectrogram array
+    im = ax.imshow(spec, origin='lower', cmap='magma', aspect='auto', extent=extent)
+    
+    plot_start, plot_end = extent[0], extent[1]
+    total_duration = plot_end - plot_start
+
+    # Crop 25% off the beginning and 25% off the end of the entire spectrogram
+    crop_start = plot_start + (0.25 * total_duration)
+    crop_end = plot_end - (0.25 * total_duration)
+    ax.set_xlim(crop_start, crop_end)
+
+    # Convert crop boundaries into frame index bounds
+    min_frame = int(0.25 * len(labels))
+    max_frame = int(0.75 * len(labels))
+
+    current_label = None
+    run_start_frame = min_frame
+
+    # Iterate strictly within the cropped frame window (+1 to flush the final segment)
+    for i in range(min_frame, max_frame + 1):
+        # Assign None at the boundary to force drawing the last open interval
+        label = labels[i] if i < max_frame else None
+
+        # Check for label transition
+        if label != current_label:
+            # Draw the previous valid interval (ignoring silence: -1 and None)
+            if current_label is not None and current_label != -1:
+                # Convert frame indices to time in seconds
+                t_start = plot_start + (run_start_frame * sec_per_label)
+                t_end = plot_start + (i * sec_per_label)
+
+                # Fetch color (fallback to 'blue' if unmapped)
+                color = colors.get(current_label, 'blue') if colors else 'blue'
+
+                # Draw horizontal colored bar
+                ax.axvspan(
+                    t_start, t_end,
+                    ymin=1.02, ymax=1.08,
+                    alpha=0.7, clip_on=False,
+                    edgecolor='black', facecolor=color
+                )
+
+            # Reset start marker for the new label
+            current_label = label
+            run_start_frame = i
+
+    ax.set_ylabel('Frequency Bin')
+    return im
+
+def plot_spectrograms(label_dictionary, bird):
+    """
+    Creates a wide-format figure showing a spectrogram with annotated time intervals,
+    attaches a colorbar, and saves the final plot to disk.
+    """
+
+    for k, v in label_dictionary.items():
+        basename = os.path.basename(k)
+        wav_number = int(os.path.splitext(basename)[0])
+
+        if (wav_number % 10) != 0:
+            continue
+
+        file = os.path.join(f"3470165/{bird}/Wave/",k)
+        spectrogram, t_sec, sample_rate = load_stft(file, 86)
+
+        sec_per_label = 1.0 / sample_rate
+        
+        # Define the bounding box for the image data [x_min, x_max, y_min, y_max]
+        img_extent = [0, t_sec, 0, spectrogram.shape[0]]
+
+        # Initialize a large, wide figure (20x12)
+        fig, ax = plt.subplots(1, 1, figsize=(20, 12), sharex=True)
+        
+        # Force the physical aspect ratio of the axes to be very wide and short (5:1 width-to-height)
+        ax.set_box_aspect(0.2) 
+
+        labels = v
+
+        clusters = set(labels) - set([-1])  
+
+        cmap = plt.get_cmap('viridis', len(set(clusters))) 
+        colors = {}
+        color_index = 0
+    
+        # Iterate through unique cluster IDs (sorted to ensure consistent color assignment)
+        for cluster_id in sorted(set(clusters)): 
+            # Assign a specific RGBA color tuple to each cluster ID
+            colors[cluster_id] = cmap(color_index)
+            color_index += 1
+
+        # Call the helper function to draw the spectrogram and the top-edge annotations
+        im = annotate(ax, spectrogram, img_extent, labels, sec_per_label, colors=colors)
+        
+        # Add a colorbar mapped to the spectrogram's intensity (dB)
+        cbar = plt.colorbar(im, ax=ax, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.02)
+        
+        ax.set_xlabel('Time (s)')
+        
+        # Adjust layout so labels/colorbars aren't cut off during saving
+        plt.tight_layout()
+
+        save_name = os.path.join(OUT_DIR, f"gt_spectrogram_{k}.png")
+        
+        # Save the figure to the provided filepath (e.g., .png or .pdf), keeping all edges tight
+        plt.savefig(save_name, bbox_inches='tight')
+        
+        plt.close()
+
 
 STATS_DIR = sys.argv[1]  # Directory containing comparison_stats_{bird}.pkl files
 OUT_DIR = sys.argv[1]      # Directory where generated figures will be saved
@@ -16,10 +236,20 @@ os.makedirs(OUT_DIR, exist_ok=True)
 
 # Find all saved comparison stats PKL files
 stats_files = sorted(glob.glob(os.path.join(STATS_DIR, "comparison_stats_*.pkl")))
+gt_label_files = glob.glob(os.path.join(STATS_DIR, "processed_xml_annotations_*.pkl"))
 
+ # Fallback to current working directory if not found in STATS_DIR
 if not stats_files:
-    # Fallback to current working directory if not found in STATS_DIR
     stats_files = sorted(glob.glob("comparison_stats_*.pkl"))
+if not gt_label_files:
+    gt_label_files = glob.glob("processed_xml_annotations_*.pkl")
+
+for label_file in gt_label_files:
+    bird = os.path.basename(label_file).replace("processed_xml_annotations_", "").replace(".pkl", "")
+    # open labels and plot spectrograms
+    with open(label_file, 'rb') as file:
+        data = pickle.load(file)
+    plot_spectrograms(data, bird)
 
 fer_records = []
 similarity_records = []
@@ -157,86 +387,6 @@ if not df_similarity.empty:
     similarity_plot_path = os.path.join(OUT_DIR, "violin_similarity_per_bird.png")
     plt.savefig(similarity_plot_path, dpi=300)
     plt.close()
-
-# Plot Markov Chain Transition Graphs
-def draw_markov_chain(matrix, ax, title, pos, all_nodes, min_prob_threshold=0.05):
-    """Utility function to render a transition matrix as a Markov Chain network diagram."""
-    if matrix.empty:
-        ax.set_title(f"{title}\n(No Data)", fontsize=11)
-        ax.axis('off')
-        return
-
-    # Container graph representing positions
-    G_dummy = nx.DiGraph()
-    G_dummy.add_nodes_from(all_nodes)
-    
-    # Determine active vs inactive nodes for THIS matrix
-    active_nodes = set(matrix.index)
-    inactive_nodes = set(all_nodes) - active_nodes
-
-
-    # Draw active nodes solid
-    if active_nodes:
-        nx.draw_networkx_nodes(G_dummy, pos, nodelist=list(active_nodes), ax=ax, 
-                               node_color='#89CFF0', node_size=1000, edgecolors='black', alpha=1.0)
-        nx.draw_networkx_labels(G_dummy, pos, labels={n: n for n in active_nodes}, ax=ax, 
-                                font_size=9, font_weight='bold')
-    # Draw inactive nodes translucent
-    if inactive_nodes:
-        nx.draw_networkx_nodes(G_dummy, pos, nodelist=list(inactive_nodes), ax=ax, 
-                               node_color='#89CFF0', node_size=1000, edgecolors='black', alpha=0.15)
-        nx.draw_networkx_labels(G_dummy, pos, labels={n: n for n in inactive_nodes}, ax=ax, 
-                                font_size=9, font_weight='bold', alpha=0.0)
-
-    # Helper function to plot distinct edge groups cleanly
-    def draw_edges(edge_list):
-        if not edge_list: return
-        alpha = 1.0
-        
-        regular_edges = []
-        self_loops = []
-        weights_reg = []
-        weights_self = []
-        
-        for src, dst, prob in edge_list:
-            weight_scaled = (prob * 4.0)
-            
-            if src == dst:
-                self_loops.append((src, dst))
-                weights_self.append(weight_scaled)
-            else:
-                regular_edges.append((src, dst))
-                weights_reg.append(weight_scaled)
-
-        # Non self-loops
-        if regular_edges:
-            nx.draw_networkx_edges(
-                G_dummy, pos, ax=ax, edgelist=regular_edges, width=weights_reg, 
-                arrowstyle='->', arrowsize= 26, edge_color='#555555', 
-                alpha=alpha, connectionstyle='arc3,rad=0.15'
-            )
-        
-        # Self-loops (Using a larger dummy node_size forces networkx to draw broader self-loops)
-        if self_loops:
-            nx.draw_networkx_edges(
-                G_dummy, pos, ax=ax, edgelist=self_loops, width=weights_self,
-                arrowstyle='->', arrowsize= 26, edge_color='#555555', 
-                alpha=alpha, node_size=2000 
-            )
-
-    # Draw active edges for the current matrix
-    active_edges = []
-    
-    for src in active_nodes:
-        for dst in active_nodes:
-            prob = matrix.loc[src, dst]
-            if prob >= min_prob_threshold:
-                active_edges.append((src, dst, prob))
-                
-    draw_edges(active_edges)
-
-    ax.set_title(title, fontsize=12, fontweight='bold')
-    ax.axis('off')
 
 
 # Render a figure for each bird containing GT, TweetyBERT, and birdsong Markov chains side-by-side
