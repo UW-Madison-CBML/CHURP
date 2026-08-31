@@ -528,6 +528,17 @@ def plot_spectrograms(spectrogram, intervals, t_sec, save_name, colors, clusters
     """
     # Calculate how many seconds each frame (point) on the x-axis represents
     sec_per_point = t_sec / spectrogram.shape[1]
+
+    # set limits for plotting
+    # Define middle half time bounds (25% to 75%)
+    t_start = 0.25 * t_sec
+    t_end = 0.75 * t_sec
+    
+    # Plot Spectrogram on primary y-axis
+    img_extent = [0, t_sec, 0, spectrogram.shape[0]]
+    im = ax1.imshow(spectrogram, origin='lower', aspect='auto', cmap='magma', extent=extent)
+    ax1.set_xlabel("Time (s)")
+    ax1.set_ylabel("Frequency Bin")
     
     # Define the bounding box for the image data [x_min, x_max, y_min, y_max]
     img_extent = [0, t_sec, 0, spectrogram.shape[0]]
@@ -536,7 +547,7 @@ def plot_spectrograms(spectrogram, intervals, t_sec, save_name, colors, clusters
     fig, ax = plt.subplots(1, 1, figsize=(20, 12), sharex=True)
     
     # Force the physical aspect ratio of the axes to be very wide and short (10:1 width-to-height)
-    ax.set_box_aspect(0.1) 
+    ax.set_box_aspect(0.2) 
     
     # Call the helper function to draw the spectrogram and the top-edge annotations
     im = annotate(ax, spectrogram, img_extent, intervals, sec_per_point, colors, clusters)
@@ -545,6 +556,8 @@ def plot_spectrograms(spectrogram, intervals, t_sec, save_name, colors, clusters
     cbar = plt.colorbar(im, ax=ax, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.02)
     
     ax.set_xlabel('Time (s)')
+
+    ax.set_xlim(t_start, t_end)
     
     # Adjust layout so labels/colorbars aren't cut off during saving
     plt.tight_layout()
@@ -652,44 +665,6 @@ def optimize_umap_clusters(X, seed, min_cluster_size=100, max_clusters = None):
         
     print(f"Best Clustering is from UMAP with {best_n} components")
 
-    return X_2d, best_clusters
-
-def optimize_umap_kmeans(X, seed, n_clusters=5):
-    """
-    Sweeps UMAP n_components from 2 to 10 and uses KMeans clustering,
-    evaluating via Silhouette score to select the best low-dimensional representation.
-    """
-    best_silhouette = -1.0
-    best_clusters = None
-    best_n = None
-    X_2d = None
-
-    for n_c in range(2, 11):
-        # Fit UMAP reduction
-        reducer = umap.UMAP(n_components=n_c, metric='euclidean', random_state=seed)
-        X_trans = reducer.fit_transform(X)
-
-        if n_c == 2:
-            X_2d = X_trans.copy()
-
-        # Perform KMeans Clustering
-        kmeans = sklearn.cluster.KMeans(n_clusters=n_clusters, random_state=seed, n_init='auto')
-        clusters = kmeans.fit_predict(X_trans)
-
-        unique_clusters = np.unique(clusters)
-        if len(unique_clusters) > 1:
-            score = silhouette_score(X_trans, clusters)
-            if score > best_silhouette:
-                best_n = n_c
-                best_silhouette = score
-                best_clusters = clusters.copy()
-
-    if best_clusters is None:
-        best_n = 2
-        kmeans = sklearn.cluster.KMeans(n_clusters=n_clusters, random_state=seed, n_init=10)
-        best_clusters = kmeans.fit_predict(X_2d)
-
-    print(f"Best KMeans Clustering is from UMAP with {best_n} components")
     return X_2d, best_clusters
 
 def plot_distance_on_spectrogram(spectrogram, embeddings_3d, t_sec, origin, save_name):
@@ -912,11 +887,6 @@ def main():
         type=int, 
         help="The maximum number of clusters allowed."
     )
-    parser.add_argument(
-        "--k_means", 
-        type=int, 
-        help="The k value if k-means clustering is used."
-    )
 
     args = parser.parse_args()
 
@@ -1050,10 +1020,7 @@ def main():
 
     # run UMAP and HDBSCAN to cluster the path signatures, optimizing for silhouette score
     # the 2d umap will be used for plotting, but the cluster labels come from the optimal clustering
-    if args.k_means is None:
-        X_2d, clusters = optimize_umap_clusters(X, seed=seed, min_cluster_size=100, max_clusters=args.max_clusters)
-    else:
-        X_2d, clusters = optimize_umap_kmeans(X, seed, n_clusters=args.k_means)
+    X_2d, clusters = optimize_umap_clusters(X, seed=seed, min_cluster_size=100, max_clusters=args.max_clusters)
 
     # Create a dynamic color palette that scales based on the number of unique clusters found
     cmap = plt.get_cmap('viridis', len(set(clusters))) 
@@ -1080,7 +1047,7 @@ def main():
     # Iterate through the main dataframe containing all audio records
     for index, record in record_df.iterrows():
         # plot 1 out of every 50 spectrograms, and only if that recording actually contains detected intervals.
-        if spec_num % 50 == 0 and record['intervals'] is not None:
+        if spec_num % 10 == 0 and record['intervals'] is not None:
             plot_spectrograms(record['spec'], record['intervals'], record['t_sec'], 
                               f"annotated_specs_{args.bird_name_prefix}_{spec_num}", 
                               colors, clusters) 
