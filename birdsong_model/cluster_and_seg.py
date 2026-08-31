@@ -534,19 +534,13 @@ def plot_spectrograms(spectrogram, intervals, t_sec, save_name, colors, clusters
     t_start = 0.25 * t_sec
     t_end = 0.75 * t_sec
     
-    # Plot Spectrogram on primary y-axis
-    img_extent = [0, t_sec, 0, spectrogram.shape[0]]
-    im = ax1.imshow(spectrogram, origin='lower', aspect='auto', cmap='magma', extent=extent)
-    ax1.set_xlabel("Time (s)")
-    ax1.set_ylabel("Frequency Bin")
-    
     # Define the bounding box for the image data [x_min, x_max, y_min, y_max]
     img_extent = [0, t_sec, 0, spectrogram.shape[0]]
 
     # Initialize a large, wide figure (20x12)
     fig, ax = plt.subplots(1, 1, figsize=(20, 12), sharex=True)
     
-    # Force the physical aspect ratio of the axes to be very wide and short (10:1 width-to-height)
+    # Force the physical aspect ratio of the axes to be very wide and short (5:1 width-to-height)
     ax.set_box_aspect(0.2) 
     
     # Call the helper function to draw the spectrogram and the top-edge annotations
@@ -556,6 +550,7 @@ def plot_spectrograms(spectrogram, intervals, t_sec, save_name, colors, clusters
     cbar = plt.colorbar(im, ax=ax, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.02)
     
     ax.set_xlabel('Time (s)')
+    ax.set_ylabel("Frequency Bin")
 
     ax.set_xlim(t_start, t_end)
     
