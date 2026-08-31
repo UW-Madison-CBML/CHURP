@@ -755,7 +755,7 @@ def plot_large_latent_trajectory(embeddings_3d, save_name, figsize=(14, 12), bir
     ax.set_zlabel("Principal Component 3", labelpad=10)
     
     plt.tight_layout()
-    plt.savefig(f"{save_name}.png", dpi=600, bbox_inches='tight')
+    plt.savefig(f"{save_name}.png", dpi=600, bbox_inches='tight', pad_inches=0.2)
     plt.close(fig)
 
 def plot_record_analysis(record, record_clusters, colors, save_name):
