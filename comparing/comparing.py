@@ -713,7 +713,7 @@ def main():
 
     # save annotations to files for later plotting 
     os.makedirs(args.out_dir, exist_ok=True)
-    xml_out_path = os.path.join(args.out_dir, "processed_xml_annotations.pkl")
+    xml_out_path = os.path.join(args.out_dir, f"processed_xml_annotations_{args.bird}.pkl")
     pkl_out_path = os.path.join(args.out_dir, "expanded_pkl_annotations.pkl")
     json_out_path = os.path.join(args.out_dir, "expanded_json_annotations.pkl")
     map_out_path_1 = os.path.join(
