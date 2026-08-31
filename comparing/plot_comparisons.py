@@ -146,7 +146,7 @@ def annotate(ax, spec, extent, labels, sec_per_label, colors=None):
         # Check for label transition
         if label != current_label:
             # Draw the previous valid interval (ignoring silence: -1 and None)
-            if current_label is not None and current_label != -1:
+            if current_label is not None and int(current_label) != -1:
                 # Convert frame indices to time in seconds
                 t_start = plot_start + (run_start_frame * sec_per_label)
                 t_end = plot_start + (i * sec_per_label)
@@ -198,7 +198,7 @@ def plot_spectrograms(label_dictionary, bird):
 
         labels = v
 
-        clusters = set(labels) - set([-1])  
+        clusters = set(labels) - set([-1]) - set(["-1"]) set(["-1.0"])   
 
         cmap = plt.get_cmap('viridis', len(set(clusters))) 
         colors = {}
