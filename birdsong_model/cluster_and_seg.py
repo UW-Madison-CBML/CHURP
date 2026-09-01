@@ -500,7 +500,7 @@ def annotate(ax, spec, extent, intervals, sec_per_point, colors=None, clusters=N
 
 
         # Skip this interval entirely if it is outside the cropped view 
-        if t_end_sec < plot_start or t_start_sec > plot_end: 
+        if t_end_sec < (plot_start*sec_per_point) or t_start_sec > (plot_end*sec_per_point): 
             continue 
 
         # Clamp the edges so they don't bleed past the crop boundary 
