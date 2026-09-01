@@ -419,9 +419,11 @@ for bird_id, stats in bird_stats.items():
     # Calculate Manhattan Distances for the title using aligned matrices
     if not gt_mat_filled.empty:
         tweety_manhattan = (gt_mat_filled - tweety_mat_filled).abs().sum().sum()
-        birdsong_manhattan = (gt_mat_filled - birdsong_mat_filled).abs().sum().sum()        
-        tweety_title = f"TweetyBERT\n(Manhattan Dist: {tweety_manhattan:.2f})"
-        birdsong_title = f"CHURP\n(Manhattan Dist: {birdsong_manhattan:.2f})"
+        birdsong_manhattan = (gt_mat_filled - birdsong_mat_filled).abs().sum().sum()
+        tweety_euclidean = ((gt_mat_filled - tweety_mat_filled) ** 2).sum().sum() ** 0.5
+        birdsong_euclidean = ((gt_mat_filled - birdsong_mat_filled) ** 2).sum().sum() ** 0.5
+        tweety_title = f"TweetyBERT\nManhattan: {tweety_manhattan:.2f}\nEuclidean: {tweety_euclidean:.2f})"
+        birdsong_title = f"CHURP\nManhattan Dist: {birdsong_manhattan:.2f}\nEuclidean: {birdsong_euclidean:.2f})"
     else:
         tweety_title = "TweetyBERT"
         birdsong_title = "CHURP"
