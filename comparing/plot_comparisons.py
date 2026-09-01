@@ -225,7 +225,7 @@ def plot_spectrograms(label_dictionary, bird):
         # Adjust layout so labels/colorbars aren't cut off during saving
         plt.tight_layout()
 
-        save_name = os.path.join(OUT_DIR, f"gt_spectrogram_{k}.png")
+        save_name = os.path.join(OUT_DIR, f"gt_spectrogram_{k}_{bird}.png")
         
         # Save the figure to the provided filepath (e.g., .png or .pdf), keeping all edges tight
         plt.savefig(save_name, bbox_inches='tight')
