@@ -17,7 +17,7 @@ import matplotlib.gridspec as gridspec
 def draw_markov_chain(matrix, ax, title, pos, all_nodes, min_prob_threshold=0.05):
     """Utility function to render a transition matrix as a Markov Chain network diagram."""
     if matrix.empty:
-        ax.set_title(f"{title}\n(No Data)", fontsize=11)
+        ax.set_title(f"{title}\n(No Data)", fontsize=15)
         ax.axis('off')
         return
 
@@ -35,7 +35,7 @@ def draw_markov_chain(matrix, ax, title, pos, all_nodes, min_prob_threshold=0.05
         nx.draw_networkx_nodes(G_dummy, pos, nodelist=list(active_nodes), ax=ax, 
                                node_color='#89CFF0', node_size=1000, edgecolors='black', alpha=1.0)
         nx.draw_networkx_labels(G_dummy, pos, labels={n: n for n in active_nodes}, ax=ax, 
-                                font_size=9, font_weight='bold')
+                                font_size=12, font_weight='bold')
     # Draw inactive nodes translucent
     if inactive_nodes:
         nx.draw_networkx_nodes(G_dummy, pos, nodelist=list(inactive_nodes), ax=ax, 
@@ -90,7 +90,7 @@ def draw_markov_chain(matrix, ax, title, pos, all_nodes, min_prob_threshold=0.05
                 
     draw_edges(active_edges)
 
-    ax.set_title(title, fontsize=12, fontweight='bold')
+    ax.set_title(title, fontsize=16, fontweight='bold')
     ax.axis('off')
 
 def load_stft(f, hop_length):
@@ -433,11 +433,11 @@ for bird_id, stats in bird_stats.items():
     draw_markov_chain(tweety_mat, axes[1], tweety_title, pos, all_nodes)
     draw_markov_chain(birdsong_mat, axes[2], birdsong_title, pos, all_nodes)
     
-    plt.suptitle(f"Syllable Transition Markov Chains — {bird_id}", fontsize=16, fontweight='bold')
+    plt.suptitle(f"Syllable Transition Markov Chains — {bird_id}", fontsize=20, fontweight='bold')
     plt.tight_layout()
     
     mc_plot_path = os.path.join(OUT_DIR, f"markov_chain_{bird_id}.png")
-    plt.savefig(mc_plot_path, dpi=300)
+    plt.savefig(mc_plot_path, dpi=600)
     plt.close()
     print(f"Saved Markov Chain Diagram for {bird_id} -> {mc_plot_path}")
 
