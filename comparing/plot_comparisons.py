@@ -146,13 +146,13 @@ def annotate(ax, spec, extent, labels, sec_per_label, colors=None):
         # Check for label transition
         if label != current_label:
             # Draw the previous valid interval (ignoring silence: -1 and None)
-            if current_label is not None and int(current_label) != -1:
+            if current_label is not None and current_label not in ["-1", -1, "-1.0"]:
                 # Convert frame indices to time in seconds
                 t_start = plot_start + (run_start_frame * sec_per_label)
                 t_end = plot_start + (i * sec_per_label)
 
-                # Fetch color (fallback to 'blue' if unmapped)
-                color = colors.get(current_label, 'blue') if colors else 'blue'
+                # Fetch color 
+                color = colors.get(current_label)
 
                 # Draw horizontal colored bar
                 ax.axvspan(
