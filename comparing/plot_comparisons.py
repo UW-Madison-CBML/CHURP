@@ -381,8 +381,8 @@ if not df_similarity.empty:
                 ha='center', va='bottom', fontsize=12, color='black',
                 bbox=dict(facecolor='white', alpha=0.75, edgecolor='none', boxstyle='round,pad=0.3'))
     
-    plt.title('Distributions of Min-Max Similarity Values Per Syllable Across Birds', fontsize=20, fontweight='bold')
-    plt.ylabel('Min-Max Similarity', fontsize=17)
+    plt.title('Distributions of Ruzicka Similarity Values Per Syllable Across Birds', fontsize=20, fontweight='bold')
+    plt.ylabel('Ruzicka Similarity', fontsize=17)
     plt.ylim(-0.05, 1.05)
     plt.grid(axis='y', linestyle='--', alpha=0.5)
     plt.tight_layout()
