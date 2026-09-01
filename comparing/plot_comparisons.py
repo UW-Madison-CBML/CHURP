@@ -335,7 +335,7 @@ else:
 
 # Plot Frame Error Rate Violins
 if not df_fer.empty:
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(10, 5))
     ax = sns.violinplot(
         data=df_fer, x='Bird', y='FER', hue='Model', 
         split=True, inner=None, density_norm="width", order=bird_order, palette=palette, legend=False
@@ -350,16 +350,15 @@ if not df_fer.empty:
     for i, b in enumerate(bird_order):
         annotation = f"N={recs_counts.get(b, 0)}\nGT={gt_counts.get(b, 0)}"
         ax.text(i, 0.75, annotation, transform=ax.get_xaxis_transform(),
-                ha='center', va='bottom', fontsize=9, color='black')
+                ha='center', va='bottom', fontsize=12, color='black')
     
-    plt.title('Distribution of Frame Error Rate (FER) Per Recording Across Birds', fontsize=14, fontweight='bold')
-    plt.ylabel('Frame Error Rate', fontsize=12)
-    plt.xlabel('Bird ID', fontsize=12)
+    plt.title('Distribution of Frame Error Rate (FER) Per Recording Across Birds', fontsize=20, fontweight='bold')
+    plt.ylabel('Frame Error Rate', fontsize=17)
     plt.ylim(-0.05, 1.05)
     plt.grid(axis='y', linestyle='--', alpha=0.5)
     plt.tight_layout()
     fer_plot_path = os.path.join(OUT_DIR, "violin_fer_per_bird.png")
-    plt.savefig(fer_plot_path, dpi=300)
+    plt.savefig(fer_plot_path, dpi=600)
     plt.close()
 
 # Plot similarity Index Violins
@@ -377,19 +376,18 @@ if not df_similarity.empty:
     
     # Add count annotations inside the plot
     for i, b in enumerate(bird_order):
-        annotation = f"GT={gt_counts.get(b, 0)}\nPred T={pred_counts_tweety.get(b, 0)}\nPred B={pred_counts_birdsong.get(b, 0)}"
+        annotation = f"GT={gt_counts.get(b, 0)}\nTweety={pred_counts_tweety.get(b, 0)}\nCHURP={pred_counts_birdsong.get(b, 0)}"
         ax.text(i, 0.02, annotation, transform=ax.get_xaxis_transform(),
-                ha='center', va='bottom', fontsize=8, color='black',
+                ha='center', va='bottom', fontsize=12, color='black',
                 bbox=dict(facecolor='white', alpha=0.75, edgecolor='none', boxstyle='round,pad=0.3'))
     
-    plt.title('Distributions of Min-Max Similarity Values Per Syllable Across Birds', fontsize=14, fontweight='bold')
-    plt.ylabel('Min-Max Similarity', fontsize=12)
-    plt.xlabel('Bird ID', fontsize=12)
+    plt.title('Distributions of Min-Max Similarity Values Per Syllable Across Birds', fontsize=20, fontweight='bold')
+    plt.ylabel('Min-Max Similarity', fontsize=17)
     plt.ylim(-0.05, 1.05)
     plt.grid(axis='y', linestyle='--', alpha=0.5)
     plt.tight_layout()
     similarity_plot_path = os.path.join(OUT_DIR, "violin_similarity_per_bird.png")
-    plt.savefig(similarity_plot_path, dpi=300)
+    plt.savefig(similarity_plot_path, dpi=600)
     plt.close()
 
 
