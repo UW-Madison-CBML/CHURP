@@ -664,45 +664,64 @@ def optimize_umap_clusters(X, seed, min_cluster_size=100, max_clusters = None):
 
     return X_2d, best_clusters
 
-def plot_distance_on_spectrogram(spectrogram, embeddings_3d, t_sec, origin, save_name):
+def plot_distance_on_spectrogram(spectrogram, embeddings_3d, intervals, t_sec, origin, save_name, colors, clusters):
     """
     Plots the latent trajectory distance from the origin overlaid on 
-    the spectrogram and saves it as a 600 DPI PNG file.
+    the spectrogram and saves it as a 600 DPI PNG file, matching the 
+    styling of plot_spectrograms.
     """
     distances = np.linalg.norm(embeddings_3d - origin, axis=1)
     
-    fig, ax1 = plt.subplots(figsize=(14, 6))
+    # Calculate how many seconds each frame (point) on the x-axis represents
+    sec_per_point = t_sec / spectrogram.shape[1]
 
-    # set limits for plotting
     # Define middle half time bounds (25% to 75%)
     t_start = 0.25 * t_sec
     t_end = 0.75 * t_sec
     
+    # Initialize a large, wide figure (20x12)
+    fig, ax1 = plt.subplots(figsize=(20, 12))
+    
+    # Force the physical aspect ratio of the axes to be very wide and short (5:1)
+    ax1.set_box_aspect(0.2)
+    
     # Plot Spectrogram on primary y-axis
     extent = [0, t_sec, 0, spectrogram.shape[0]]
-    im = ax1.imshow(spectrogram, origin='lower', aspect='auto', cmap='magma', extent=extent)
-    ax1.set_xlabel("Time (s)")
-    ax1.set_ylabel("Frequency Bin")
+    
+    # Pass colors and clusters to allow for colored annotations
+    im = annotate(ax1, spectrogram, extent, intervals, sec_per_point, colors=colors, clusters=clusters, crop=False)
+    
+    # Add a colorbar mapped to the spectrogram's intensity (dB)
+    cbar = plt.colorbar(im, ax=ax1, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.08)
+    cbar.set_label('Intensity (dB)', fontsize=24)
+    cbar.ax.tick_params(labelsize=20)
+    
+    # Style primary axis (ax1)
+    ax1.set_xlabel("Time (s)", fontsize=24)
+    ax1.set_ylabel("Frequency Bin", fontsize=24)
+    ax1.tick_params(axis='both', which='major', labelsize=20)
     ax1.set_xlim(t_start, t_end)
     
     # Create twin axis for distance metric overlay
     ax2 = ax1.twinx()
     time_bins = np.linspace(0, t_sec, len(distances))
     
-    # Plot distance line
-    ax2.plot(time_bins, distances, color='cyan', linewidth=1.8, label='Distance from Origin')
+    # Plot distance line and mean (slightly thickened to match large figure size)
+    ax2.plot(time_bins, distances, color='cyan', linewidth=2.5, label='Distance from Origin')
     
     # Calculate mean distance and plot horizontal dashed red line
     mean_distance = np.mean(distances)
-    ax2.axhline(y=mean_distance, color='red', linestyle='--', linewidth=1.5, label='Mean Distance')
+    ax2.axhline(y=mean_distance, color='red', linestyle='--', linewidth=2.0, label='Mean Distance')
     
-    # Add legend for ax2 (will grab both labels automatically)
-    ax2.legend(loc='upper right')
+    # Style twin axis (ax2)
+    ax2.legend(loc='upper right', fontsize=18)
+    ax2.set_ylabel("Distance from Origin", fontsize=24)
+    ax2.tick_params(axis='y', labelsize=20)
     
-    ax2.set_ylabel("Distance from Origin")
-    ax2.tick_params(axis='y')
+    # Style title
+    plt.title("Spectrogram with Latent Trajectory Distance Overlay", fontsize=26, pad=20)
     
-    plt.title("Spectrogram with Latent Trajectory Distance Overlay")
+    # Adjust layout and save
     plt.tight_layout()
     plt.savefig(f"{save_name}.png", dpi=600, bbox_inches='tight')
     plt.close(fig)
@@ -926,15 +945,6 @@ def main():
         # find origin that represents silence
         origin, db_thresh, keep_idx = find_origin(spectrogram, embeddings_norm)
 
-        if index % 10 == 0:
-            # plot trajectory distance overlaid on spectrogram at 600 DPI
-            dist_plot_name = f"dist_overlay_{args.bird_name_prefix}_{index}"
-            plot_distance_on_spectrogram(spectrogram, embeddings_norm, t_sec, origin, dist_plot_name)
-
-            # plot large version of entire latent trajectory in gray at 600 DPI
-            large_traj_name = f"large_latent_traj_{args.bird_name_prefix}_{index}"
-            plot_large_latent_trajectory(embeddings_norm, large_traj_name, birdname = args.bird_name_prefix, recording_number = index)
-
         # get intervals of deviation from fuzzy origin
         ints, starts, ends = get_all_intervals(embeddings_norm, origin, threshold_perc=args.fst_threshold)
 
@@ -1047,7 +1057,15 @@ def main():
         if spec_num % 10 == 0 and record['intervals'] is not None:
             plot_spectrograms(record['spec'], record['intervals'], record['t_sec'], 
                               f"annotated_specs_{args.bird_name_prefix}_{spec_num}", 
-                              colors, clusters) 
+                              colors, clusters)
+            origin, _, _ = find_origin(record['spec'], record['embeddings'])
+            # plot trajectory distance overlaid on spectrogram at 600 DPI
+            dist_plot_name = f"dist_overlay_{args.bird_name_prefix}_{spec_num}"
+            plot_distance_on_spectrogram(record['spec'], record['embeddings'], record['intervals'], record['t_sec'], origin, dist_plot_name, colors, clusters)
+
+            # plot large version of entire latent trajectory in gray at 600 DPI
+            large_traj_name = f"large_latent_traj_{args.bird_name_prefix}_{spec_num}"
+            plot_large_latent_trajectory(record['embeddings'], large_traj_name, birdname = args.bird_name_prefix, recording_number = spec_num)
         spec_num = spec_num + 1
 
     # Convert the list of discrete intervals back into continuous, frame-by-frame label arrays 
