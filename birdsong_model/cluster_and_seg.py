@@ -516,7 +516,7 @@ def annotate(ax, spec, extent, intervals, sec_per_point, colors=None, clusters=N
             edgecolor='black', facecolor=color
         )
     
-    ax.set_ylabel('Frequency', fontsize=24)
+    ax.set_ylabel('Frequency Bin', fontsize=24)
 
     # Return the image object so a colorbar can be attached to it later
     return im
@@ -790,17 +790,17 @@ def plot_record_analysis(record, record_clusters, colors, save_name):
     ax_wav = fig1.add_subplot(gs1[0, :])
     ax_wav.plot(time_wav, y, color='black', lw=0.5)
     ax_wav.set_xlim(0, t_sec)
-    ax_wav.set_title("Waveform")
+    ax_wav.set_title("Normalized Waveform")
     ax_wav.set_ylabel("Amplitude")
     ax_wav.set_xlim(t_start, t_end)
-    ax_wav.set_xticks([]) # Hide x-ticks to share cleanly with spectrogram
+    ax_wav.tick_params(labelbottom=False)# Hide x-ticks to share cleanly with spectrogram
     
     # --- Row 1: Amplitude Trace ---
     ax_amp = fig1.add_subplot(gs1[1, :], sharex=ax_wav)
     ax_amp.plot(time_wav, amplitude, color='forestgreen', lw=0.5)
-    ax_amp.set_title("Amplitude Trace")
+    ax_amp.set_title("Normalized Amplitude Trace")
     ax_amp.set_ylabel("Abs Amp")
-    ax_amp.set_xticks([])
+    ax_wav.tick_params(labelbottom=False)
     
     # --- Row 2: Annotated Spectrogram ---
     ax_spec = fig1.add_subplot(gs1[2, :], sharex=ax_wav)
