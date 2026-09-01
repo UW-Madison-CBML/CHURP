@@ -198,7 +198,7 @@ def plot_spectrograms(label_dictionary, bird):
 
         labels = v
 
-        clusters = set(labels) - set([-1]) - set(["-1"]) set(["-1.0"])   
+        clusters = set(labels) - set([-1]) - set(["-1"]) - set(["-1.0"])   
 
         cmap = plt.get_cmap('viridis', len(set(clusters))) 
         colors = {}
