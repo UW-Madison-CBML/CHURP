@@ -544,7 +544,7 @@ def plot_spectrograms(spectrogram, intervals, t_sec, save_name, colors, clusters
     ax.set_box_aspect(0.1) 
     
     # Call the helper function to draw the spectrogram and the top-edge annotations
-    im = annotate(ax, spectrogram, img_extent, intervals, sec_per_point, colors, clusters)
+    im = annotate(ax, spectrogram, img_extent, intervals, sec_per_point, colors, clusters, crop = True)
     
     # Add a colorbar mapped to the spectrogram's intensity (dB)
     cbar = plt.colorbar(im, ax=ax, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.02)
@@ -689,7 +689,7 @@ def plot_distance_on_spectrogram(spectrogram, embeddings_3d, intervals, t_sec, o
     extent = [0, t_sec, 0, spectrogram.shape[0]]
     
     # Pass colors and clusters to allow for colored annotations
-    im = annotate(ax1, spectrogram, extent, intervals, sec_per_point, colors=colors, clusters=clusters, crop=False)
+    im = annotate(ax1, spectrogram, extent, intervals, sec_per_point, colors=colors, clusters=clusters, crop=True)
 
     # Add a colorbar mapped to the spectrogram's intensity (dB)
     cbar = plt.colorbar(im, ax=ax1, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.08)
