@@ -348,7 +348,7 @@ def validate_html(X, clusters, loop_specs, wav_segs, samplerate, all_intervals, 
     ax2d.scatter(X[~is_noise, 0], X[~is_noise, 1], 
                  c=clusters[~is_noise], s=10, cmap='viridis', alpha=0.7, label='Clusters')
                      
-    ax2d.set_title(f"HDBSCAN Clustering on Path Signatures (UMAP), {num_records} Recordings, {len(X)} Segements")
+    ax2d.set_title(f"Clustering on Path Signatures, {num_records} Recordings, {len(X)} Segements")
     ax2d.set_xlabel("UMAP 1") 
     ax2d.set_ylabel("UMAP 2") 
 
@@ -809,6 +809,7 @@ def plot_record_analysis(record, record_clusters, colors, save_name):
     annotate(ax_spec, spec, img_extent, intervals, sec_per_point, colors, record_clusters, crop = True)
     ax_spec.set_title("Annotated Spectrogram", pad = 20)
     ax_spec.set_xlabel("Time (s)")
+    ax_spec.set_ylabel("Frequency Bin")
     
     plt.tight_layout()
     plt.savefig(f"{save_name}_spec.png", bbox_inches='tight', dpi=600)
