@@ -751,9 +751,9 @@ def plot_large_latent_trajectory(embeddings_3d, save_name, figsize=(14, 12), bir
 def plot_record_analysis(record, record_clusters, colors, save_name):
     """
     Takes a single record entry from record_df and plots:
+    - The annotated spectrogram
     - The raw waveform
     - The absolute amplitude trace
-    - The annotated spectrogram
     - A row for each cluster containing: 
         The 3D embeddings of the whole record (gray) with cluster segments highlighted
     """
@@ -783,32 +783,33 @@ def plot_record_analysis(record, record_clusters, colors, save_name):
     
     # initialize first figure
     fig1 = plt.figure(figsize=(8.5, 5.5))
-    gs1 = GridSpec(3, 4, figure=fig1, height_ratios=[1, 1, 2])
+    # Adjusted height ratios so row 0 (spectrogram) is the largest
+    gs1 = GridSpec(3, 4, figure=fig1, height_ratios=[2, 1, 1])
 
-    # --- Row 0: Waveform ---
-    ax_wav = fig1.add_subplot(gs1[0, :])
-    ax_wav.plot(time_wav, y, color='black', lw=0.5)
-    ax_wav.set_xlim(0, t_sec)
-    ax_wav.set_title("Normalized Waveform")
-    ax_wav.set_ylabel("Amplitude")
-    ax_wav.set_xlim(t_start, t_end)
-    ax_wav.tick_params(labelbottom=False)# Hide x-ticks to share cleanly with spectrogram
-    
-    # --- Row 1: Amplitude Trace ---
-    ax_amp = fig1.add_subplot(gs1[1, :], sharex=ax_wav)
-    ax_amp.plot(time_wav, amplitude, color='forestgreen', lw=0.5)
-    ax_amp.set_title("Normalized Amplitude Trace")
-    ax_amp.set_ylabel("Abs Amp")
-    ax_wav.tick_params(labelbottom=False)
-    
-    # --- Row 2: Annotated Spectrogram ---
-    ax_spec = fig1.add_subplot(gs1[2, :], sharex=ax_wav)
+    # --- Row 0: Annotated Spectrogram ---
+    ax_spec = fig1.add_subplot(gs1[0, :])
     sec_per_point = t_sec / spec.shape[1]
     img_extent = [0, t_sec, 0, spec.shape[0]]
     annotate(ax_spec, spec, img_extent, intervals, sec_per_point, colors, record_clusters, crop = True)
     ax_spec.set_title("Annotated Spectrogram", pad = 20)
-    ax_spec.set_xlabel("Time (s)")
     ax_spec.set_ylabel("Frequency Bin")
+    ax_spec.set_xlim(t_start, t_end)
+    ax_spec.tick_params(labelbottom=False) # Hide x-ticks to share cleanly with plots below
+    
+    # --- Row 1: Waveform ---
+    ax_wav = fig1.add_subplot(gs1[1, :], sharex=ax_spec)
+    ax_wav.plot(time_wav, y, color='black', lw=0.5)
+    ax_wav.set_title("Normalized Waveform")
+    ax_wav.set_ylabel("Amplitude")
+    ax_wav.tick_params(labelbottom=False) # Hide x-ticks
+    
+    # --- Row 2: Amplitude Trace ---
+    ax_amp = fig1.add_subplot(gs1[2, :], sharex=ax_spec)
+    ax_amp.plot(time_wav, amplitude, color='forestgreen', lw=0.5)
+    ax_amp.set_title("Normalized Amplitude Trace")
+    ax_amp.set_ylabel("Abs Amp")
+    ax_amp.set_xlabel("Time (s)") # Only the bottom plot gets the x-axis label
+    # ax_amp keeps bottom tick labels visible by default
     
     plt.tight_layout()
     plt.savefig(f"{save_name}_spec.png", bbox_inches='tight', dpi=600)
