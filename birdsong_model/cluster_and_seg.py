@@ -515,8 +515,6 @@ def annotate(ax, spec, extent, intervals, sec_per_point, colors=None, clusters=N
             alpha=0.7, clip_on=False, label=f'Loop {i}',
             edgecolor='black', facecolor=color
         )
-    
-    ax.set_ylabel('Frequency Bin', fontsize=24)
 
     # Return the image object so a colorbar can be attached to it later
     return im
