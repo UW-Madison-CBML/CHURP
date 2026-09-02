@@ -90,7 +90,7 @@ def draw_markov_chain(matrix, ax, title, pos, all_nodes, min_prob_threshold=0.05
                 
     draw_edges(active_edges)
 
-    ax.set_title(title, fontsize=16, fontweight='bold')
+    ax.set_title(title, fontsize=16, fontweight='bold', pad=20)
     ax.axis('off')
 
 def load_stft(f, hop_length):
@@ -465,27 +465,37 @@ if distance_records:
     )
     df_distances = df_distances.sort_values('SortKey').drop(columns='SortKey')
 
-    # Draw table
-    fig, ax = plt.subplots(figsize=(10, len(df_distances) * 0.5 + 1.5))
+    # Combine columns into the 3 requested categories
+    compact_df = pd.DataFrame({
+        'Bird': df_distances['Bird'],
+        'Euclidean Dist: Tweety/CHURP': df_distances['Tweety Euclidean'] + "/" + df_distances['CHURP Euclidean'],
+        'Manhattan Dist: Tweety/CHURP': df_distances['Tweety Manhattan'] + "/" + df_distances['CHURP Manhattan']
+    })
+
+    # Draw table (reduced figsize for compactness)
+    fig, ax = plt.subplots(figsize=(5.5, len(compact_df) * 0.25 + 0.5))
     ax.axis('tight')
     ax.axis('off')
     
-    table = ax.table(cellText=df_distances.values, 
-                     colLabels=df_distances.columns, 
+    table = ax.table(cellText=compact_df.values, 
+                     colLabels=compact_df.columns, 
                      cellLoc='center', 
                      loc='center')
     
-    # Format Table
+    # Format Table to be highly compact
     table.auto_set_font_size(False)
-    table.set_fontsize(12)
-    table.scale(1, 1.8)
+    table.set_fontsize(9)  # Smaller font
+    table.scale(1, 1.2)    # Reduced row height scaling
     
-    plt.title("Distance Metrics by Bird", fontsize=16, fontweight='bold')
-    plt.tight_layout()
+    plt.title("Distance Metrics by Bird", fontsize=11, fontweight='bold', pad=10)
+    
+    # Minimize plot padding
+    plt.tight_layout(pad=0)
     
     table_path = os.path.join(OUT_DIR, "distance_metrics_table.png")
-    plt.savefig(table_path, dpi=300)
+    # bbox_inches='tight' crops out excess whitespace
+    plt.savefig(table_path, dpi=600, bbox_inches='tight')
     plt.close()
-    print(f"Saved Distance Metrics Table -> {table_path}")
+    print(f"Saved Compact Distance Metrics Table -> {table_path}")
 
 print(f"\nAll plots successfully saved to directory: '{OUT_DIR}/'")
