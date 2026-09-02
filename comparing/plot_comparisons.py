@@ -468,8 +468,8 @@ if distance_records:
     # Combine columns into the 3 requested categories
     compact_df = pd.DataFrame({
         'Bird': df_distances['Bird'],
-        'Euclidean Dist: Tweety/CHURP': df_distances['Tweety Euclidean'] + "/" + df_distances['CHURP Euclidean'],
-        'Manhattan Dist: Tweety/CHURP': df_distances['Tweety Manhattan'] + "/" + df_distances['CHURP Manhattan']
+        'Euclidean Dist\nTweety/CHURP': df_distances['Tweety Euclidean'] + "/" + df_distances['CHURP Euclidean'],
+        'Manhattan Dist\nTweety/CHURP': df_distances['Tweety Manhattan'] + "/" + df_distances['CHURP Manhattan']
     })
 
     # Draw table (reduced figsize for compactness)
