@@ -488,6 +488,15 @@ if distance_records:
     table.auto_set_font_size(False)
     table.set_fontsize(9)  # Smaller font
     table.scale(1, 1.2)    # Reduced row height scaling
+
+    # Automatically shrink column widths to fit the text tightly
+    table.auto_set_column_width(col=list(range(len(compact_df.columns))))
+    
+    # Increase the height of the first row to accommodate the \n in your headers
+    for (row, col), cell in table.get_celld().items():
+        if row == 0:
+            # Double the height of the header row cells
+            cell.set_height(cell.get_height() * 2)
     
     plt.title("Distance Metrics by Bird", fontsize=11, fontweight='bold', pad=10)
     
