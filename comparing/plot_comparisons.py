@@ -447,8 +447,8 @@ for bird_id, stats in bird_stats.items():
     draw_markov_chain(tweety_mat, axes[1], tweety_title, pos, all_nodes)
     draw_markov_chain(birdsong_mat, axes[2], birdsong_title, pos, all_nodes)
     
-    plt.suptitle(f"Syllable Transition Markov Chains — {bird_id}", fontsize=20, fontweight='bold')
-    plt.tight_layout()
+    plt.suptitle(f"Syllable Transition Markov Chains — {bird_id}", fontsize=20, fontweight='bold', y=0.99)
+    plt.tight_layout(rect=[0, 0, 1, 0.96])
     
     mc_plot_path = os.path.join(OUT_DIR, f"markov_chain_{bird_id}.png")
     plt.savefig(mc_plot_path, dpi=600)
