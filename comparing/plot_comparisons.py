@@ -423,7 +423,7 @@ for bird_id, stats in bird_stats.items():
         tweety_euclidean = ((gt_mat_filled - tweety_mat_filled) ** 2).sum().sum() ** 0.5
         birdsong_euclidean = ((gt_mat_filled - birdsong_mat_filled) ** 2).sum().sum() ** 0.5
         tweety_title = f"TweetyBERT\nManhattan: {tweety_manhattan:.2f}\nEuclidean: {tweety_euclidean:.2f}"
-        birdsong_title = f"CHURP\nManhattan Dist: {birdsong_manhattan:.2f}\nEuclidean: {birdsong_euclidean:.2f}"
+        birdsong_title = f"CHURP\nManhattan: {birdsong_manhattan:.2f}\nEuclidean: {birdsong_euclidean:.2f}"
     else:
         tweety_title = "TweetyBERT"
         birdsong_title = "CHURP"
