@@ -352,7 +352,7 @@ if not df_fer.empty:
         ax.text(i, 0.75, annotation, transform=ax.get_xaxis_transform(),
                 ha='center', va='bottom', fontsize=12, color='black')
     
-    plt.title('Distribution of Frame Error Rate (FER) Per Recording Across Birds', fontsize=20, fontweight='bold')
+    plt.title('Distributions of Frame Error Rate Per Recording Across Birds', fontsize=20, fontweight='bold')
     plt.ylabel('Frame Error Rate', fontsize=17)
     plt.ylim(-0.05, 1.05)
     plt.grid(axis='y', linestyle='--', alpha=0.5)
