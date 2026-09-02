@@ -352,7 +352,8 @@ if not df_fer.empty:
         ax.text(i, 0.75, annotation, transform=ax.get_xaxis_transform(),
                 ha='center', va='bottom', fontsize=12, color='black')
     
-    plt.title('Distributions of Frame Error Rate Per Recording Across Birds', fontsize=20, fontweight='bold')
+    # Font size decreased by 1 (20 -> 19)
+    plt.title('Distributions of Frame Error Rate Per Recording Across Birds', fontsize=19, fontweight='bold')
     plt.ylabel('Frame Error Rate', fontsize=17)
     plt.ylim(-0.05, 1.05)
     plt.grid(axis='y', linestyle='--', alpha=0.5)
@@ -381,7 +382,8 @@ if not df_similarity.empty:
                 ha='center', va='bottom', fontsize=10, color='black',
                 bbox=dict(facecolor='white', alpha=0.75, edgecolor='none', boxstyle='round,pad=0.3'))
     
-    plt.title('Distributions of Ruzicka Similarity Values Per Syllable Across Birds', fontsize=18, fontweight='bold')
+    # Font size decreased by 1 (18 -> 17)
+    plt.title('Distributions of Ruzicka Similarity Values Per Syllable Across Birds', fontsize=17, fontweight='bold')
     plt.ylabel('Ruzicka Similarity', fontsize=17)
     plt.ylim(-0.05, 1.05)
     plt.grid(axis='y', linestyle='--', alpha=0.5)
@@ -391,9 +393,12 @@ if not df_similarity.empty:
     plt.close()
 
 
-# Render a figure for each bird containing GT, TweetyBERT, and birdsong Markov chains side-by-side
+distance_records = []
+
+# Render a figure for each bird containing GT, TweetyBERT, and birdsong Markov chains in 3 rows
 for bird_id, stats in bird_stats.items():
-    fig, axes = plt.subplots(1, 3, figsize=(20, 6.5))
+    # Modified subplot setup: 3 rows, 1 column with adjusted figsize
+    fig, axes = plt.subplots(3, 1, figsize=(8, 20))
     
     gt_mat = stats.get('transition_matrix_gt', pd.DataFrame())
     tweety_mat = stats.get('transition_matrix_tweety', pd.DataFrame())
@@ -416,7 +421,7 @@ for bird_id, stats in bird_stats.items():
     # Ground truth circular layout
     pos = nx.circular_layout(all_nodes)
     
-    # Calculate Manhattan Distances for the title using aligned matrices
+    # Calculate Manhattan and Euclidean Distances using aligned matrices
     if not gt_mat_filled.empty:
         tweety_manhattan = (gt_mat_filled - tweety_mat_filled).abs().sum().sum()
         birdsong_manhattan = (gt_mat_filled - birdsong_mat_filled).abs().sum().sum()
@@ -424,6 +429,15 @@ for bird_id, stats in bird_stats.items():
         birdsong_euclidean = ((gt_mat_filled - birdsong_mat_filled) ** 2).sum().sum() ** 0.5
         tweety_title = f"TweetyBERT\nManhattan: {tweety_manhattan:.2f}\nEuclidean: {tweety_euclidean:.2f}"
         birdsong_title = f"CHURP\nManhattan: {birdsong_manhattan:.2f}\nEuclidean: {birdsong_euclidean:.2f}"
+        
+        # Save distance records for the table creation later
+        distance_records.append({
+            'Bird': bird_id,
+            'Tweety Manhattan': f"{tweety_manhattan:.2f}",
+            'Tweety Euclidean': f"{tweety_euclidean:.2f}",
+            'CHURP Manhattan': f"{birdsong_manhattan:.2f}",
+            'CHURP Euclidean': f"{birdsong_euclidean:.2f}"
+        })
     else:
         tweety_title = "TweetyBERT"
         birdsong_title = "CHURP"
@@ -440,5 +454,38 @@ for bird_id, stats in bird_stats.items():
     plt.savefig(mc_plot_path, dpi=600)
     plt.close()
     print(f"Saved Markov Chain Diagram for {bird_id} -> {mc_plot_path}")
+
+# --- Generate Table with Manhattan and Euclidean Distances ---
+if distance_records:
+    df_distances = pd.DataFrame(distance_records)
+    
+    # Optional: Sort by bird ID identically to previous plots
+    df_distances['SortKey'] = df_distances['Bird'].apply(
+        lambda x: int(re.search(r'\d+', x).group()) if re.search(r'\d+', x) else 0
+    )
+    df_distances = df_distances.sort_values('SortKey').drop(columns='SortKey')
+
+    # Draw table
+    fig, ax = plt.subplots(figsize=(10, len(df_distances) * 0.5 + 1.5))
+    ax.axis('tight')
+    ax.axis('off')
+    
+    table = ax.table(cellText=df_distances.values, 
+                     colLabels=df_distances.columns, 
+                     cellLoc='center', 
+                     loc='center')
+    
+    # Format Table
+    table.auto_set_font_size(False)
+    table.set_fontsize(12)
+    table.scale(1, 1.8)
+    
+    plt.title("Distance Metrics by Bird", fontsize=16, fontweight='bold')
+    plt.tight_layout()
+    
+    table_path = os.path.join(OUT_DIR, "distance_metrics_table.png")
+    plt.savefig(table_path, dpi=300)
+    plt.close()
+    print(f"Saved Distance Metrics Table -> {table_path}")
 
 print(f"\nAll plots successfully saved to directory: '{OUT_DIR}/'")
