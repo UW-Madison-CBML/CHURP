@@ -73,39 +73,21 @@ done
 wait
 ```
 # TweetyBERT implementation
-TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main as of July 2026. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code block below. This includes all parameters used, as well as the commands that were executed to change some of the original code. 
-
+TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main as of July 2026. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code block below. This includes all parameters used, as well as the commands that were executed to change some of the original code.
 ```bash
+# run docker
+docker run -it cdonahue6/churp:latest
+
 tar -xzf 3470165.tar.gz
 
-git clone https://github.com/UW-Madison-CBML/CHURP
-cd 3470165
-bash ../CHURP/birdsong_model/move_wavs.sh
-cd ..
+mkdir files
+mv 3470165/ files
 
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
-# 1. Create and activate a new Conda environment
-conda create -n tweetybert python=3.11
-source $(conda info --base)/etc/profile.d/conda.sh
-conda activate tweetybert
-
-# 2. Install core scientific packages (including librosa)
-conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas librosa seaborn jupyter ipykernel
-
-# 3. Install additional dependencies via pip
-pip install soundfile shutil-extra glasbey pyqtgraph PyQt5 hmmlearn
-
-# 4. install torch
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
-
-# 5. Clone this repository
 git clone https://github.com/georgevenven/tweety_bert.git
 cd tweety_bert
 
 # pretrain network on all birds using default settings, except step_size 86 for 2.7ms bins
-python pretrain.py --input_dir "../3470165/all_wavs" --experiment_name "MyTweetyBERTModel" --test_percentage 20 --batch_size 32 --learning_rate 3e-4 --context 1000 --m 250 --multi_thread --step_size 86
+python pretrain.py --input_dir "../files/3470165/all_wavs" --experiment_name "MyTweetyBERTModel" --test_percentage 20 --batch_size 32 --learning_rate 3e-4 --context 1000 --m 250 --multi_thread --step_size 86 
 
 # change path error in inference.py
 sed -i "s|'python', '/home/george-vengrovski/Documents/projects/tweety_net_song_detector/src/inference.py'|'python','./src/inference.py'|g" src/inference.py
@@ -143,43 +125,24 @@ for bird in "${birdnames[@]}"; do
         touch files/$bird.npz
 
         # generate UMAP embeddings and train decoder on all birds with default arguments
-        python decoding.py --mode single --bird_name "${bird}_decoder" --model_name "MyTweetyBERTModel" --wav_folder "../3470165/$bird/Wave/" --num_random_files_spec 100 --num_samples_umap 5e5
+        python decoding.py --mode single --bird_name "${bird}_decoder" --model_name "MyTweetyBERTModel" --wav_folder "../files/3470165/$bird/Wave/" --num_random_files_spec 100 --num_samples_umap 5e5
 
-        # detect songs for individual bird so that spectrogram naming is not messed up
-        python detect_song.py --input_dir "../3470165/$bird/Wave/"
+	    # detect songs for individual bird so that spectrogram naming is not messed up
+	    python detect_song.py --input_dir "../files/3470165/$bird/Wave/"
 
         mv files/song_detection.json files/${bird}_song_detection.json
 
         # run inference on specific bird
-        python run_inference.py --bird_name "${bird}_decoder" --wav_folder "../3470165/$bird/Wave/" --apply_post_processing True --visualize --song_detection_json "files/${bird}_song_detection.json"
+        python run_inference.py --bird_name "${bird}_decoder" --wav_folder "../files/3470165/$bird/Wave/" --apply_post_processing True --visualize --song_detection_json "files/${bird}_song_detection.json"
 
 done
 
 cd ..
-
-tar -zcvf tweety_bert.tar.gz tweety_bert
 ```
 
 # Metrics and comparison calculations
+### This code assumes that both the above CHURP and TweetyBERT code was executed in the same directory and that the CHURP docker image is running
 ```bash
-git clone https://github.com/UW-Madison-CBML/CHURP
-
-conda create -n churp python=3.10
-source $(conda info --base)/etc/profile.d/conda.sh
-conda activate churp
-
-conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas jupyter ipykernel librosa
-pip install --upgrade pip setuptools wheel cython
-pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
-pip install hdbscan iisignature --no-build-isolation
-pip install scipy soundfile ipython wandb shutil-extra glasbey pyqtgraph PyQt5 hmmlearn seaborn networkx
-
-tar -xzf CHURP_outputs.tar.gz
-tar -xzf tweety_bert.tar.gz
-tar -xzf 3470165.tar.gz
-
-mkdir comparison_outputs
-
 birdnames=(
     "Bird0"
     "Bird1"
@@ -194,40 +157,39 @@ birdnames=(
     "Bird10"
 )
 
+mkdir files/comparison_outputs
+
 # run comparisons for each bird
 for bird in "${birdnames[@]}"; do
 
-        python CHURP/comparing/comparing.py \
-                --xml "3470165/${bird}/Annotation.xml" \
-                --pkl "CHURP_outputs/annotated_bins_${bird}.pkl" \
+        python src/comparing.py \
+                --xml "files/3470165/${bird}/Annotation.xml" \
+                --pkl "files/annotated_bins_${bird}.pkl" \
                 --json "tweety_bert/files/${bird}_decoder_decoded_database.json" \
-                --wav_dir "3470165/${bird}/Wave" \
+                --wav_dir "files/3470165/${bird}/Wave" \
                 --sr 32000 \
                 --hop 86 \
-                --out_dir "comparison_outputs" \
+                --out_dir "files/comparison_outputs" \
                 --regions "tweety_bert/files/${bird}_song_detection.json" \
-                --bird "${bird}" > "comparison_outputs/${bird}.out" &
+                --bird "${bird}" > "files/comparison_outputs/${bird}.out" &
 
 done
 
 wait
 
-mv *.csv comparison_outputs/
-
 touch metrics.csv
 
-sed -n '1p' "comparison_outputs/Bird0_comparison_data.csv" > metrics.csv
+sed -n '1p' "files/comparison_outputs/Bird0_comparison_data.csv" > files/comparison_outputs/metrics.csv
 
 for bird in "${birdnames[@]}"; do
-        sed -n '2p' "comparison_outputs/${bird}_comparison_data.csv" >> metrics.csv
+        sed -n '2p' "files/comparison_outputs/${bird}_comparison_data.csv" >> files/comparison_outputs/metrics.csv
 done
 
-mv metrics.csv comparison_outputs/
-
 # plot results
-python CHURP/comparing/plot_comparisons.py "comparison_outputs"
+python src/plot_comparisons.py "files/comparison_outputs"
 
-tar -czf comparison_outputs.tar.gz comparison_outputs/
+mkdir final_outputs
+mv files/comparison_outputs/* final_outputs/
 ```
 
 
