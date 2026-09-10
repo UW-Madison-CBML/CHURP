@@ -1,0 +1,69 @@
+mv: cannot stat 'comb_outputs/churp.pth': No such file or directory
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird3.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird4.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird6.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird5.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird8.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird7.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird9.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird0.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird2.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird10.pkl'
+Traceback (most recent call last):
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 1056, in <module>
+    main()
+  File "/var/lib/condor/execute/slot2/dir_2794377/scratch/src/cluster_and_seg.py", line 854, in main
+    with open(args.pkl, "rb") as file:
+FileNotFoundError: [Errno 2] No such file or directory: './files/Bird1.pkl'
+mv: cannot overwrite 'comb_outputs/files': Directory not empty
+mv: cannot overwrite 'comb_outputs/models': Directory not empty

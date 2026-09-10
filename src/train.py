@@ -18,7 +18,8 @@ import sys
 import argparse
 
 # Import the extracted loader and model classes
-from model import SpectrogramLoader, pad_collate_fn, ConvAutoencoderLSTM
+from models.model import ConvAutoencoderLSTM
+from dataloader import SpectrogramLoader, pad_collate_fn
 
 # set random seeds for reproducability
 seed = 42

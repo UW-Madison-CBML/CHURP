@@ -1,0 +1,149 @@
+000 (6181439.000.000) 2026-09-08 22:13:38 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "tweetyBERT_pretraining" ]
+...
+040 (6181439.000.000) 2026-09-08 22:16:35 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_4_2813602_e3a7_15133>
+...
+040 (6181439.000.000) 2026-09-08 22:16:39 Finished transferring input files
+...
+001 (6181439.000.000) 2026-09-08 22:16:39 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_4@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_107714f3 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_959479/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_107714f3 = [ Id = "GPU-107714f3"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "107714f3-79aa-2351-be93-4fbeb9819812"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:5D:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6181439.000.000) 2026-09-08 22:16:48 Image size of job updated: 3
+	0  -  MemoryUsage of job (MB)
+	952  -  ResidentSetSize of job (KB)
+...
+006 (6181439.000.000) 2026-09-08 22:21:49 Image size of job updated: 632
+	632  -  MemoryUsage of job (MB)
+	647828  -  ResidentSetSize of job (KB)
+...
+040 (6181439.000.000) 2026-09-08 22:22:34 Started transferring output files
+...
+040 (6181439.000.000) 2026-09-08 22:22:34 Finished transferring output files
+...
+005 (6181439.000.000) 2026-09-08 22:22:36 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:05:35, Sys 0 00:02:37  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:05:35, Sys 0 00:02:37  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	79362825  -  Run Bytes Sent By Job
+	4557546013  -  Run Bytes Received By Job
+	79362825  -  Total Bytes Sent By Job
+	4557546013  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.00         2         2 
+	   Disk (KB)            : 10515744    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-107714f3"
+	   GpusMemory (MB)      :    27910                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :      632       133120    133120 
+	   TimeExecute (s)      :      354                        
+	   TimeSlotBusy (s)     :      360                        
+...
+000 (6182152.000.000) 2026-09-09 08:17:21 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "tweetyBERT_pretraining" ]
+...
+040 (6182152.000.000) 2026-09-09 08:21:06 Started transferring input files
+	Transferring to host: <128.105.76.53:9618?addrs=128.105.76.53-9618+[2607-f388-2200-100-b65c-b5ff-fe81-e536]-9618&alias=gpu5000.chtc.wisc.edu&noUDP&sock=slot2_3_2139582_d316_10654>
+...
+040 (6182152.000.000) 2026-09-09 08:21:45 Finished transferring input files
+...
+001 (6182152.000.000) 2026-09-09 08:21:54 Job executing on host: <128.105.76.53:9618?addrs=128.105.76.53-9618+[2607-f388-2200-100-b65c-b5ff-fe81-e536]-9618&alias=gpu5000.chtc.wisc.edu&noUDP&sock=startd_14985_0ac5>
+	SlotName: slot2_3@gpu5000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_08f96c4f }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2496703/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_08f96c4f = [ Id = "GPU-08f96c4f"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "08f96c4f-e762-71a2-c44a-4bdcc4ada04a"; ECCEnabled = true; NvidiaDriver = "590.48.01"; DriverVersion = 13.1; DevicePciBusId = "0000:5D:00.0"; GlobalMemoryMb = 143158; MaxSupportedVersion = 13010 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6182152.000.000) 2026-09-09 08:26:55 Image size of job updated: 641
+	641  -  MemoryUsage of job (MB)
+	656512  -  ResidentSetSize of job (KB)
+...
+040 (6182152.000.000) 2026-09-09 08:28:05 Started transferring output files
+...
+040 (6182152.000.000) 2026-09-09 08:28:06 Finished transferring output files
+...
+005 (6182152.000.000) 2026-09-09 08:28:07 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:04:07, Sys 0 00:01:26  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:04:07, Sys 0 00:01:26  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	79357646  -  Run Bytes Sent By Job
+	4557546085  -  Run Bytes Received By Job
+	79357646  -  Total Bytes Sent By Job
+	4557546085  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.00         2         2 
+	   Disk (KB)            : 10515912    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-08f96c4f"
+	   GpusMemory (MB)      :     1249                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :      641       133120    133120 
+	   TimeExecute (s)      :      336                        
+	   TimeSlotBusy (s)     :      422                        
+...
+000 (6182162.000.000) 2026-09-09 08:33:14 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "tweetyBERT_pretraining" ]
+...
+040 (6182162.000.000) 2026-09-09 08:36:04 Started transferring input files
+	Transferring to host: <128.105.68.213:9618?addrs=128.105.68.213-9618+[2607-f388-2200-100-e29d-73ff-fe7b-531e]-9618&alias=gpu4004.chtc.wisc.edu&noUDP&sock=slot2_2_3984413_27c2_13991>
+...
+040 (6182162.000.000) 2026-09-09 08:36:08 Finished transferring input files
+...
+001 (6182162.000.000) 2026-09-09 08:36:08 Job executing on host: <128.105.68.213:9618?addrs=128.105.68.213-9618+[2607-f388-2200-100-e29d-73ff-fe7b-531e]-9618&alias=gpu4004.chtc.wisc.edu&noUDP&sock=startd_2998441_b471>
+	SlotName: slot2_2@gpu4004.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_9ba15165 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_518274/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_9ba15165 = [ Id = "GPU-9ba15165"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "9ba15165-beb5-ca2f-931c-afd52f446f4d"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:3B:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6182162.000.000) 2026-09-09 08:36:16 Image size of job updated: 3
+	0  -  MemoryUsage of job (MB)
+	960  -  ResidentSetSize of job (KB)
+...
+006 (6182162.000.000) 2026-09-09 08:41:17 Image size of job updated: 58466
+	58466  -  MemoryUsage of job (MB)
+	59869748  -  ResidentSetSize of job (KB)
+...
+040 (6182162.000.000) 2026-09-09 20:53:07 Started transferring output files
+...
+040 (6182162.000.000) 2026-09-09 20:57:04 Finished transferring output files
+...
+005 (6182162.000.000) 2026-09-09 20:57:14 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 1 14:16:50, Sys 0 10:23:50  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 1 14:16:50, Sys 0 10:23:50  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	33085823811  -  Run Bytes Sent By Job
+	4557546097  -  Run Bytes Received By Job
+	33085823811  -  Total Bytes Sent By Job
+	4557546097  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.16         2         2 
+	   Disk (KB)            : 80321336    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-9ba15165"
+	   GpusMemory (MB)      :      608                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :    58466       133120    133120 
+	   TimeExecute (s)      :    44218                        
+	   TimeSlotBusy (s)     :    44461                        
+...

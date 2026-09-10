@@ -1,0 +1,672 @@
+000 (6184491.000.000) 2026-09-09 11:39:08 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+009 (6184491.000.000) 2026-09-09 12:24:40 Job was aborted.
+	via condor_rm (by user cdonahue6)
+...
+000 (6185065.000.000) 2026-09-09 12:24:44 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6185065.000.000) 2026-09-09 12:24:58 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_2_2813602_e3a7_16753>
+...
+040 (6185065.000.000) 2026-09-09 12:25:14 Finished transferring input files
+...
+001 (6185065.000.000) 2026-09-09 12:25:14 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_2@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_c2e78818 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2655820/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_c2e78818 = [ Id = "GPU-c2e78818"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "c2e78818-dae2-2d4a-dffc-67861bc8a9e6"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:3B:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6185065.000.000) 2026-09-09 12:25:22 Image size of job updated: 2
+	0  -  MemoryUsage of job (MB)
+	952  -  ResidentSetSize of job (KB)
+...
+006 (6185065.000.000) 2026-09-09 12:27:16 Image size of job updated: 2
+	0  -  MemoryUsage of job (MB)
+	956  -  ResidentSetSize of job (KB)
+...
+040 (6185065.000.000) 2026-09-09 12:27:17 Started transferring output files
+...
+040 (6185065.000.000) 2026-09-09 12:27:17 Finished transferring output files
+...
+005 (6185065.000.000) 2026-09-09 12:27:20 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:05, Sys 0 00:00:01  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:05, Sys 0 00:00:01  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	2736  -  Run Bytes Sent By Job
+	18288292472  -  Run Bytes Received By Job
+	2736  -  Total Bytes Sent By Job
+	18288292472  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.00         2         2 
+	   Disk (KB)            : 20054356    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-c2e78818"
+	   GpusMemory (MB)      :     4028                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :        0       133120    133120 
+	   TimeExecute (s)      :      122                        
+	   TimeSlotBusy (s)     :      140                        
+...
+000 (6185496.000.000) 2026-09-09 12:42:03 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6185496.000.000) 2026-09-09 12:44:40 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_2_2813602_e3a7_16794>
+...
+040 (6185496.000.000) 2026-09-09 12:44:55 Finished transferring input files
+...
+001 (6185496.000.000) 2026-09-09 12:44:55 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_2@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_c2e78818 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2689082/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_c2e78818 = [ Id = "GPU-c2e78818"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "c2e78818-dae2-2d4a-dffc-67861bc8a9e6"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:3B:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6185496.000.000) 2026-09-09 12:45:03 Image size of job updated: 1500
+	0  -  MemoryUsage of job (MB)
+	280  -  ResidentSetSize of job (KB)
+...
+006 (6185496.000.000) 2026-09-09 12:50:03 Image size of job updated: 65648
+	20  -  MemoryUsage of job (MB)
+	19968  -  ResidentSetSize of job (KB)
+...
+040 (6185496.000.000) 2026-09-09 12:53:31 Started transferring output files
+...
+040 (6185496.000.000) 2026-09-09 12:53:31 Finished transferring output files
+...
+005 (6185496.000.000) 2026-09-09 12:53:34 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	113  -  Run Bytes Sent By Job
+	18288292472  -  Run Bytes Received By Job
+	113  -  Total Bytes Sent By Job
+	18288292472  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.00         2         2 
+	   Disk (KB)            : 20054368    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-c2e78818"
+	   GpusMemory (MB)      :      608                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :       20       133120    133120 
+	   TimeExecute (s)      :      516                        
+	   TimeSlotBusy (s)     :      531                        
+...
+000 (6185513.000.000) 2026-09-09 12:53:47 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6185513.000.000) 2026-09-09 12:57:28 Started transferring input files
+	Transferring to host: <128.105.69.54:9618?addrs=128.105.69.54-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5346]-9618&alias=hsharma-chtcgpu4000.chtc.wisc.edu&noUDP&sock=slot3_4_300924_ee46_16649>
+...
+040 (6185513.000.000) 2026-09-09 13:00:27 Finished transferring input files
+...
+001 (6185513.000.000) 2026-09-09 13:00:35 Job executing on host: <128.105.69.54:9618?addrs=128.105.69.54-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5346]-9618&alias=hsharma-chtcgpu4000.chtc.wisc.edu&noUDP&sock=startd_17987_2a14>
+	SlotName: slot3_4@hsharma-chtcgpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_ca5be3f8 }
+	CondorScratchDir = "/var/lib/condor/execute/slot3/dir_147410/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_ca5be3f8 = [ Id = "GPU-ca5be3f8"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "ca5be3f8-3aa9-9e9a-fca9-2fee54b933da"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:BB:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6185513.000.000) 2026-09-09 13:05:36 Image size of job updated: 65516
+	21  -  MemoryUsage of job (MB)
+	21504  -  ResidentSetSize of job (KB)
+...
+040 (6185513.000.000) 2026-09-09 13:36:44 Started transferring output files
+...
+040 (6185513.000.000) 2026-09-09 13:36:44 Finished transferring output files
+...
+021 (6185513.000.000) 2026-09-09 13:36:44 Error from starter on slot3_4@hsharma-chtcgpu4000.chtc.wisc.edu:
+	STARTER at 128.105.69.54 failed to send file(s) to <128.105.68.113:9618>: : FILETRANSFER:1:non-zero exit (1) from /usr/libexec/condor/curl_plugin. |Error: could not open local file /var/lib/condor/execute/slot3/dir_147410/scratch/final_outputs.tar.gz, error 2 (No such file or directory) (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/c/cdonahue6/birdsong/final_outputs.tar.gz )|; SHADOW failed to receive file(s) from <128.105.69.54:45761>
+	Code 13 Subcode 256
+...
+004 (6185513.000.000) 2026-09-09 13:36:49 Job was evicted. Code 12 Subcode 256
+	(0) CPU times
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	18288292472  -  Run Bytes Received By Job
+	Reason: Transfer output files failure at execution point slot3_4@hsharma-chtcgpu4000.chtc.wisc.edu using protocol file. Details: could not open local file /var/lib/condor/execute/slot3/dir_147410/scratch/final_outputs.tar.gz, error 2 (No such file or directory) (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/c/cdonahue6/birdsong/final_outputs.tar.gz )|
+	Partitionable Resources :    Usage   Request Allocated Assigned
+	   Cpus                 :        0         2         2 
+	   Disk (KB)            : 33383572 524288000 524288000 
+	   GPUs                 :        0         1         1 "GPU-ca5be3f8"
+	   GpusMemory (MB)      :      608                     
+	   IoHeavy              :                            0 
+	   Memory (MB)          :       21    133120    133120 
+	   TimeExecute (s)      :     2131                     
+	   TimeSlotBusy (s)     :     2357                     
+...
+012 (6185513.000.000) 2026-09-09 13:36:49 Job was held.
+	Transfer output files failure at execution point slot3_4@hsharma-chtcgpu4000.chtc.wisc.edu using protocol file. Details: could not open local file /var/lib/condor/execute/slot3/dir_147410/scratch/final_outputs.tar.gz, error 2 (No such file or directory) (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/c/cdonahue6/birdsong/final_outputs.tar.gz )|
+	Code 12 Subcode 256
+...
+000 (6185561.000.000) 2026-09-09 13:40:35 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+009 (6185513.000.000) 2026-09-09 13:40:49 Job was aborted.
+	via condor_rm (by user cdonahue6)
+...
+040 (6185561.000.000) 2026-09-09 13:45:54 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_3_2813602_e3a7_16934>
+...
+040 (6185561.000.000) 2026-09-09 13:46:09 Finished transferring input files
+...
+001 (6185561.000.000) 2026-09-09 13:46:09 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_3@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_33aa2a42 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2795401/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_33aa2a42 = [ Id = "GPU-33aa2a42"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "33aa2a42-bd2a-6304-6f7b-77e4ff98ad33"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:4C:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6185561.000.000) 2026-09-09 13:46:17 Image size of job updated: 2
+	0  -  MemoryUsage of job (MB)
+	952  -  ResidentSetSize of job (KB)
+...
+006 (6185561.000.000) 2026-09-09 13:49:01 Image size of job updated: 2
+	1  -  MemoryUsage of job (MB)
+	1300  -  ResidentSetSize of job (KB)
+...
+040 (6185561.000.000) 2026-09-09 13:49:02 Started transferring output files
+...
+040 (6185561.000.000) 2026-09-09 13:49:02 Finished transferring output files
+...
+005 (6185561.000.000) 2026-09-09 13:49:05 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:02:39, Sys 0 00:00:29  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:02:39, Sys 0 00:00:29  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	2736  -  Run Bytes Sent By Job
+	18288292485  -  Run Bytes Received By Job
+	2736  -  Total Bytes Sent By Job
+	18288292485  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.00         2         2 
+	   Disk (KB)            : 20054372    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-33aa2a42"
+	   GpusMemory (MB)      :      608                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :        1       133120    133120 
+	   TimeExecute (s)      :      172                        
+	   TimeSlotBusy (s)     :      188                        
+...
+000 (6185589.000.000) 2026-09-09 14:03:06 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6185589.000.000) 2026-09-09 14:04:45 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_2_2813602_e3a7_16978>
+...
+040 (6185589.000.000) 2026-09-09 14:05:01 Finished transferring input files
+...
+001 (6185589.000.000) 2026-09-09 14:05:01 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_2@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_c2e78818 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2837409/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_c2e78818 = [ Id = "GPU-c2e78818"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "c2e78818-dae2-2d4a-dffc-67861bc8a9e6"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:3B:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6185589.000.000) 2026-09-09 14:05:09 Image size of job updated: 2
+	0  -  MemoryUsage of job (MB)
+	944  -  ResidentSetSize of job (KB)
+...
+006 (6185589.000.000) 2026-09-09 14:07:55 Image size of job updated: 2
+	1  -  MemoryUsage of job (MB)
+	1292  -  ResidentSetSize of job (KB)
+...
+040 (6185589.000.000) 2026-09-09 14:07:56 Started transferring output files
+...
+040 (6185589.000.000) 2026-09-09 14:07:56 Finished transferring output files
+...
+005 (6185589.000.000) 2026-09-09 14:07:59 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:04, Sys 0 00:00:01  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:04, Sys 0 00:00:01  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	2955  -  Run Bytes Sent By Job
+	18288292499  -  Run Bytes Received By Job
+	2955  -  Total Bytes Sent By Job
+	18288292499  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.00         2         2 
+	   Disk (KB)            : 20054368    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-c2e78818"
+	   GpusMemory (MB)      :      608                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :        1       133120    133120 
+	   TimeExecute (s)      :      174                        
+	   TimeSlotBusy (s)     :      192                        
+...
+000 (6185598.000.000) 2026-09-09 14:12:29 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6185598.000.000) 2026-09-09 14:16:24 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_2_2813602_e3a7_17010>
+...
+040 (6185598.000.000) 2026-09-09 14:16:38 Finished transferring input files
+...
+001 (6185598.000.000) 2026-09-09 14:16:38 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_2@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_c2e78818 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2869140/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_c2e78818 = [ Id = "GPU-c2e78818"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "c2e78818-dae2-2d4a-dffc-67861bc8a9e6"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:3B:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6185598.000.000) 2026-09-09 14:16:48 Image size of job updated: 1500
+	0  -  MemoryUsage of job (MB)
+	280  -  ResidentSetSize of job (KB)
+...
+006 (6185598.000.000) 2026-09-09 14:21:49 Image size of job updated: 65516
+	20  -  MemoryUsage of job (MB)
+	19968  -  ResidentSetSize of job (KB)
+...
+040 (6185598.000.000) 2026-09-09 14:23:40 Started transferring output files
+...
+040 (6185598.000.000) 2026-09-09 14:23:40 Finished transferring output files
+...
+000 (6185605.000.000) 2026-09-09 14:23:40 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+005 (6185598.000.000) 2026-09-09 14:23:43 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	112  -  Run Bytes Sent By Job
+	18288411756  -  Run Bytes Received By Job
+	112  -  Total Bytes Sent By Job
+	18288411756  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.00         2         2 
+	   Disk (KB)            : 20054532    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-c2e78818"
+	   GpusMemory (MB)      :      608                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :       20       133120    133120 
+	   TimeExecute (s)      :      421                        
+	   TimeSlotBusy (s)     :      437                        
+...
+040 (6185605.000.000) 2026-09-09 14:27:30 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_2_2813602_e3a7_17055>
+...
+040 (6185605.000.000) 2026-09-09 14:27:44 Finished transferring input files
+...
+001 (6185605.000.000) 2026-09-09 14:27:44 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_2@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_c2e78818 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2899135/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_c2e78818 = [ Id = "GPU-c2e78818"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "c2e78818-dae2-2d4a-dffc-67861bc8a9e6"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:3B:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6185605.000.000) 2026-09-09 14:27:52 Image size of job updated: 2
+	0  -  MemoryUsage of job (MB)
+	952  -  ResidentSetSize of job (KB)
+...
+006 (6185605.000.000) 2026-09-09 14:30:40 Image size of job updated: 2
+	1  -  MemoryUsage of job (MB)
+	1308  -  ResidentSetSize of job (KB)
+...
+040 (6185605.000.000) 2026-09-09 14:30:40 Started transferring output files
+...
+040 (6185605.000.000) 2026-09-09 14:30:40 Finished transferring output files
+...
+005 (6185605.000.000) 2026-09-09 14:30:43 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:06, Sys 0 00:00:01  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:06, Sys 0 00:00:01  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	11976  -  Run Bytes Sent By Job
+	18288411760  -  Run Bytes Received By Job
+	11976  -  Total Bytes Sent By Job
+	18288411760  -  Total Bytes Received By Job
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        1.00         2         2 
+	   Disk (KB)            : 20054572    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-c2e78818"
+	   GpusMemory (MB)      :     3026                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :        1       133120    133120 
+	   TimeExecute (s)      :      176                        
+	   TimeSlotBusy (s)     :      191                        
+...
+000 (6185620.000.000) 2026-09-09 14:43:07 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6185620.000.000) 2026-09-09 14:46:50 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_2_2813602_e3a7_17105>
+...
+040 (6185620.000.000) 2026-09-09 14:47:04 Finished transferring input files
+...
+001 (6185620.000.000) 2026-09-09 14:47:04 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_2@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_c2e78818 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2944141/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_c2e78818 = [ Id = "GPU-c2e78818"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "c2e78818-dae2-2d4a-dffc-67861bc8a9e6"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:3B:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6185620.000.000) 2026-09-09 14:47:14 Image size of job updated: 2
+	0  -  MemoryUsage of job (MB)
+	944  -  ResidentSetSize of job (KB)
+...
+006 (6185620.000.000) 2026-09-09 14:49:59 Image size of job updated: 125
+	125  -  MemoryUsage of job (MB)
+	128928  -  ResidentSetSize of job (KB)
+...
+040 (6185620.000.000) 2026-09-09 14:49:59 Started transferring output files
+...
+040 (6185620.000.000) 2026-09-09 14:49:59 Finished transferring output files
+...
+005 (6185620.000.000) 2026-09-09 14:50:02 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:02:48, Sys 0 00:00:31  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:02:48, Sys 0 00:00:31  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	11934  -  Run Bytes Sent By Job
+	18288411703  -  Run Bytes Received By Job
+	11934  -  Total Bytes Sent By Job
+	18288411703  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage   Request Allocated Assigned
+	   Cpus                 :        0         2         2 
+	   Disk (KB)            : 20054616 524288000 524288000 
+	   GPUs                 :                  1         1 "GPU-c2e78818"
+	   GpusMemory (MB)      :      608                     
+	   IoHeavy              :                            0 
+	   Memory (MB)          :      125    133120    133120 
+	   TimeExecute (s)      :      175                     
+	   TimeSlotBusy (s)     :      190                     
+...
+000 (6186692.000.000) 2026-09-09 22:21:53 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6186692.000.000) 2026-09-09 22:22:44 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_1_2813602_e3a7_18091>
+...
+040 (6186692.000.000) 2026-09-09 22:30:21 Finished transferring input files
+...
+001 (6186692.000.000) 2026-09-09 22:30:22 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_1@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_a6385676 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_554612/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_a6385676 = [ Id = "GPU-a6385676"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "a6385676-e469-d8bf-78bf-e936ea0e7758"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:19:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6186692.000.000) 2026-09-09 22:30:30 Image size of job updated: 2
+	0  -  MemoryUsage of job (MB)
+	944  -  ResidentSetSize of job (KB)
+...
+006 (6186692.000.000) 2026-09-09 22:35:30 Image size of job updated: 2
+	1  -  MemoryUsage of job (MB)
+	1288  -  ResidentSetSize of job (KB)
+...
+006 (6186692.000.000) 2026-09-09 22:38:09 Image size of job updated: 11652
+	11652  -  MemoryUsage of job (MB)
+	11931660  -  ResidentSetSize of job (KB)
+...
+040 (6186692.000.000) 2026-09-09 22:38:10 Started transferring output files
+...
+040 (6186692.000.000) 2026-09-09 22:38:10 Finished transferring output files
+...
+005 (6186692.000.000) 2026-09-09 22:38:18 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:04:51, Sys 0 00:00:51  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:04:51, Sys 0 00:00:51  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	10648  -  Run Bytes Sent By Job
+	51293782091  -  Run Bytes Received By Job
+	10648  -  Total Bytes Sent By Job
+	51293782091  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage   Request Allocated Assigned
+	   Cpus                 :        0         2         2 
+	   Disk (KB)            : 89952724 524288000 524288000 
+	   GPUs                 :                  1         1 "GPU-a6385676"
+	   GpusMemory (MB)      :    23630                     
+	   IoHeavy              :                            0 
+	   Memory (MB)          :    11652    133120    133120 
+	   TimeExecute (s)      :      467                     
+	   TimeSlotBusy (s)     :      927                     
+...
+000 (6187771.000.000) 2026-09-10 09:36:20 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6187771.000.000) 2026-09-10 09:36:38 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_1_2813602_e3a7_19799>
+...
+040 (6187771.000.000) 2026-09-10 09:40:05 Finished transferring input files
+...
+004 (6187771.000.000) 2026-09-10 09:40:05 Job was evicted. Code 1023 Subcode 0
+	(0) CPU times
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Reason: via condor_rm (by user cdonahue6)
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.06         2         2 
+	   Disk (KB)            : 38512320    524288000 524288000 
+	   GPUs                 :        0            1         1 "GPU-a6385676"
+	   GpusMemory (MB)      :      608                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :                133120    133120 
+...
+009 (6187771.000.000) 2026-09-10 09:40:05 Job was aborted.
+	via condor_rm (by user cdonahue6)
+...
+000 (6187772.000.000) 2026-09-10 09:40:10 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6187772.000.000) 2026-09-10 09:40:57 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_1_2813602_e3a7_19811>
+...
+040 (6187772.000.000) 2026-09-10 09:43:48 Finished transferring input files
+...
+001 (6187772.000.000) 2026-09-10 09:43:48 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_1@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_c2e78818 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2706170/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_c2e78818 = [ Id = "GPU-c2e78818"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "c2e78818-dae2-2d4a-dffc-67861bc8a9e6"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:3B:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6187772.000.000) 2026-09-10 09:43:57 Image size of job updated: 1500
+	0  -  MemoryUsage of job (MB)
+	276  -  ResidentSetSize of job (KB)
+...
+006 (6187772.000.000) 2026-09-10 09:48:57 Image size of job updated: 65516
+	21  -  MemoryUsage of job (MB)
+	21504  -  ResidentSetSize of job (KB)
+...
+006 (6187772.000.000) 2026-09-10 09:55:54 Image size of job updated: 65516
+	11520  -  MemoryUsage of job (MB)
+	11796580  -  ResidentSetSize of job (KB)
+...
+040 (6187772.000.000) 2026-09-10 09:55:54 Started transferring output files
+...
+040 (6187772.000.000) 2026-09-10 09:55:54 Finished transferring output files
+...
+005 (6187772.000.000) 2026-09-10 09:56:04 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	3526  -  Run Bytes Sent By Job
+	57602045384  -  Run Bytes Received By Job
+	3526  -  Total Bytes Sent By Job
+	57602045384  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage   Request Allocated Assigned
+	   Cpus                 :        0         2         2 
+	   Disk (KB)            : 92870616 524288000 524288000 
+	   GPUs                 :        0         1         1 "GPU-c2e78818"
+	   GpusMemory (MB)      :      608                     
+	   IoHeavy              :                            0 
+	   Memory (MB)          :    11520    133120    133120 
+	   TimeExecute (s)      :      726                     
+	   TimeSlotBusy (s)     :      898                     
+...
+000 (6187778.000.000) 2026-09-10 10:01:12 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6187778.000.000) 2026-09-10 10:01:51 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_1_2813602_e3a7_19889>
+...
+040 (6187778.000.000) 2026-09-10 10:02:33 Finished transferring input files
+...
+001 (6187778.000.000) 2026-09-10 10:02:33 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_1@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_c2e78818 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2742793/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_c2e78818 = [ Id = "GPU-c2e78818"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "c2e78818-dae2-2d4a-dffc-67861bc8a9e6"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:3B:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6187778.000.000) 2026-09-10 10:02:42 Image size of job updated: 1500
+	0  -  MemoryUsage of job (MB)
+	280  -  ResidentSetSize of job (KB)
+...
+006 (6187778.000.000) 2026-09-10 10:07:43 Image size of job updated: 65516
+	20  -  MemoryUsage of job (MB)
+	19968  -  ResidentSetSize of job (KB)
+...
+006 (6187778.000.000) 2026-09-10 10:32:43 Image size of job updated: 65660
+	20  -  MemoryUsage of job (MB)
+	19968  -  ResidentSetSize of job (KB)
+...
+006 (6187778.000.000) 2026-09-10 10:40:11 Image size of job updated: 65660
+	12529  -  MemoryUsage of job (MB)
+	12830228  -  ResidentSetSize of job (KB)
+...
+040 (6187778.000.000) 2026-09-10 10:40:12 Started transferring output files
+...
+040 (6187778.000.000) 2026-09-10 10:40:12 Finished transferring output files
+...
+005 (6187778.000.000) 2026-09-10 10:40:21 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:08:45, Sys 0 00:01:40  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:08:45, Sys 0 00:01:40  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	3506  -  Run Bytes Sent By Job
+	57602045384  -  Run Bytes Received By Job
+	3506  -  Total Bytes Sent By Job
+	57602045384  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage   Request Allocated Assigned
+	   Cpus                 :        0         2         2 
+	   Disk (KB)            : 93036552 524288000 524288000 
+	   GPUs                 :        0         1         1 "GPU-c2e78818"
+	   GpusMemory (MB)      :      608                     
+	   IoHeavy              :                            0 
+	   Memory (MB)          :    12529    133120    133120 
+	   TimeExecute (s)      :     2258                     
+	   TimeSlotBusy (s)     :     2302                     
+...
+000 (6187848.000.000) 2026-09-10 11:07:05 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "comparison_all_reg" ]
+...
+040 (6187848.000.000) 2026-09-10 11:07:37 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_1_2813602_e3a7_20081>
+...
+040 (6187848.000.000) 2026-09-10 11:08:22 Finished transferring input files
+...
+001 (6187848.000.000) 2026-09-10 11:08:22 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_1@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_a6385676 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_2872139/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_a6385676 = [ Id = "GPU-a6385676"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "a6385676-e469-d8bf-78bf-e936ea0e7758"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:19:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6187848.000.000) 2026-09-10 11:08:30 Image size of job updated: 1500
+	0  -  MemoryUsage of job (MB)
+	284  -  ResidentSetSize of job (KB)
+...
+006 (6187848.000.000) 2026-09-10 11:13:30 Image size of job updated: 65516
+	21  -  MemoryUsage of job (MB)
+	21504  -  ResidentSetSize of job (KB)
+...
+040 (6187848.000.000) 2026-09-10 11:23:51 Started transferring output files
+...
+040 (6187848.000.000) 2026-09-10 11:23:51 Finished transferring output files
+...
+021 (6187848.000.000) 2026-09-10 11:23:51 Error from starter on slot2_1@bhaskargpu4000.chtc.wisc.edu:
+	STARTER at 128.105.76.46 failed to send file(s) to <128.105.68.113:9618>: : FILETRANSFER:1:non-zero exit (1) from /usr/libexec/condor/curl_plugin. |Error: could not open local file /var/lib/condor/execute/slot2/dir_2872139/scratch/final_outputs.tar.gz, error 2 (No such file or directory) (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/c/cdonahue6/birdsong/final_outputs.tar.gz )|; SHADOW failed to receive file(s) from <128.105.76.46:36721>
+	Code 13 Subcode 256
+...
+004 (6187848.000.000) 2026-09-10 11:24:00 Job was evicted. Code 12 Subcode 256
+	(0) CPU times
+		Usr 0 00:02:55, Sys 0 00:00:29  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	57602080950  -  Run Bytes Received By Job
+	Reason: Transfer output files failure at execution point slot2_1@bhaskargpu4000.chtc.wisc.edu using protocol file. Details: could not open local file /var/lib/condor/execute/slot2/dir_2872139/scratch/final_outputs.tar.gz, error 2 (No such file or directory) (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/c/cdonahue6/birdsong/final_outputs.tar.gz )|
+	Partitionable Resources :       Usage   Request Allocated Assigned
+	   Cpus                 :        0.00         2         2 
+	   Disk (KB)            : 79653652    524288000 524288000 
+	   GPUs                 :                     1         1 "GPU-a6385676"
+	   GpusMemory (MB)      :      608                        
+	   IoHeavy              :                               0 
+	   Memory (MB)          :       21       133120    133120 
+	   TimeExecute (s)      :      928                        
+	   TimeSlotBusy (s)     :      975                        
+...
+012 (6187848.000.000) 2026-09-10 11:24:00 Job was held.
+	Transfer output files failure at execution point slot2_1@bhaskargpu4000.chtc.wisc.edu using protocol file. Details: could not open local file /var/lib/condor/execute/slot2/dir_2872139/scratch/final_outputs.tar.gz, error 2 (No such file or directory) (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/c/cdonahue6/birdsong/final_outputs.tar.gz )|
+	Code 12 Subcode 256
+...
+009 (6187848.000.000) 2026-09-10 11:36:31 Job was aborted.
+	via condor_rm (by user cdonahue6)
+...

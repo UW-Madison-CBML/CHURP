@@ -1,0 +1,25 @@
+container_image = docker://cdonahue6/churp:latest
+
+Universe = container
+Executable = infer_and_cluster_CHURP.sh
+transfer_input_files = scripts, src, file:///staging/c/cdonahue6/birdsong/files.tar.gz, file:///staging/c/cdonahue6/birdsong/models.tar.gz
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_output_files = files.tar.gz, models.tar.gz
+output_destination = file:///staging/c/cdonahue6/birdsong/
+
++WantGPULab = true
++WantFlock = true
++GPUJobLength = "long"
+Requirements = (Target.HasCHTCStaging == true)
+gpus_minimum_memory = 130 GB
+request_memory = 130 GB
+request_disk = 500 GB
+request_cpus = 2
+request_gpus = 1
+
+batch_name = churp_infer
+output = logs/$(batch_name).out
+error = logs/$(batch_name).err
+log = logs/$(batch_name).log
+queue

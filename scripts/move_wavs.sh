@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Define the destination directory
-DEST_DIR="all_wavs"
+DEST_DIR="3470165/all_wavs"
 
 # Loop through all directories in the current location that start with "Bird"
-for dir in Bird*/Wave/; do
+for dir in 3470165/Bird*/Wave/; do
     
     # Check if it is an actual directory (in case no "Bird*" folders exist)
     [ -d "$dir" ] || continue

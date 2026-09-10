@@ -1,0 +1,37 @@
+000 (6164932.000.000) 2026-09-07 13:38:55 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "churp_all" ]
+...
+040 (6164932.000.000) 2026-09-07 13:39:41 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_1_2813602_e3a7_11090>
+...
+040 (6164932.000.000) 2026-09-07 13:39:41 Finished transferring input files
+...
+040 (6164932.000.000) 2026-09-07 13:39:42 Started transferring output files
+...
+040 (6164932.000.000) 2026-09-07 13:39:42 Finished transferring output files
+...
+021 (6164932.000.000) 2026-09-07 13:39:42 Error from starter on slot2_1@bhaskargpu4000.chtc.wisc.edu:
+	Failed to transfer files: SHADOW at 128.105.68.113 failed to send file(s) to <128.105.76.46:42257>: |Error: 1 total failures: first failure: reading from file /home/cdonahue6/birdsong/publication/refactored_CHURP/CHURP/CHTC_scripts/../*: (errno 2) No such file or directory; STARTER failed to receive file(s) from <128.105.68.113:9618>
+	Code 13 Subcode 2
+...
+004 (6164932.000.000) 2026-09-07 13:39:42 Job was evicted. Code 13 Subcode 2
+	(0) CPU times
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Reason: Transfer input files failure at access point ap2002 while sending files to execution point slot2_1@bhaskargpu4000.chtc.wisc.edu. Details: 1 total failures: first failure: reading from file /home/cdonahue6/birdsong/publication/refactored_CHURP/CHURP/CHTC_scripts/../*: (errno 2) No such file or directory
+	Partitionable Resources :    Usage   Request Allocated Assigned
+	   Cpus                 :        0         2         2 
+	   Disk (KB)            :       48 524288000 524288000 
+	   GPUs                 :        0         1         1 "GPU-a6385676"
+	   IoHeavy              :                            0 
+	   Memory (MB)          :             133120    133120 
+...
+012 (6164932.000.000) 2026-09-07 13:39:42 Job was held.
+	Transfer input files failure at access point ap2002 while sending files to execution point slot2_1@bhaskargpu4000.chtc.wisc.edu. Details: 1 total failures: first failure: reading from file /home/cdonahue6/birdsong/publication/refactored_CHURP/CHURP/CHTC_scripts/../*: (errno 2) No such file or directory
+	Code 13 Subcode 2
+...
+009 (6164932.000.000) 2026-09-07 13:50:05 Job was aborted.
+	via condor_rm (by user cdonahue6)
+...

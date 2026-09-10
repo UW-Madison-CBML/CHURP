@@ -35,16 +35,9 @@ from IPython.display import display, HTML
 import scipy.io.wavfile as wav
 
 # Import the extracted loader, collate function, and model classes
-from model import SpectrogramLoader, pad_collate_fn, ConvAutoencoderLSTM
-
-#increase global font sizes
-plt.rcParams.update({
-    'font.size': 14,          # Global font size
-    'axes.titlesize': 16,     # Title size
-    'axes.labelsize': 14,     # X and Y label size
-    'xtick.labelsize': 12,    # X tick label size
-    'ytick.labelsize': 12     # Y tick label size
-})
+from src.dataloader import SpectrogramLoader
+from src.dataloader import pad_collate_fn
+from models.model import ConvAutoencoderLSTM
 
 seed = 42
 random.seed(seed)

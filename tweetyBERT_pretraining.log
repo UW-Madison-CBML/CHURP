@@ -1,0 +1,90 @@
+000 (6181399.000.000) 2026-09-08 21:55:57 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "tweetyBERT_pretraining" ]
+...
+040 (6181399.000.000) 2026-09-08 21:58:02 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_4_2813602_e3a7_15107>
+...
+040 (6181399.000.000) 2026-09-08 21:58:02 Finished transferring input files
+...
+040 (6181399.000.000) 2026-09-08 21:58:03 Started transferring output files
+...
+021 (6181399.000.000) 2026-09-08 21:58:03 Error from starter on slot2_4@bhaskargpu4000.chtc.wisc.edu:
+	Failed to transfer files: FILETRANSFER:1:non-zero exit (1) from /usr/libexec/condor/curl_plugin. |Error: Couldn't open file /staging/cdonahue6/birdsong/benchmark_data/3470165.tar.gz (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/cdonahue6/birdsong/benchmark_data/3470165.tar.gz )|
+	Code 12 Subcode 256
+...
+004 (6181399.000.000) 2026-09-08 21:58:03 Job was evicted. Code 13 Subcode 256
+	(0) CPU times
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	Reason: Transfer input files failure at execution point slot2_4@bhaskargpu4000.chtc.wisc.edu using protocol file. Details: Couldn't open file /staging/cdonahue6/birdsong/benchmark_data/3470165.tar.gz (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/cdonahue6/birdsong/benchmark_data/3470165.tar.gz )|
+	Partitionable Resources :    Usage   Request Allocated Assigned
+	   Cpus                 :                  2         2 
+	   Disk (KB)            :       56 524288000 524288000 
+	   GPUs                 :                  1         1 "GPU-107714f3"
+	   IoHeavy              :                            0 
+	   Memory (MB)          :             133120    133120 
+...
+012 (6181399.000.000) 2026-09-08 21:58:03 Job was held.
+	Transfer input files failure at execution point slot2_4@bhaskargpu4000.chtc.wisc.edu using protocol file. Details: Couldn't open file /staging/cdonahue6/birdsong/benchmark_data/3470165.tar.gz (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/cdonahue6/birdsong/benchmark_data/3470165.tar.gz )|
+	Code 13 Subcode 256
+...
+009 (6181399.000.000) 2026-09-08 22:02:32 Job was aborted.
+	via condor_rm (by user cdonahue6)
+...
+000 (6181408.000.000) 2026-09-08 22:02:42 Job submitted from host: <128.105.68.113:9618?addrs=128.105.68.113-9618+[2607-f388-2200-100-eaeb-d3ff-fea7-d05e]-9618&alias=ap2002.chtc.wisc.edu&noUDP&sock=schedd_7808_378f>
+    [ JobBatchName = "tweetyBERT_pretraining" ]
+...
+040 (6181408.000.000) 2026-09-08 22:03:19 Started transferring input files
+	Transferring to host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=slot2_4_2813602_e3a7_15113>
+...
+040 (6181408.000.000) 2026-09-08 22:03:23 Finished transferring input files
+...
+001 (6181408.000.000) 2026-09-08 22:03:23 Job executing on host: <128.105.76.46:9618?addrs=128.105.76.46-9618+[2607-f388-2200-100-e29d-73ff-fe7b-5316]-9618&alias=bhaskargpu4000.chtc.wisc.edu&noUDP&sock=startd_58915_5e3e>
+	SlotName: slot2_4@bhaskargpu4000.chtc.wisc.edu
+	AvailableGPUs = { GPUs_GPU_107714f3 }
+	CondorScratchDir = "/var/lib/condor/execute/slot2/dir_934836/scratch"
+	Cpus = 2
+	Disk = 524288000
+	GPUs = 1
+	GPUs_GPU_107714f3 = [ Id = "GPU-107714f3"; Capability = 9.0; DeviceName = "NVIDIA H200"; DeviceUuid = "107714f3-79aa-2351-be93-4fbeb9819812"; ECCEnabled = true; NvidiaDriver = "570.195.03"; DriverVersion = 12.8; DevicePciBusId = "0000:5D:00.0"; GlobalMemoryMb = 143166; MaxSupportedVersion = 12080 ]
+	IoHeavy = 0
+	Memory = 133120
+...
+006 (6181408.000.000) 2026-09-08 22:03:32 Image size of job updated: 6
+	6  -  MemoryUsage of job (MB)
+	6272  -  ResidentSetSize of job (KB)
+...
+040 (6181408.000.000) 2026-09-08 22:03:35 Started transferring output files
+...
+040 (6181408.000.000) 2026-09-08 22:07:05 Finished transferring output files
+...
+021 (6181408.000.000) 2026-09-08 22:07:05 Error from starter on slot2_4@bhaskargpu4000.chtc.wisc.edu:
+	STARTER at 128.105.76.46 failed to send file(s) to <128.105.68.113:9618>: : FILETRANSFER:1:non-zero exit (1) from /usr/libexec/condor/curl_plugin. |Error: Can't open /staging/cdonahue6/birdsong/tweety_bert.tar.gz for writing (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/cdonahue6/birdsong/tweety_bert.tar.gz )|; SHADOW failed to receive file(s) from <128.105.76.46:37837>
+	Code 13 Subcode 256
+...
+004 (6181408.000.000) 2026-09-08 22:07:06 Job was evicted. Code 12 Subcode 256
+	(0) CPU times
+		Usr 0 00:00:03, Sys 0 00:00:01  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+	0  -  Run Bytes Sent By Job
+	4557545969  -  Run Bytes Received By Job
+	Reason: Transfer output files failure at execution point slot2_4@bhaskargpu4000.chtc.wisc.edu using protocol file. Details: Can't open /staging/cdonahue6/birdsong/tweety_bert.tar.gz for writing (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/cdonahue6/birdsong/tweety_bert.tar.gz )|
+	Partitionable Resources :    Usage   Request Allocated Assigned
+	   Cpus                 :        0         2         2 
+	   Disk (KB)            :  4607812 524288000 524288000 
+	   GPUs                 :                  1         1 "GPU-107714f3"
+	   GpusMemory (MB)      :     6672                     
+	   IoHeavy              :                            0 
+	   Memory (MB)          :        6    133120    133120 
+	   TimeExecute (s)      :       12                     
+	   TimeSlotBusy (s)     :      226                     
+...
+012 (6181408.000.000) 2026-09-08 22:07:06 Job was held.
+	Transfer output files failure at execution point slot2_4@bhaskargpu4000.chtc.wisc.edu using protocol file. Details: Can't open /staging/cdonahue6/birdsong/tweety_bert.tar.gz for writing (with environment: http_proxy='http://squid-cs-2360.chtc.wisc.edu:3128', https_proxy='') ( URL file = file:///staging/cdonahue6/birdsong/tweety_bert.tar.gz )|
+	Code 12 Subcode 256
+...
+009 (6181408.000.000) 2026-09-08 22:14:01 Job was aborted.
+	via condor_rm (by user cdonahue6)
+...

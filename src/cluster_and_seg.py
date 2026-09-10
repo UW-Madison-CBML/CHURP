@@ -348,11 +348,11 @@ def validate_html(X, clusters, loop_specs, wav_segs, samplerate, all_intervals, 
     ax2d.scatter(X[~is_noise, 0], X[~is_noise, 1], 
                  c=clusters[~is_noise], s=10, cmap='viridis', alpha=0.7, label='Clusters')
                      
-    ax2d.set_title(f"Clustering on Path Signatures, {num_records} Recordings, {len(X)} Segements")
+    ax2d.set_title(f"Clustering on Path Signatures, {num_records} Recordings, {len(X)} Segments")
     ax2d.set_xlabel("UMAP 1") 
     ax2d.set_ylabel("UMAP 2") 
 
-    #save as SVG
+    #save as PNG
     buf2d = io.BytesIO()
     fig2d.savefig(buf2d, format='png', dpi=600, bbox_inches='tight')
     buf2d.seek(0)
@@ -519,49 +519,6 @@ def annotate(ax, spec, extent, intervals, sec_per_point, colors=None, clusters=N
     # Return the image object so a colorbar can be attached to it later
     return im
 
-def plot_spectrograms(spectrogram, intervals, t_sec, save_name, colors, clusters):
-    """
-    Creates a wide-format figure showing a spectrogram with annotated time intervals,
-    attaches a colorbar, and saves the final plot to disk.
-    """
-    # Calculate how many seconds each frame (point) on the x-axis represents
-    sec_per_point = t_sec / spectrogram.shape[1]
-
-    # set limits for plotting
-    # Define middle half time bounds (25% to 75%)
-    t_start = 0.25 * t_sec
-    t_end = 0.75 * t_sec
-    
-    # Define the bounding box for the image data [x_min, x_max, y_min, y_max]
-    img_extent = [0, t_sec, 0, spectrogram.shape[0]]
-
-    # Initialize a large, wide figure (20x12)
-    fig, ax = plt.subplots(1, 1, figsize=(20, 12), sharex=True)
-    
-    # Force the physical aspect ratio of the axes to be very wide and short (10:1 width-to-height)
-    ax.set_box_aspect(0.1) 
-    
-    # Call the helper function to draw the spectrogram and the top-edge annotations
-    im = annotate(ax, spectrogram, img_extent, intervals, sec_per_point, colors, clusters, crop = True)
-    ax.set_ylabel("Frequency Bin", fontsize=24)
-    
-    # Add a colorbar mapped to the spectrogram's intensity (dB)
-    cbar = plt.colorbar(im, ax=ax, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.02)
-    cbar.set_label('Intensity (dB)', fontsize=24)
-    cbar.ax.tick_params(labelsize=20)
-    
-    ax.set_xlabel('Time (s)', fontsize=24)
-    ax.tick_params(axis='both', which='major', labelsize=20)
-    ax.set_xlim(t_start, t_end)
-    
-    # Adjust layout so labels/colorbars aren't cut off during saving
-    plt.tight_layout()
-    
-    # Save the figure to the provided filepath (e.g., .png or .pdf), keeping all edges tight
-    plt.savefig(save_name, bbox_inches='tight')
-    
-    plt.close()
-
 def load_stft(f, hop_length):
     """
     Helper for loading individual wav files as spectrograms -- normalizing and cutoff at 512 bins not needed here
@@ -601,7 +558,7 @@ def optimize_umap_clusters(X, seed, min_cluster_size=100, max_clusters = None):
         temp_min_clust = min_cluster_size
 
         # Run UMAP
-        reducer = umap.UMAP(n_components=n_c, metric='euclidean', random_state=seed)
+        reducer = umap.UMAP(n_components=n_c, metric='euclidean', random_state=seed, n_neighbors=15, min_dist=0.1)
         X_trans = reducer.fit_transform(X)
         
         if max_clusters is not None:
@@ -662,7 +619,7 @@ def optimize_umap_clusters(X, seed, min_cluster_size=100, max_clusters = None):
 
     return X_2d, best_clusters
 
-def plot_distance_on_spectrogram(spectrogram, embeddings_3d, intervals, t_sec, origin, save_name, colors, clusters):
+def plot_distance_on_spectrogram(spectrogram, embeddings_3d, intervals, t_sec, origin, save_name, colors, clusters, out_dir):
     """
     Plots the latent trajectory distance from the origin overlaid on 
     the spectrogram and saves it as a 600 DPI PNG file, matching the 
@@ -686,10 +643,10 @@ def plot_distance_on_spectrogram(spectrogram, embeddings_3d, intervals, t_sec, o
     # Plot Spectrogram on primary y-axis
     extent = [0, t_sec, 0, spectrogram.shape[0]]
     
-    # Pass colors and clusters to allow for colored annotations
-    im = annotate(ax1, spectrogram, extent, intervals, sec_per_point, colors=colors, clusters=clusters, crop=True)
     ax1.set_ylabel("Frequency Bin", fontsize=24)
     
+    im = ax1.imshow(spectrogram, origin='lower', cmap='magma', aspect='auto', extent=extent)
+
     # Add a colorbar mapped to the spectrogram's intensity (dB)
     cbar = plt.colorbar(im, ax=ax1, label='Intensity (dB)', shrink=0.22, aspect=10, pad=0.08)
     cbar.set_label('Intensity (dB)', fontsize=24)
@@ -706,11 +663,15 @@ def plot_distance_on_spectrogram(spectrogram, embeddings_3d, intervals, t_sec, o
     time_bins = np.linspace(0, t_sec, len(distances))
     
     # Plot distance line and mean (slightly thickened to match large figure size)
-    ax2.plot(time_bins, distances, color='cyan', linewidth=2.5, label='Distance from Origin')
+    ax2.plot(time_bins, distances, color='cyan', linewidth=2, label='Distance from Origin')
     
-    # Calculate mean distance and plot horizontal dashed red line
-    mean_distance = np.mean(distances)
-    ax2.axhline(y=mean_distance, color='red', linestyle='--', linewidth=2.0, label='Mean Distance')
+    # Calculate the 20th and 75th percentiles of the distances
+    pct_20 = np.percentile(distances, 20)
+    pct_75 = np.percentile(distances, 75)
+
+    # Plot horizontal dashed lines for both percentiles
+    ax2.axhline(y=pct_20, color='blue', linestyle='--', linewidth=2.0, label='20th Percentile')
+    ax2.axhline(y=pct_75, color='orange', linestyle='--', linewidth=2.0, label='75th Percentile')
     
     # Style twin axis (ax2)
     ax2.legend(loc='upper right', fontsize=18)
@@ -722,39 +683,18 @@ def plot_distance_on_spectrogram(spectrogram, embeddings_3d, intervals, t_sec, o
     
     # Adjust layout and save
     plt.tight_layout()
-    plt.savefig(f"{save_name}.png", dpi=600, bbox_inches='tight')
+    plt.savefig(f"{out_dir}/{save_name}.png", dpi=600, bbox_inches='tight')
     plt.close(fig)
 
-def plot_large_latent_trajectory(embeddings_3d, save_name, figsize=(14, 12), birdname = None, recording_number = None):
+def plot_record_analysis(record, record_clusters, colors, save_name, out_dir):
     """
-    Plots a large high-resolution 3D plot of the entire latent trajectory 
-    of a recording in gray and saves it as a 600 DPI PNG.
-    """
-    fig = plt.figure(figsize=figsize)
-    ax = fig.add_subplot(111, projection='3d')
-    
-    # Plot continuous trajectory line in gray
-    ax.plot(embeddings_3d[:, 0], embeddings_3d[:, 1], embeddings_3d[:, 2], 
-            color='gray', alpha=0.7, linewidth=1.5)
-    
-    formatted_name = re.sub(r"([a-zA-Z]+)(\d+)", r"\1 \2", birdname)
-    
-    ax.set_title(f"Full Latent Trajectory, {formatted_name} Recording {recording_number}", fontsize=18)
-    ax.set_xlabel("Principal Component 1", labelpad=10)
-    ax.set_ylabel("Principal Component 2", labelpad=10)
-    ax.set_zlabel("Principal Component 3", labelpad=10)
-    
-    plt.tight_layout()
-    plt.savefig(f"{save_name}.png", dpi=600, bbox_inches='tight', pad_inches=0.2)
-    plt.close(fig)
-
-def plot_record_analysis(record, record_clusters, colors, save_name):
-    """
-    Takes a single record entry from record_df and plots:
+    Takes a single record entry from record_df and plots two figures:
+    First figure:
     - The annotated spectrogram
     - The raw waveform
     - The absolute amplitude trace
-    - A row for each cluster containing: 
+    Second figure:
+    - A subplot for each cluster containing: 
         The 3D embeddings of the whole record (gray) with cluster segments highlighted
     """
     wav_path = record['wav_file']
@@ -786,7 +726,7 @@ def plot_record_analysis(record, record_clusters, colors, save_name):
     # Adjusted height ratios so row 0 (spectrogram) is the largest
     gs1 = GridSpec(3, 4, figure=fig1, height_ratios=[2, 1, 1])
 
-    # --- Row 0: Annotated Spectrogram ---
+    # Row 0: Annotated Spectrogram
     ax_spec = fig1.add_subplot(gs1[0, :])
     sec_per_point = t_sec / spec.shape[1]
     img_extent = [0, t_sec, 0, spec.shape[0]]
@@ -796,14 +736,14 @@ def plot_record_analysis(record, record_clusters, colors, save_name):
     ax_spec.set_xlim(t_start, t_end)
     ax_spec.tick_params(labelbottom=False) # Hide x-ticks to share cleanly with plots below
     
-    # --- Row 1: Waveform ---
+    # Row 1: Waveform
     ax_wav = fig1.add_subplot(gs1[1, :], sharex=ax_spec)
     ax_wav.plot(time_wav, y, color='black', lw=0.5)
     ax_wav.set_title("Normalized Waveform")
     ax_wav.set_ylabel("Amplitude")
     ax_wav.tick_params(labelbottom=False) # Hide x-ticks
     
-    # --- Row 2: Amplitude Trace ---
+    # Row 2: Amplitude Trace
     ax_amp = fig1.add_subplot(gs1[2, :], sharex=ax_spec)
     ax_amp.plot(time_wav, amplitude, color='forestgreen', lw=0.5)
     ax_amp.set_title("Normalized Amplitude Trace")
@@ -812,27 +752,25 @@ def plot_record_analysis(record, record_clusters, colors, save_name):
     # ax_amp keeps bottom tick labels visible by default
     
     plt.tight_layout()
-    plt.savefig(f"{save_name}_spec.png", bbox_inches='tight', dpi=600)
+    plt.savefig(f"{out_dir}/{save_name}_spec.png", bbox_inches='tight', dpi=600)
     plt.close(fig1)
 
     # initialize second figure
     fig2 = plt.figure(figsize=(8.5, 3 * num_clusters))
     gs2 = GridSpec(math.ceil(num_clusters / 3), 3, figure=fig2)
 
-    # --- Lower Rows: Cluster-specific subplots ---
+    # Cluster-specific subplots
     for i, c_id in enumerate(unique_clusters):
         row_idx = i // 3
         col_idx = i % 3
         
-        # Apply cluster color (or black for noise)
-        color = colors[c_id] if c_id in colors else 'black'
-        if c_id == -1: 
-            color = 'black'
+        # Apply cluster color
+        color = colors[c_id]
 
         # Find all intervals belonging to this specific cluster
         c_intervals = [inter for idx, inter in enumerate(intervals) if record_clusters[idx] == c_id]
                                         
-        # Column: 3D Embeddings
+        # make plot for 3D Embeddings
         ax3d = fig2.add_subplot(gs2[row_idx, col_idx], projection='3d')
 
         # Plot the entire trajectory in translucent gray
@@ -849,7 +787,7 @@ def plot_record_analysis(record, record_clusters, colors, save_name):
         ax3d.set_zticks([])
 
     plt.tight_layout()
-    plt.savefig(f"{save_name}_clusters.png", bbox_inches='tight', dpi=600)
+    plt.savefig(f"{out_dir}/{save_name}_clusters.png", bbox_inches='tight', dpi=600)
     plt.close(fig2)
 
 ####################################
@@ -873,6 +811,11 @@ def main():
         "--bird_name_prefix", 
         type=str, 
         help="The bird name for organizing results."
+    )
+    parser.add_argument(
+        "--out_dir", 
+        type=str, 
+        help="The directory to save the output files."
     )
     parser.add_argument(
         "--hop_length", 
@@ -1042,42 +985,34 @@ def main():
         color_index += 1
 
     # Export an interactive HTML file to visualize the embeddings, spectrograms, and raw audio.
-    # We filter out any 'None' values from the specs and wav segments to prevent rendering errors for files without annotations
+    # filter out any 'None' values from the specs and wav segments to prevent rendering errors for files without annotations
     validate_html(X_2d, clusters, 
                   [loop for loop in loop_specs if loop is not None], 
                   [seg for seg in wav_segs if seg is not None], 
                   samplerate, traj,
                   num_records, 
-                  output_file=f"{args.bird_name_prefix}.html") 
+                  output_file=f"{args.out_dir}/{args.bird_name_prefix}.html") 
 
     spec_num = 0
     
     # Iterate through the main dataframe containing all audio records
     for index, record in record_df.iterrows():
         # plot 1 out of every 50 spectrograms, and only if that recording actually contains detected intervals.
-        if spec_num % 10 == 0 and record['intervals'] is not None:
-            plot_spectrograms(record['spec'], record['intervals'], record['t_sec'], 
-                              f"annotated_specs_{args.bird_name_prefix}_{spec_num}", 
-                              colors, clusters)
+        if spec_num % 50 == 0 and record['intervals'] is not None:
             origin, _, _ = find_origin(record['spec'], record['embeddings'])
             # plot trajectory distance overlaid on spectrogram at 600 DPI
             dist_plot_name = f"dist_overlay_{args.bird_name_prefix}_{spec_num}"
-            plot_distance_on_spectrogram(record['spec'], record['embeddings'], record['intervals'], record['t_sec'], origin, dist_plot_name, colors, clusters)
+            plot_distance_on_spectrogram(record['spec'], record['embeddings'], record['intervals'], record['t_sec'], origin, dist_plot_name, colors, clusters, args.out_dir)
 
-            # plot large version of entire latent trajectory in gray at 600 DPI
-            large_traj_name = f"large_latent_traj_{args.bird_name_prefix}_{spec_num}"
-            plot_large_latent_trajectory(record['embeddings'], large_traj_name, birdname = args.bird_name_prefix, recording_number = spec_num)
         spec_num = spec_num + 1
 
     # Convert the list of discrete intervals back into continuous, frame-by-frame label arrays 
     # for each original audio file.
-    
     binned_predictions = {}
     wav_files = []
     annotated_times = []
     
     # 'cluster_idx' keeps track of the position in the flat 'clusters' array.
-    # 'clusters' contains labels for all intervals across all files, squashed into 1D.
     cluster_idx = 0 
     
     for index, record in record_df.iterrows():
@@ -1095,10 +1030,10 @@ def main():
         num_intervals = len(record['intervals'])
         record_clusters = clusters[cluster_idx : cluster_idx + num_intervals]
         
-        # Call the figure 2 plotting function (for every 10 recordings)
-        if index % 10 == 0:
+        # Call the plotting function for annotated spectrogram and raw data (for every 50 recordings)
+        if index % 50 == 0:
             plot_name = f"record_analysis_{args.bird_name_prefix}_{index}"
-            plot_record_analysis(record, record_clusters, colors, plot_name)
+            plot_record_analysis(record, record_clusters, colors, plot_name, args.out_dir)
             
         # Iterate through the start/end frames of each detected syllable in this recording
         for i, (start, end) in enumerate(record['intervals']):
@@ -1114,7 +1049,7 @@ def main():
     binned_predictions = {"wav_file": wav_files, "annotated_times": annotated_times}
 
     # pickle the dictionary so it can be analyzed later
-    with open(f"annotated_bins_{args.bird_name_prefix}.pkl", "wb") as file:
+    with open(f"{args.out_dir}/annotated_bins_{args.bird_name_prefix}.pkl", "wb") as file:
         pickle.dump(binned_predictions, file)
 
 if __name__ == "__main__":

@@ -100,71 +100,10 @@ def weighted_pearson(x, y, w):
         
     return cov / np.sqrt(var_x * var_y)
 
-def evaluate_mapped_metrics(gt_dict, pred_dict, mapping, bg_labels=("-1", -1)):
-    """Extracts metrics and calculates weighted Pearson correlations for mapped labels."""
-    gt_freq, gt_dur, gt_ent, _ = compute_phrase_metrics(gt_dict, bg_labels)
-    pr_freq, pr_dur, pr_ent, _ = compute_phrase_metrics(pred_dict, bg_labels)
-    
-    bg_labels_str = {str(b) for b in bg_labels}
-    
-    x_dur, y_dur, w_dur = [], [], []
-    x_ent, y_ent, w_ent = [], [], []
-    
-    for gt_label, pred_label in mapping.items():
-        # Keys are already strings from the Hungarian mapping
-        if gt_label in bg_labels_str or pred_label in bg_labels_str:
-            continue
-            
-        weight = gt_freq.get(gt_label, 0)
-        if weight == 0:
-            continue
-            
-        w_dur.append(weight)
-        x_dur.append(gt_dur.get(gt_label, 0.0))
-        y_dur.append(pr_dur.get(pred_label, 0.0)) # Safe now because pr_dur has string keys
-        
-        w_ent.append(weight)
-        x_ent.append(gt_ent.get(gt_label, 0.0))
-        y_ent.append(pr_ent.get(pred_label, 0.0)) # Safe now because pr_ent has string keys
-        
-    corr_dur = weighted_pearson(x_dur, y_dur, w_dur)
-    corr_ent = weighted_pearson(x_ent, y_ent, w_ent)
-    
-    print("\n--- Debugging Duration Mappings ---")
-    for gt_label, pred_label in mapping.items():
-        if gt_label in bg_labels_str or pred_label in bg_labels_str:
-            continue
-            
-        weight = gt_freq.get(gt_label, 0)
-        if weight == 0:
-            continue
-            
-        gt_length = gt_dur.get(gt_label, 0.0)
-        pr_length = pr_dur.get(pred_label, 0.0)
-        
-        print(f"Weight: {weight:<4} | GT Label '{gt_label}' (Len: {gt_length:.1f}) mapped to Pred Label '{pred_label}' (Len: {pr_length:.1f})")
-
-    print("\n--- Debugging Entropy Mappings ---")
-    for gt_label, pred_label in mapping.items():
-        if gt_label in bg_labels_str or pred_label in bg_labels_str:
-            continue
-            
-        weight = gt_freq.get(gt_label, 0)
-        if weight == 0:
-            continue
-            
-        gt_entropy = gt_ent.get(gt_label, 0.0)
-        pr_entropy = pr_ent.get(pred_label, 0.0)
-        
-        print(f"Weight: {weight:<4} | GT Label '{gt_label}' (Entropy: {gt_entropy:.1f}) mapped to Pred Label '{pred_label}' (Entropy: {pr_entropy:.1f})")
-
-    return corr_dur, corr_ent
-
 def get_wav_length_samples(wav_path):
     """Opens a wav file and returns its total length in samples."""
     with wave.open(wav_path, "rb") as wf:
         return wf.getnframes()
-
 
 def normalize_wav_name(filename):
     """Strips whitespace and ensures .wav extension exists."""
@@ -349,15 +288,8 @@ def parse_cluster_json(
     """
     print(f"\n[JSON] Loading {data_input}...")
 
-    # Flexible loading: handle direct filepath or raw JSON string/dict
-    if isinstance(data_input, str):
-        if os.path.isfile(data_input):
-            with open(data_input, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        else:
-            data = json.loads(data_input)
-    else:
-        data = data_input
+    with open(data_input, "r", encoding="utf-8") as f:
+        data = json.load(f)
 
     # Load region map because the JSON targets isolated segments rather than full audio (tweetyBERT uses song_detection.py)
     region_offsets = {}
@@ -479,7 +411,7 @@ def apply_region_mask(annot_dict, regions_json_path, hop):
             onset_bin = seg.get("onset_timebin", 0)
             offset_bin = seg.get("offset_timebin", 0)
             
-            # filter out sigments less than 250 time bins long 
+            # filter out sigments less than 250 time bins long -- tweetyBERT uses 250 time bins as the minimum phrase length for inference
             if (offset_bin - onset_bin) < 250:
                 continue
             
@@ -488,8 +420,7 @@ def apply_region_mask(annot_dict, regions_json_path, hop):
             offset_sample = max(0, min(offset_bin * hop_multiplier, len(original_annots)))
 
             if offset_sample > onset_sample:
-                # Insert a single background tag between disconnected segments 
-                # to prevent artificial phrase transitions across segment boundaries
+                # Insert a single background tag between disconnected segments to prevent artificial phrase transitions across segment boundaries
                 if i > 0 and kept_samples:
                     kept_samples.append(bg_val)
                 
@@ -500,14 +431,14 @@ def apply_region_mask(annot_dict, regions_json_path, hop):
 
     return filtered_dict
 
-def compute_hungarian_mapping(xml_dict, target_dict, bg_label="-1"):
+def compute_mapping(xml_dict, target_dict, bg_label="-1"):
     """
     Finds the optimal 1-to-1 mapping between ground truth (XML) labels and 
     predicted/clustered (Target) labels.
-    Forces the background label to map to itself, and uses the Hungarian 
+    Forces the background label to map to itself, and uses the optimal linear sum assignment 
     algorithm for the remaining syllables.
     """
-    print("\n[Hungarian] Computing co-occurrence matrix and 1-1 mapping...")
+    print("\n[Mapping] Computing co-occurrence matrix and 1-1 mapping...")
 
     # Build a raw co-occurrence frequency matrix between GT and Target labels
     pair_counts = Counter()
@@ -542,7 +473,7 @@ def compute_hungarian_mapping(xml_dict, target_dict, bg_label="-1"):
     co_df = pd.DataFrame(co_matrix, index=xml_labels, columns=target_labels)
     co_df.index.name = "XML \\ Target"
 
-    # Isolate Foreground Labels for Hungarian Algorithm -- background labels automatically map to one another
+    # Isolate Foreground Labels for mapping Algorithm -- background labels automatically map to one another
     bg_str = str(bg_label)
     xml_labels_sub = [lbl for lbl in xml_labels if lbl != bg_str]
     target_labels_sub = [lbl for lbl in target_labels if lbl != bg_str]
@@ -553,20 +484,21 @@ def compute_hungarian_mapping(xml_dict, target_dict, bg_label="-1"):
     if bg_str in xml_labels and bg_str in target_labels:
         mapping[bg_str] = bg_str
 
-    # Only run the Hungarian algorithm if there are actual foreground syllables to map
+    # Only run the optimal linear sum assignment if there are actual foreground syllables to map
     if xml_labels_sub and target_labels_sub:
         # Extract the sub-matrix of only foreground labels
         sub_matrix_float = co_df.loc[xml_labels_sub, target_labels_sub].to_numpy().astype(float)
         
         # Normalize by columns to convert raw counts into probabilities
         col_sums = sub_matrix_float.sum(axis=0, keepdims=True)
+        
         # Prevent division by zero for any empty columns by replacing 0s with 1.0
         col_sums[col_sums == 0] = 1.0 
         
         # Divide raw counts by the column totals
         normalized_matrix = sub_matrix_float / col_sums
 
-        # Use Hungarian algorithm to maximize total probability 
+        # Use optimal linear sum assignment to maximize total probability
         cost_matrix = normalized_matrix.max() - normalized_matrix
         
         # row_ind contains the XML label indices, col_ind contains the Target label indices
@@ -717,10 +649,10 @@ def main():
     pkl_out_path = os.path.join(args.out_dir, "expanded_pkl_annotations.pkl")
     json_out_path = os.path.join(args.out_dir, "expanded_json_annotations.pkl")
     map_out_path_1 = os.path.join(
-        args.out_dir, "hungarian_label_mapping_xml_pkl.json"
+        args.out_dir, "label_mapping_xml_pkl.json"
     )
     map_out_path_2 = os.path.join(
-        args.out_dir, "hungarian_label_mapping_xml_json.json"
+        args.out_dir, "label_mapping_xml_json.json"
     )
     with open(xml_out_path, "wb") as f:
         pickle.dump(processed_xml, f)
@@ -737,9 +669,9 @@ def main():
 
     # make co-occurance matrix and 1-1 mapping of GT syllables and clusters 
     # for CHURP
-    label_mapping_1, co_df_1 = compute_hungarian_mapping(processed_xml, processed_pkl)
+    label_mapping_1, co_df_1 = compute_mapping(processed_xml, processed_pkl)
     # for tweetyBERT
-    label_mapping_2, co_df_2 = compute_hungarian_mapping(processed_xml, processed_json)
+    label_mapping_2, co_df_2 = compute_mapping(processed_xml, processed_json)
 
     # strip unmapped labels from the dictionaries
     processed_pkl = strip_unmapped(processed_pkl, label_mapping_1)
@@ -756,8 +688,8 @@ def main():
     print(f"XML Annotations Saved -> {xml_out_path}")
     print(f"PKL Annotations Saved -> {pkl_out_path}")
     print(f"JSON Annotations Saved -> {json_out_path}")
-    print(f"Hungarian Mapping (XML -> PKL) Saved -> {map_out_path_1}")
-    print(f"Hungarian Mapping (XML -> JSON) Saved -> {map_out_path_2}")
+    print(f"Label Mapping (XML -> PKL) Saved -> {map_out_path_1}")
+    print(f"Label Mapping (XML -> JSON) Saved -> {map_out_path_2}")
     print("\nOptimal 1-1 Label Mapping (XML -> PKL):")
     print(json.dumps(label_mapping_1, indent=4))
     print("\nOptimal 1-1 Label Mapping (XML -> JSON):")
@@ -819,7 +751,7 @@ def main():
     num_pkl_sybs = sum(freq_pkl.values())
     num_json_sybs = sum(freq_json.values())
     
-    # calculate min-max similarity for syllables
+    # calculate similarities for syllables
     similarity_birdsong = []
     mapped_keys = set(label_mapping_1.keys())
     
@@ -874,28 +806,16 @@ def main():
     with open(stats_path, "wb") as f:
         pickle.dump(stats, f)
 
-    # Compute Phrase orrelations of entropy
-    # Compare XML (ground truth) against CHURP (PKL) 
-    birdsong_corr_dur, birdsong_corr_ent = evaluate_mapped_metrics(
-        processed_xml, processed_pkl, label_mapping_1
-    )
-    
-    # Compare XML (ground truth) against TweetyBERT (JSON) 
-    tweety_corr_dur, tweety_corr_ent = evaluate_mapped_metrics(
-        processed_xml, processed_json, label_mapping_2
-    )
-
     # store all the comparison metrics in a csv file
     file_exists = os.path.exists(f"{args.bird}_comparison_data.csv")
     with open(f"{args.bird}_comparison_data.csv", mode='a', newline='') as file:
         writer = csv.writer(file)
    
         if not file_exists:
-            writer.writerow(['Syllables From Tweety', 'Syllables from Birdsong', 'Ground Truth Syllables', 'Tweety Entropy Cor', 'Birdsong Entropy Cor', 'Tweety Duration Cor', 'Birdsong Duration Cor', 'Audio Minutes'])
+            writer.writerow(['Syllables From Tweety', 'Syllables from Birdsong', 'Ground Truth Syllables', 'Audio Minutes'])
 
         raw_data = [
-            num_json_sybs, num_pkl_sybs, num_xml_sybs, tweety_corr_ent, birdsong_corr_ent, 
-            tweety_corr_dur, birdsong_corr_dur, minutes
+            num_json_sybs, num_pkl_sybs, num_xml_sybs, minutes
         ]
 
         formatted_data = [f"{val:.2f}" for val in raw_data]
