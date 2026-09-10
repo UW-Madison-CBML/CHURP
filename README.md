@@ -3,44 +3,33 @@
 Brief description of method, good figure/animation, and link to preprint go here
 
 # CHURP Usage Guide
+The following usage guide works through the process for training and inference with the CHURP model using the dataset from the manuscript, which can be downloaded at https://figshare.com/articles/media/BirdsongRecognition/3470165
 
 ## 1. Setup and Installation
 
-First, extract the dataset. The dataset used below comes from https://figshare.com/articles/media/BirdsongRecognition/3470165 and the "all_wavs" directory was created by adding all the wav files from the individual birds to a single directory (see the "birdsong_model/move_wavs.sh" usage). Note than any wav files can be used as model inputs. Next, clone the repository:
+First, activate the docker image for CHURP. Next, clone the CHURP repository and extract the data set that was downloaded from the link included above. For training, all the recordings must be in the same subdirectory -- the "move_wavs.sh" script handles this.
 
 ```bash
-tar -zxf 3470165.tar.gz
+# run docker
+docker run -it cdonahue6/churp:latest
+
+# clone the repo
 git clone https://github.com/UW-Madison-CBML/CHURP
-cd 3470165
-bash ../CHURP/birdsong_model/move_wavs.sh
-cd ../CHURP/birdsong_model
+
+# unzip the data, deposited in to the files directory
+tar -zxf 3470165.tar.gz -C files/
+
+# copy wav files from all birds into single directory
+bash scripts/move_wavs.sh
 ```
 
-## 2. Environment Configuration
-### Create an environment for running CHURP and install the necessary programs. Note that the pipeline uses torch 2.10.0, so be sure to change that and match the correct CUDA version to your system and GPU drivers if needed:
-
+## 2. Model Training -- outputs "churp.pth" weights into "models" directory
 ```bash
-conda create -n churp python=3.10
-source $(conda info --base)/etc/profile.d/conda.sh
-conda activate churp
-
-conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas seaborn jupyter ipykernel librosa
-pip install --upgrade pip setuptools wheel cython
-pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
-pip install hdbscan iisignature --no-build-isolation
-pip install scipy soundfile ipython wandb shutil-extra glasbey pyqtgraph PyQt5 hmmlearn
+python src/train.py --audio_path "files/3470165/all_wavs" --save_name "models/churp.pth" --hop_length 86 --epochs 50
 ```
 
-## 3. Model Training -- outputs "churp.pth" weights file
-### Start the training pipeline to generate the churp.pth model weights:
-
-```bash
-python train.py --audio_path "../../3470165/all_wavs" --save_name "churp.pth" --hop_length 86 --epochs 50
-```
-
-## 4. Inference -- outputs "<bird name>.pkl" files containing dictionary mapping each .wav file (the keys) to the corresponding list of 3d normalized embeddings for each time bin in the recording (the values)
+## 3. Inference -- outputs "<bird name>.pkl" files (into the "files" directory), containing dictionary mapping each .wav file (the keys) to the corresponding list of 3d normalized embeddings for each time bin in the recording (the values)
 ### Define the target subjects and run batched inference to generate pickle (.pkl) files for each bird:
-
 ```bash
 birdnames=(
     "Bird0"
@@ -56,34 +45,34 @@ birdnames=(
     "Bird10"
 )
 
+echo "INFERENCE STARTED"
+
 # run inference on each bird
 for bird in "${birdnames[@]}"; do
-    pklname="./${bird%/}.pkl"
-    python model_inference_batched.py --audio_path "../../3470165/$bird/Wave" --model_path "churp.pth" --save_pickle "$pklname" --hop_length 86
-done
-```
 
-## 5. Clustering and Segmentation -- outputs <bird name>.html summary file and .png files containing visualizations
-### Process the inferred pickle files to group and segment the audio data (in parallel, for speed):
+    pklname="./files/${bird%/}.pkl"
 
-```bash
-for bird in "${birdnames[@]}"; do
-    pklname="${bird}.pkl"
-    python cluster_and_seg.py --audio_path "../../3470165/${bird}/Wave" --pkl "${pklname}" --hop_length 86 --bird_name_prefix "${bird}" --min_length 20 --max_length 50 --max_clusters 20 --fst_threshold 0.2 --sec_threshold 0.75 &
+    python src/model_inference_batched.py --audio_path "files/3470165/$bird/Wave" --model_path "models/churp.pth" --save_pickle "$pklname" --hop_length 86
+
 done
+
 wait
 ```
 
-## 6. Packaging Outputs
-### Finally, organize all generated visualizations and data files into a single compressed archive for easy sharing or storage:
+## 4. Clustering and Segmentation -- outputs <bird name>.html summary file and .png files containing visualizations
+### Process the inferred pickle files to group and segment the audio data (in parallel, for speed):
 
 ```bash
-cd ../../
-mkdir CHURP_outputs
-mv CHURP/birdsong_model/*.html CHURP_outputs
-mv CHURP/birdsong_model/*.png CHURP_outputs
-mv CHURP/birdsong_model/*.pkl CHURP_outputs
-tar -czf "CHURP_outputs.tar.gz" CHURP_outputs
+# clustering embedding songs
+for bird in "${birdnames[@]}"; do
+
+    pklname="./files/${bird}.pkl"
+
+    python src/cluster_and_seg.py --audio_path "files/3470165/${bird}/Wave" --out_dir "files" --pkl "${pklname}" --hop_length 86 --bird_name_prefix "${bird}" --min_length 20 --max_length 50 --max_clusters 20 --fst_threshold 0.2 --sec_threshold 0.75 &
+
+done
+
+wait
 ```
 # TweetyBERT implementation
 TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main as of July 2026. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code block below. This includes all parameters used, as well as the commands that were executed to change some of the original code. 
