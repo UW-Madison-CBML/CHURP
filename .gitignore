@@ -1,5 +1,6 @@
 *.log
 *.err
+*.err
 *.sh
-*.sup
+*.sub
 CHTC_scripts
