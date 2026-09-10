@@ -1,3 +1,7 @@
+# CHURP Overview
+
+Brief description of method, good figure/animation, and link to preprint go here
+
 # CHURP Usage Guide
 
 ## 1. Setup and Installation
