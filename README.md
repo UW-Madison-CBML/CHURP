@@ -29,7 +29,6 @@ python src/train.py --audio_path "files/3470165/all_wavs" --save_name "models/ch
 ```
 
 ## 3. Inference -- outputs "<bird name>.pkl" files (into the "files" directory), containing dictionary mapping each .wav file (the keys) to the corresponding list of 3d normalized embeddings for each time bin in the recording (the values)
-### Define the target subjects and run batched inference to generate pickle (.pkl) files for each bird:
 ```bash
 birdnames=(
     "Bird0"
@@ -59,9 +58,8 @@ done
 wait
 ```
 
-## 4. Clustering and Segmentation -- outputs <bird name>.html summary file and .png files containing visualizations
-### Process the inferred pickle files to group and segment the audio data (in parallel, for speed):
-
+## 4. Clustering and Segmentation -- outputs <bird name>.html summary into "files" folder, as well as .png files containing visualizations
+### Note that the code is run in parallel for all birds here due to the '&' after the python command.
 ```bash
 # clustering embedding songs
 for bird in "${birdnames[@]}"; do
