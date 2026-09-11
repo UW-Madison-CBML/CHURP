@@ -165,7 +165,16 @@ mkdir files/comparison_outputs
 # run comparisons for each bird
 for bird in "${birdnames[@]}"; do
 
-        python src/comparing.py --xml "files/3470165/${bird}/Annotation.xml" --pkl "files/annotated_bins_${bird}.pkl" --json "tweety_bert/files/${bird}_decoder_decoded_database.json" --wav_dir "files/3470165/${bird}/Wave" --sr 32000 --hop 86 --out_dir "files/comparison_outputs" --regions "tweety_bert/files/${bird}_song_detection.json" --bird "${bird}" > "files/comparison_outputs/${bird}.out" &
+        python src/comparing.py \
+                --xml "files/3470165/${bird}/Annotation.xml" \
+                --pkl "files/annotated_bins_${bird}.pkl" \
+                --json "tweety_bert/files/${bird}_decoder_decoded_database.json" \
+                --wav_dir "files/3470165/${bird}/Wave" \
+                --sr 32000 \
+                --hop 86 \
+                --out_dir "files/comparison_outputs" \
+                --regions "tweety_bert/files/${bird}_song_detection.json" \
+                --bird "${bird}" > "files/comparison_outputs/${bird}.out" &
 
 done
 

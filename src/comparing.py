@@ -807,8 +807,9 @@ def main():
         pickle.dump(stats, f)
 
     # store all the comparison metrics in a csv file
-    file_exists = os.path.exists(f"{args.bird}_comparison_data.csv")
-    with open(f"{args.bird}_comparison_data.csv", mode='a', newline='') as file:
+    csv_path = os.path.join(args.out_dir, f"{args.bird}_comparison_data.csv")
+    file_exists = os.path.exists(csv_path)
+    with open(csv_path, mode='a', newline='') as file:
         writer = csv.writer(file)
    
         if not file_exists:
