@@ -2,6 +2,8 @@
 
 Convolutional Heuristic Unsupervised Recurrent Parser (CHURP) is a fully unsupervised framework for the segmentation and classification of birdsong syllables. CHURP utilizes a hybrid convolutional-LSTM autoencoder to encode audio spectrograms into latent trajectories that exhibit loop-like structures corresponding to discrete syllables. The trajectories are segmented based on their spatial deviation from a quiet ambient baseline and are subsequently encoded using time-augmented path signatures, which capture the geometric and temporal dynamics of each vocalization. The embedded syllables are then clustered with HDBSCAN to identify unique groupings and infer a dictionary of syllable types. CHURP also produces transition probability matrices that capture the underlying syntactic structure of the songs via measuring the relative frequencies of ordered pairs of syllables occurring in sequence. More detailed information for the CHURP framework can be found in the manuscript: LINK TO PREPRINT.
 
+[CHURP_figure_2.pdf](https://github.com/user-attachments/files/32084261/CHURP_figure_2.pdf)
+
 # CHURP Usage Guide
 The following usage guide works through the process for training and inference with the CHURP model using the dataset from the manuscript, which can be downloaded at https://figshare.com/articles/media/BirdsongRecognition/3470165
 
