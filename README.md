@@ -18,7 +18,8 @@ docker run -it cdonahue6/churp:latest
 # clone the repo
 git clone https://github.com/UW-Madison-CBML/CHURP
 
-# unzip the data, deposited in to the files directory
+# unzip the data, depositing it to the files directory
+# THIS IS THE FILE DOWNLOADED FROM FIGSHARE
 tar -zxf 3470165.tar.gz -C files/
 
 # copy wav files from all birds into single directory
