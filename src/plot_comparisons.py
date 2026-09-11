@@ -173,7 +173,7 @@ def annotate(ax, spec, extent, labels, sec_per_label, colors=None):
     ax.set_ylabel('Frequency Bin', fontsize=24)
     return im
 
-def plot_spectrograms(label_dictionary, bird):
+def plot_spectrograms(label_dictionary, bird, file_path):
     """
     Creates a wide-format figure showing a spectrogram with annotated time intervals,
     attaches a colorbar, and saves the final plot to disk.
@@ -188,7 +188,7 @@ def plot_spectrograms(label_dictionary, bird):
             continue
 
         # Construct the filepath and load the processed spectrogram
-        file = os.path.join(f"3470165/{bird}/Wave/",k)
+        file = os.path.join(file_path,k)
         spectrogram, t_sec, sample_rate = load_stft(file, 86)
 
         sec_per_label = 1.0 / sample_rate
@@ -238,6 +238,7 @@ def plot_spectrograms(label_dictionary, bird):
 # Parse input arguments for input and output directories
 STATS_DIR = sys.argv[1]  # Directory containing comparison_stats_{bird}.pkl files
 OUT_DIR = sys.argv[1]      # Directory where generated figures will be saved (same as STATS_DIR)
+FILE_PATH = sys.argv[2] # directory with wav files 
 
 # Ensure the output directory exists before generating figures
 os.makedirs(OUT_DIR, exist_ok=True)
@@ -257,7 +258,8 @@ for label_file in gt_label_files:
     bird = os.path.basename(label_file).replace("processed_xml_annotations_", "").replace(".pkl", "")
     with open(label_file, 'rb') as file:
         data = pickle.load(file)
-    plot_spectrograms(data, bird)
+    file_path = os.join(FILE_PATH, f"/{bird}/Wave")
+    plot_spectrograms(data, bird, file_path)
 
 # Initialize data structures to collect metrics for downstream statistical plotting
 fer_records = []

@@ -189,7 +189,7 @@ for bird in "${birdnames[@]}"; do
 done
 
 # plot results
-python src/plot_comparisons.py "files/comparison_outputs"
+python src/plot_comparisons.py "files/comparison_outputs" "files/3470165"
 
 mkdir final_outputs
 mv files/comparison_outputs/* final_outputs/
