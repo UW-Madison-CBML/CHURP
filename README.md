@@ -1,42 +1,36 @@
+# CHURP Overview
+
+Convolutional Heuristic Unsupervised Recurrent Parser (CHURP) is a fully unsupervised framework for the segmentation and classification of birdsong syllables. CHURP utilizes a hybrid convolutional-LSTM autoencoder to encode audio spectrograms into latent trajectories that exhibit loop-like structures corresponding to discrete syllables. The trajectories are segmented based on their spatial deviation from a quiet ambient baseline and are subsequently encoded using time-augmented path signatures, which capture the geometric and temporal dynamics of each vocalization. The embedded syllables are then clustered with HDBSCAN to identify unique groupings and infer a dictionary of syllable types. CHURP also produces transition probability matrices that capture the underlying syntactic structure of the songs via measuring the relative frequencies of ordered pairs of syllables occurring in sequence. More detailed information for the CHURP framework can be found in the manuscript: LINK TO PREPRINT.
+
+![example image](https://github.com/user-attachments/assets/b064f72a-618c-4a54-ba4a-6e765dfb70c4)
+
 # CHURP Usage Guide
+The following usage guide works through the process for training and inference with the CHURP model using the dataset from the manuscript, which can be downloaded at https://figshare.com/articles/media/BirdsongRecognition/3470165
 
 ## 1. Setup and Installation
 
-First, extract the dataset. The dataset used below comes from https://figshare.com/articles/media/BirdsongRecognition/3470165 and the "all_wavs" directory was created by adding all the wav files from the individual birds to a single directory (see the "birdsong_model/move_wavs.sh" usage). Note than any wav files can be used as model inputs. Next, clone the repository:
+First, activate the docker image for CHURP. Next, clone the CHURP repository and extract the data set that was downloaded from the link included above. For training, all the recordings must be in the same subdirectory -- the "move_wavs.sh" script handles this.
 
 ```bash
-tar -zxf 3470165.tar.gz
+# run docker
+docker run -it cdonahue6/churp:latest
+
+# clone the repo
 git clone https://github.com/UW-Madison-CBML/CHURP
-cd 3470165
-bash ../CHURP/birdsong_model/move_wavs.sh
-cd ../CHURP/birdsong_model
+
+# unzip the data, deposited in to the files directory
+tar -zxf 3470165.tar.gz -C files/
+
+# copy wav files from all birds into single directory
+bash scripts/move_wavs.sh
 ```
 
-## 2. Environment Configuration
-### Create an environment for running CHURP and install the necessary programs. Note that the pipeline uses torch 2.10.0, so be sure to change that and match the correct CUDA version to your system and GPU drivers if needed:
-
+## 2. Model Training -- outputs "churp.pth" weights into "models" directory
 ```bash
-conda create -n churp python=3.10
-source $(conda info --base)/etc/profile.d/conda.sh
-conda activate churp
-
-conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas seaborn jupyter ipykernel librosa
-pip install --upgrade pip setuptools wheel cython
-pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
-pip install hdbscan iisignature --no-build-isolation
-pip install scipy soundfile ipython wandb shutil-extra glasbey pyqtgraph PyQt5 hmmlearn
+python src/train.py --audio_path "files/3470165/all_wavs" --save_name "models/churp.pth" --hop_length 86 --epochs 50
 ```
 
-## 3. Model Training -- outputs "churp.pth" weights file
-### Start the training pipeline to generate the churp.pth model weights:
-
-```bash
-python train.py --audio_path "../../3470165/all_wavs" --save_name "churp.pth" --hop_length 86 --epochs 50
-```
-
-## 4. Inference -- outputs "<bird name>.pkl" files containing dictionary mapping each .wav file (the keys) to the corresponding list of 3d normalized embeddings for each time bin in the recording (the values)
-### Define the target subjects and run batched inference to generate pickle (.pkl) files for each bird:
-
+## 3. Inference -- outputs "<bird name>.pkl" files (into the "files" directory), containing dictionary mapping each .wav file (the keys) to the corresponding list of 3d normalized embeddings for each time bin in the recording (the values)
 ```bash
 birdnames=(
     "Bird0"
@@ -52,69 +46,50 @@ birdnames=(
     "Bird10"
 )
 
+echo "INFERENCE STARTED"
+
 # run inference on each bird
 for bird in "${birdnames[@]}"; do
-    pklname="./${bird%/}.pkl"
-    python model_inference_batched.py --audio_path "../../3470165/$bird/Wave" --model_path "churp.pth" --save_pickle "$pklname" --hop_length 86
-done
-```
 
-## 5. Clustering and Segmentation -- outputs <bird name>.html summary file and .png files containing visualizations
-### Process the inferred pickle files to group and segment the audio data (in parallel, for speed):
+    pklname="./files/${bird%/}.pkl"
 
-```bash
-for bird in "${birdnames[@]}"; do
-    pklname="${bird}.pkl"
-    python cluster_and_seg.py --audio_path "../../3470165/${bird}/Wave" --pkl "${pklname}" --hop_length 86 --bird_name_prefix "${bird}" --min_length 20 --max_length 50 --max_clusters 20 --fst_threshold 0.2 --sec_threshold 0.75 &
+    python src/model_inference_batched.py --audio_path "files/3470165/$bird/Wave" --model_path "models/churp.pth" --save_pickle "$pklname" --hop_length 86
+
 done
+
 wait
 ```
 
-## 6. Packaging Outputs
-### Finally, organize all generated visualizations and data files into a single compressed archive for easy sharing or storage:
-
+## 4. Clustering and Segmentation -- outputs <bird name>.html summary into "files" folder, as well as .png files containing visualizations
+### Note that the code is run in parallel for all birds here due to the '&' after the python command.
 ```bash
-cd ../../
-mkdir CHURP_outputs
-mv CHURP/birdsong_model/*.html CHURP_outputs
-mv CHURP/birdsong_model/*.png CHURP_outputs
-mv CHURP/birdsong_model/*.pkl CHURP_outputs
-tar -czf "CHURP_outputs.tar.gz" CHURP_outputs
+# clustering embedding songs
+for bird in "${birdnames[@]}"; do
+
+    pklname="./files/${bird}.pkl"
+
+    python src/cluster_and_seg.py --audio_path "files/3470165/${bird}/Wave" --out_dir "files" --pkl "${pklname}" --hop_length 86 --bird_name_prefix "${bird}" --min_length 20 --max_length 50 --max_clusters 20 --fst_threshold 0.2 --sec_threshold 0.75 &
+
+done
+
+wait
 ```
 # TweetyBERT implementation
-TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main as of July 2026. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code block below. This includes all parameters used, as well as the commands that were executed to change some of the original code. 
-
+TweetyBERT was implemented according to the github https://github.com/georgevenven/tweety_bert/tree/main as of July 2026. Some minor changes were made to the code in order to correct path errors and change the hop length of the spectrogram generation steps. All code used for training and inference with the TweetyBERT model is included in the code block below. This includes all parameters used, as well as the commands that were executed to change some of the original code.
 ```bash
+# run docker
+docker run -it cdonahue6/churp:latest
+
 tar -xzf 3470165.tar.gz
 
-git clone https://github.com/UW-Madison-CBML/CHURP
-cd 3470165
-bash ../CHURP/birdsong_model/move_wavs.sh
-cd ..
+mkdir files
+mv 3470165/ files
 
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
-conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
-# 1. Create and activate a new Conda environment
-conda create -n tweetybert python=3.11
-source $(conda info --base)/etc/profile.d/conda.sh
-conda activate tweetybert
-
-# 2. Install core scientific packages (including librosa)
-conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas librosa seaborn jupyter ipykernel
-
-# 3. Install additional dependencies via pip
-pip install soundfile shutil-extra glasbey pyqtgraph PyQt5 hmmlearn
-
-# 4. install torch
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
-
-# 5. Clone this repository
 git clone https://github.com/georgevenven/tweety_bert.git
 cd tweety_bert
 
 # pretrain network on all birds using default settings, except step_size 86 for 2.7ms bins
-python pretrain.py --input_dir "../3470165/all_wavs" --experiment_name "MyTweetyBERTModel" --test_percentage 20 --batch_size 32 --learning_rate 3e-4 --context 1000 --m 250 --multi_thread --step_size 86
+python pretrain.py --input_dir "../files/3470165/all_wavs" --experiment_name "MyTweetyBERTModel" --test_percentage 20 --batch_size 32 --learning_rate 3e-4 --context 1000 --m 250 --multi_thread --step_size 86 
 
 # change path error in inference.py
 sed -i "s|'python', '/home/george-vengrovski/Documents/projects/tweety_net_song_detector/src/inference.py'|'python','./src/inference.py'|g" src/inference.py
@@ -152,43 +127,24 @@ for bird in "${birdnames[@]}"; do
         touch files/$bird.npz
 
         # generate UMAP embeddings and train decoder on all birds with default arguments
-        python decoding.py --mode single --bird_name "${bird}_decoder" --model_name "MyTweetyBERTModel" --wav_folder "../3470165/$bird/Wave/" --num_random_files_spec 100 --num_samples_umap 5e5
+        python decoding.py --mode single --bird_name "${bird}_decoder" --model_name "MyTweetyBERTModel" --wav_folder "../files/3470165/$bird/Wave/" --num_random_files_spec 100 --num_samples_umap 5e5
 
-        # detect songs for individual bird so that spectrogram naming is not messed up
-        python detect_song.py --input_dir "../3470165/$bird/Wave/"
+	    # detect songs for individual bird so that spectrogram naming is not messed up
+	    python detect_song.py --input_dir "../files/3470165/$bird/Wave/"
 
         mv files/song_detection.json files/${bird}_song_detection.json
 
         # run inference on specific bird
-        python run_inference.py --bird_name "${bird}_decoder" --wav_folder "../3470165/$bird/Wave/" --apply_post_processing True --visualize --song_detection_json "files/${bird}_song_detection.json"
+        python run_inference.py --bird_name "${bird}_decoder" --wav_folder "../files/3470165/$bird/Wave/" --apply_post_processing True --visualize --song_detection_json "files/${bird}_song_detection.json"
 
 done
 
 cd ..
-
-tar -zcvf tweety_bert.tar.gz tweety_bert
 ```
 
 # Metrics and comparison calculations
+### This code assumes that both the above CHURP and TweetyBERT code was executed in the same directory and that the CHURP docker image is running
 ```bash
-git clone https://github.com/UW-Madison-CBML/CHURP
-
-conda create -n churp python=3.10
-source $(conda info --base)/etc/profile.d/conda.sh
-conda activate churp
-
-conda install -c conda-forge numpy matplotlib tqdm umap-learn hdbscan scikit-learn pandas jupyter ipykernel librosa
-pip install --upgrade pip setuptools wheel cython
-pip install torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
-pip install hdbscan iisignature --no-build-isolation
-pip install scipy soundfile ipython wandb shutil-extra glasbey pyqtgraph PyQt5 hmmlearn seaborn networkx
-
-tar -xzf CHURP_outputs.tar.gz
-tar -xzf tweety_bert.tar.gz
-tar -xzf 3470165.tar.gz
-
-mkdir comparison_outputs
-
 birdnames=(
     "Bird0"
     "Bird1"
@@ -203,40 +159,39 @@ birdnames=(
     "Bird10"
 )
 
+mkdir files/comparison_outputs
+
 # run comparisons for each bird
 for bird in "${birdnames[@]}"; do
 
-        python CHURP/comparing/comparing.py \
-                --xml "3470165/${bird}/Annotation.xml" \
-                --pkl "CHURP_outputs/annotated_bins_${bird}.pkl" \
+        python src/comparing.py \
+                --xml "files/3470165/${bird}/Annotation.xml" \
+                --pkl "files/annotated_bins_${bird}.pkl" \
                 --json "tweety_bert/files/${bird}_decoder_decoded_database.json" \
-                --wav_dir "3470165/${bird}/Wave" \
+                --wav_dir "files/3470165/${bird}/Wave" \
                 --sr 32000 \
                 --hop 86 \
-                --out_dir "comparison_outputs" \
+                --out_dir "files/comparison_outputs" \
                 --regions "tweety_bert/files/${bird}_song_detection.json" \
-                --bird "${bird}" > "comparison_outputs/${bird}.out" &
+                --bird "${bird}" > "files/comparison_outputs/${bird}.out" &
 
 done
 
 wait
 
-mv *.csv comparison_outputs/
-
 touch metrics.csv
 
-sed -n '1p' "comparison_outputs/Bird0_comparison_data.csv" > metrics.csv
+sed -n '1p' "files/comparison_outputs/Bird0_comparison_data.csv" > files/comparison_outputs/metrics.csv
 
 for bird in "${birdnames[@]}"; do
-        sed -n '2p' "comparison_outputs/${bird}_comparison_data.csv" >> metrics.csv
+        sed -n '2p' "files/comparison_outputs/${bird}_comparison_data.csv" >> files/comparison_outputs/metrics.csv
 done
 
-mv metrics.csv comparison_outputs/
-
 # plot results
-python CHURP/comparing/plot_comparisons.py "comparison_outputs"
+python src/plot_comparisons.py "files/comparison_outputs"
 
-tar -czf comparison_outputs.tar.gz comparison_outputs/
+mkdir final_outputs
+mv files/comparison_outputs/* final_outputs/
 ```
 
 
