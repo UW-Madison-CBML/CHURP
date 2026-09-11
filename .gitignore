@@ -1,2 +1,5 @@
 logs
 CHTC_scripts
+*.sh
+*.sub
+!move_wavs.sh
