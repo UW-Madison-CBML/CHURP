@@ -277,7 +277,7 @@ def get_wav_segs(wav, spectrogram, intervals, t_sec):
     
     # Load the audio file to get the raw waveform (y) and sampling rate (sr)
     file_path = wav
-    y, sr = librosa.load(file_path)
+    y, sr = librosa.load(file_path, sr=None)
     
     for inter in intervals:
         # Calculate time (in seconds) per spectrogram frame
@@ -578,11 +578,6 @@ def optimize_umap_clusters(X, seed, min_cluster_size=100, max_clusters = None):
             # Run HDBSCAN
             hdbscan = HDBSCAN(min_cluster_size=temp_min_clust)
             clusters = hdbscan.fit_predict(X_trans)
-
-        # save 2d clusters and X-trans for fallback if no other dimension yields >1 cluster
-        if n_c == 2:
-            clusters_2d = clusters.copy()
-            X_2d = X_trans.copy()
         
         # Force noise into nearest core cluster
         noise_mask = (clusters == -1)
@@ -609,6 +604,11 @@ def optimize_umap_clusters(X, seed, min_cluster_size=100, max_clusters = None):
                 best_n = n_c
                 best_silhouette = score
                 best_clusters = clusters.copy()
+
+        # save 2d clusters and X-trans for fallback if no other dimension yields >1 cluster
+        if n_c == 2:
+            clusters_2d = clusters.copy()
+            X_2d = X_trans.copy()
 
     # Fallback in case NO dimension yielded >1 cluster
     if best_clusters is None:
@@ -708,7 +708,7 @@ def plot_record_analysis(record, record_clusters, colors, save_name, out_dir):
         return
         
     # Load waveform and compute amplitude trace
-    y, sr = librosa.load(wav_path)
+    y, sr = librosa.load(wav_path, sr = None)
     time_wav = np.linspace(0, t_sec, len(y))
     amplitude = np.abs(y) # Using absolute amplitude for the trace
 

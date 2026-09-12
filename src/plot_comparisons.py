@@ -258,7 +258,7 @@ for label_file in gt_label_files:
     bird = os.path.basename(label_file).replace("processed_xml_annotations_", "").replace(".pkl", "")
     with open(label_file, 'rb') as file:
         data = pickle.load(file)
-    file_path = os.join(FILE_PATH, f"/{bird}/Wave")
+    file_path = os.path.join(FILE_PATH, bird, "Wave")
     plot_spectrograms(data, bird, file_path)
 
 # Initialize data structures to collect metrics for downstream statistical plotting
