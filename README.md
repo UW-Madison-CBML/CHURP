@@ -2,10 +2,10 @@
 
 Convolutional Hybrid Unsupervised Recurrent Parser (CHURP) is a fully unsupervised framework for the segmentation and classification of birdsong syllables. CHURP utilizes a hybrid convolutional-LSTM autoencoder to encode audio spectrograms into latent trajectories that exhibit loop-like structures corresponding to discrete syllables. The trajectories are segmented based on their spatial deviation from a quiet ambient baseline and are subsequently encoded using time-augmented path signatures, which capture the geometric and temporal dynamics of each vocalization. The embedded syllables are then clustered with HDBSCAN to identify unique groupings and infer a dictionary of syllable types. CHURP also produces transition probability matrices that capture the underlying syntactic structure of the songs via measuring the relative frequencies of ordered pairs of syllables occurring in sequence. More detailed information for the CHURP framework can be found in the manuscript: LINK TO PREPRINT.
 
-![example image](https://github.com/user-attachments/assets/b064f72a-618c-4a54-ba4a-6e765dfb70c4)
+![example image 1](https://github.com/user-attachments/assets/b064f72a-618c-4a54-ba4a-6e765dfb70c4)
 In the above figure, a) depicts a UMAP of embedded syllables from a collection of recordings of an example bird, and b) displays the latent trajectories of birdsong from one example recording. Example trajectories from each cluster are highlighted. c) Consists of an annotated spectrogram, with bar colors indicating from which cluster each syllable originates.
 
-![example image](https://github.com/user-attachments/files/32255518/CHURP_figure_4.pdf)
+![example image 2](https://github.com/user-attachments/files/32255518/CHURP_figure_4.pdf)
 Syllable transition markov chains for example birds. Each node represents a syllable and arrows connecting nodes represent transitions probabilities. Thicker arrows represent higher transition probabilities, and transition probabilities less than 0.05 are not depicted.
 
 
