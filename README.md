@@ -6,7 +6,7 @@ Convolutional Hybrid Unsupervised Recurrent Parser (CHURP) is a fully unsupervis
 In the above figure, a) depicts a UMAP of embedded syllables from a collection of recordings of an example bird, and b) displays the latent trajectories of birdsong from one example recording. Example trajectories from each cluster are highlighted. c) Consists of an annotated spectrogram, with bar colors indicating from which cluster each syllable originates.
 
 ![example image 2](https://github.com/user-attachments/assets/44246395-dfe6-41ae-8c8b-56dd52623541)
-Syllable transition markov chains for example birds. Each node represents a syllable and arrows connecting nodes represent transitions probabilities. Thicker arrows represent higher transition probabilities, and transition probabilities less than 0.05 are not depicted.
+Syllable transition markov chains for example birds with distance metrics. Each node represents a syllable and arrows connecting nodes represent transitions probabilities. Thicker arrows represent higher transition probabilities, and transition probabilities less than 0.05 are not depicted.
 
 
 
