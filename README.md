@@ -5,7 +5,7 @@ Convolutional Hybrid Unsupervised Recurrent Parser (CHURP) is a fully unsupervis
 ![example image](https://github.com/user-attachments/assets/b064f72a-618c-4a54-ba4a-6e765dfb70c4)
 In the above figure, a) depicts a UMAP of embedded syllables from a collection of recordings of an example bird, and b) displays the latent trajectories of birdsong from one example recording. Example trajectories from each cluster are highlighted. c) Consists of an annotated spectrogram, with bar colors indicating from which cluster each syllable originates.
 
-![example image]([CHURP_figure_4.pdf](https://github.com/user-attachments/files/32255518/CHURP_figure_4.pdf))
+![example image](https://github.com/user-attachments/files/32255518/CHURP_figure_4.pdf)
 
 
 # CHURP Usage Guide
